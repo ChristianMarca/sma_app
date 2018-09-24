@@ -15,6 +15,8 @@ const mapStateToProps=state=>{
     interruptionStart: state.interruptionDateReducer.interruptionStart,
     interruptionEnd: state.interruptionDateReducer.interruptionEnd,
     interruptionTime: state.interruptionDateReducer.interruptionTime,
+
+    interruptionType: state.interruptionTypeReducer.interruptionType,
 	}
 }
 
@@ -31,39 +33,73 @@ const mapDispatchToProps=(dispatch)=>{
 
 
 class InterruptionDate extends React.Component{
-  // constructor(){
-  //   super();
-  //   this.state={
-  //     startDate:moment(),
-  //     endDate:moment(),
-  //   }
-  // }
-  // handleChangeStart=(date)=>{
-  //   this.setState({
-  //     startDate: date
-  //   });
-  // }
-  // handleChangeEnd=(date)=>{
-  //   this.setState({
-  //     endDate: date
-  //   });
-  // }
 
   calculateTime=()=>{
     // var now  = "04/09/2013 15:00:30";
     // var then = "02/09/2013 14:20:31";
+    const {onSubmitInterruptionTime}=this.props;
     var now  = this.props.interruptionEnd;
     var then = this.props.interruptionStart;
     var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
     var d = moment.duration(ms);
     var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    onSubmitInterruptionTime(s)
     return(s)
   }
 
-  render(){
-    const {onSubmitInterruptionStart, onSubmitInterruptionEnd,onSubmitInterruptionTime}=this.props;
+  scheduled=()=>{
+    const {
+      onSubmitInterruptionEnd,
+    }=this.props;
     return(
-      <form>
+      <div className="scheduledContainer">
+        <h6 className="titleInput">Fin</h6>
+        <DatePicker
+            className="datesComponents"
+            selected={this.props.interruptionEnd}
+            selectsEnd
+            startDate={this.props.interruptionStart}
+            endDate={this.props.interruptionEnd}
+            // onChange={(event)=>{onSubmitInterruptionEnd(event);this.props.onSubmitInterruptionTime(calculateTime())}}
+            onChange={(event)=>{onSubmitInterruptionEnd(event)}}
+            showTimeSelect
+              timeFormat="HH:mm"
+              injectTimes={[
+                moment().hours(0).minutes(1),
+                moment().hours(12).minutes(5),
+                moment().hours(23).minutes(59)
+              ]}
+              dateFormat="LLL"
+              minDate={moment()}
+              maxDate={moment().add(5, "months")}
+              showDisabledMonthNavigation
+              withPortal
+        />
+        <h6 className="titleInput">Tiempo de Interrupción</h6>
+        {/* <input type="time" className="" onChange={onSubmitInterruptionTime} value="18:39:59" disabled required></input> */}
+        <h1 className="timeCounter">
+          {this.calculateTime().split(':').map((item,index)=>{
+            switch (index){
+              case 0:
+                return `${item} h `
+              case 1:
+                return `${item} min `
+              default:
+                return `${item} seg`
+            }
+          })}
+        </h1>
+      </div>
+    )
+  }
+
+  render(){
+    const {
+      onSubmitInterruptionStart,
+      interruptionType
+    }=this.props;
+    return(
+      <div>
         {/* <input type="date" className="" onChange={onSubmitInterruptionStart} required></input> */}
         {/* <input type="date" className="" onChange={onSubmitInterruptionEnd} required></input> */}
         <div className="addressContainer">
@@ -88,44 +124,9 @@ class InterruptionDate extends React.Component{
                 showDisabledMonthNavigation
                 withPortal
           />
-          <h6 className="titleInput">Fin</h6>
-          <DatePicker
-              className="datesComponents"
-              selected={this.props.interruptionEnd}
-              selectsEnd
-              startDate={this.props.interruptionStart}
-              endDate={this.props.interruptionEnd}
-              // onChange={(event)=>{onSubmitInterruptionEnd(event);this.props.onSubmitInterruptionTime(calculateTime())}}
-              onChange={(event)=>{onSubmitInterruptionEnd(event)}}
-              showTimeSelect
-                timeFormat="HH:mm"
-                injectTimes={[
-                  moment().hours(0).minutes(1),
-                  moment().hours(12).minutes(5),
-                  moment().hours(23).minutes(59)
-                ]}
-                dateFormat="LLL"
-                minDate={moment()}
-                maxDate={moment().add(5, "months")}
-                showDisabledMonthNavigation
-                withPortal
-          />
-          <h6 className="titleInput">Tiempo de Interrupción</h6>
-          {/* <input type="time" className="" onChange={onSubmitInterruptionTime} value="18:39:59" disabled required></input> */}
-          <h1 className="timeCounter">
-            {this.calculateTime().split(':').map((item,index)=>{
-              switch (index){
-                case 0:
-                  return `${item} h `
-                case 1:
-                  return `${item} min `
-                default:
-                  return `${item} seg`
-              }
-            })}
-          </h1>
+          {interruptionType==='Scheduled' && this.scheduled()}
         </div>
-      </form>
+      </div>
 
     )
   }

@@ -1,6 +1,27 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {interruptionCausesAction,interruptionTagsAction} from '../../actions';
 
 import './interruption.css'
+
+const mapStateToProps=state=>{
+	return {
+    //Código de Interrupción
+    interruptionCauses: state.interruptionAddressCauses,
+    // //Código de Estación Base
+    // interruptionTags: state.interruptionAddressCauses.interruptionBS,
+
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    //Causas de la interrupcion
+    onChangeInterruptionCauses: (event)=> dispatch(interruptionCausesAction(event)),
+    //Tags de causas
+    onChangeInterruptionTags: (event)=> dispatch(interruptionTagsAction(event)),
+
+	}
+}
 
 var textContainer, textareaSize, input;
 var autoSize=()=> {
@@ -8,11 +29,13 @@ var autoSize=()=> {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-  textContainer = document.querySelector('.textarea-containerCauses');
-  textareaSize = textContainer.querySelector('.textarea-size');
-  input = textContainer.querySelector('textarea');
-  autoSize();
-  input.addEventListener('input', autoSize);
+  try{
+    textContainer = document.querySelector('.textarea-containerCauses');
+    textareaSize = textContainer.querySelector('.textarea-size');
+    input = textContainer.querySelector('textarea');
+    autoSize();
+    input.addEventListener('input', autoSize);
+  }catch(e){}
 });
 
 class InterruptionCauses extends React.Component{
@@ -26,14 +49,17 @@ class InterruptionCauses extends React.Component{
     return matches;
   }
   regexA=(texto)=>{
-    const regex = /-b-([^-<\\]*(?:\\.[^-<\\]*)*)-/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
+    const {onChangeInterruptionCauses,onChangeInterruptionTags}=this.props;
+    //const regex = /-b([^-<\\]*(?:\\.[^-<\\]*)*)-/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
+    const regex = /@([^@<\\]*(?:\\.[^-<\\]*)*)@/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
     var matches = this.getMatches(texto.target.value, regex, 1);
-    console.log(matches)
+    onChangeInterruptionCauses(texto.target.value.replace(regex,'$1'));
+    onChangeInterruptionTags(matches);
     resultado.innerHTML = texto.target.value.replace(regex,reemp);
   }
   render(){
     return(
-      <form className="addressContainer">
+      <div className="addressContainer">
         <h6 className="titleInput">Causas</h6>
         <div className="card searchContainer">
           <div className="textarea-containerCauses">
@@ -42,9 +68,9 @@ class InterruptionCauses extends React.Component{
           </div>
           <p className="textField card-body" id="resultado"></p>
         </div>
-      </form>
+      </div>
     )
   }
 }
 
-export default InterruptionCauses;
+export default connect(mapStateToProps,mapDispatchToProps)(InterruptionCauses);
