@@ -9,7 +9,8 @@ import {
   INTERRUPTION_START,
   INTERRUPTION_END,
   INTERRUPTION_TIME,
-
+  INTERRUPTION_CAUSES,
+  INTERRUPTION_TAGS
 } from './constants';
 
 // Elección del tipo de interrupción
@@ -90,4 +91,16 @@ export const interruptionEndAction=(end)=>({
 export const interruptionTimeAction=(time)=>({
   type: INTERRUPTION_TIME,
   payload: time
+});
+
+//Causas
+export const interruptionCausesAction=(cause)=>({
+  type: INTERRUPTION_CAUSES,
+  payload: cause
+});
+
+//Tags
+export const interruptionTagsAction=(tags)=>({
+  type: INTERRUPTION_TAGS,
+  payload: tags
 });

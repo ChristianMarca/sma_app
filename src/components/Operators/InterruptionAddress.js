@@ -43,18 +43,21 @@ var autoSize=()=> {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-  textContainer = document.querySelector('.textarea-container');
-  textareaSize = textContainer.querySelector('.textarea-size');
-  input = textContainer.querySelector('textarea');
-  autoSize();
-  input.addEventListener('input', autoSize);
+  try{
+    textContainer = document.querySelector('.textarea-container');
+    textareaSize = textContainer.querySelector('.textarea-size');
+    input = textContainer.querySelector('textarea');
+    autoSize();
+    input.addEventListener('input', autoSize);
+  }
+  catch(e){}
 });
 
 class InterruptionAddress extends React.Component{
   render(){
     const {onChangeInterruptionCode,onChangeBS,onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
     return(
-      <form className="addressContainer">
+      <div className="addressContainer">
         <h6 className="titleInput">Código</h6>
         <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
         <h6 className="titleInput">Radio Base</h6>
@@ -71,7 +74,7 @@ class InterruptionAddress extends React.Component{
           <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
           <div className="textarea-size"></div>
         </div>
-      </form>
+      </div>
     )
   }
 }

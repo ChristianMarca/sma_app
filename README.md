@@ -1,4 +1,4 @@
-# Parte Inicial del proyecto de SMA manejo de interrupciones
+#Parte Inicial del proyecto de SMA manejo de interrupciones
 
 #Creando componenetes y comunicacion iunter componentes
 
