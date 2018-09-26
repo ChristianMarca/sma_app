@@ -1,7 +1,25 @@
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//El componente AddReport realiza la función de: Recibir las parametros del formulario y validar parea el envío al servidor
+//            Autor: Christian Marca
+//            Fecha de Creación: 25/09/2018
+//            Fecha de Ultima Modificación:----------
+//            Descripción: Es el contenedor de los componentes de fomulario y permite la valudación de la información antes de ser cargada al servidor para procegir el proceso de el amnejo de la interrupción
+//            inputs: Campos de información de la interrupción
+//            outputs: Objeto con la información del formulario pasada por primera verificación de datos
+//            methods: Reducers de comabio de estado
+//            resumen: Toma la entrada del usuario y genera un objeto con datos validos para el envío hacia el servidor.
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//AddReport
+
 import React from 'react';
 import { interruptionTypeAction} from '../../../actions';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
+import axios from 'axios';
 
 import InterruptionAddress from '../../../components/Operators/InterruptionAddress';
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
@@ -9,7 +27,6 @@ import InterruptionCauses from '../../../components/Operators/InterruptionCauses
 import InterruptionFiles from '../../../components/Operators/InterruptionFiles';
 
 import '../Operators.css'
-import axios from 'axios';
 
 const mapStateToProps=state=>{
 	return {
@@ -57,9 +74,12 @@ class AddReport extends React.Component{
         interruptionDate,
         interruptionCauses
     }
-    axios.post('http://192.168.1.140:3000/newInterruption',keys)
-      .then(resp=>{console.log(resp)})
+    axios.post('http://192.168.1.140:3000/radioBases/newInterruption',keys)
+      .then(resp=>{console.log(resp.data)})
       .catch(err=>console.log(err))
+    // axios.get(`http://192.168.1.140:3000/radioBases?province=${interruptionRB.interruptionProvince}`)
+    //   .then(resp=>{console.log(resp.data)})
+    //   .catch(console.log)
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   cancel=()=>{

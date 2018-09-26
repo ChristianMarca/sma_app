@@ -27,7 +27,7 @@ import registerServiceWorker from './registerServiceWorker';
 // ReactDOM.render(<App />, document.getElementById('root'));
 // registerServiceWorker();
 
-// const looger = createLogger();
+const looger = createLogger();
 const rootReducers=combineReducers(
 	{interruptionTypeReducer,
 		interruptionAddressReducer,
@@ -35,9 +35,9 @@ const rootReducers=combineReducers(
 		interruptionCausesReducer
 	})
 
-// const store = createStore(rootReducers, applyMiddleware(thunkMiddleware,looger))
-const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
-//const store = createStore(clickButtonReducer, applyMiddleware(thunkMiddleware,looger))
+const store = createStore(rootReducers, applyMiddleware(thunkMiddleware,looger))
+// const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
+// const store = createStore(clickButtonReducer, applyMiddleware(thunkMiddleware,looger))
 
 ReactDOM.render(
 	<Provider store={store}>

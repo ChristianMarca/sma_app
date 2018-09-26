@@ -58,8 +58,8 @@ export const interruptionAddressReducer =(state=initialStateBS, action={})=>{
 
 //Inicio de Interrupció
 const initialStateDate={
-  interruptionStart: moment(),
-  interruptionEnd: moment(),
+  interruptionStart: moment().toDate(),
+  interruptionEnd: moment().toDate(),
   interruptionTime:"",
 };
 

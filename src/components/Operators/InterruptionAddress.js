@@ -1,7 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {interruptionCodeAction,interruptionBSAction,interruptionProvinceAction,interruptionCantonAction,interruptionParishAction,interruptionSectorAction} from '../../actions';
+import axios from 'axios';
 
+import {interruptionCodeAction,interruptionBSAction,interruptionProvinceAction,interruptionCantonAction,interruptionParishAction,interruptionSectorAction} from '../../actions';
+import SuggestField from './SuggestFields';
 import './interruption.css'
 
 const mapStateToProps=state=>{
@@ -54,12 +56,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 class InterruptionAddress extends React.Component{
+  onChangeTest=(event)=>{
+    console.log(event.target.value.length)
+    event.target.value.length>=3 && axios.get(`http://192.168.1.102:3000/radioBases?id=${event.target.value}`)
+      .then(resp=>{console.log(resp.data)})
+      .catch(console.log)
+  }
   render(){
     const {onChangeInterruptionCode,onChangeBS,onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
     return(
       <div className="addressContainer">
+        <SuggestField />
         <h6 className="titleInput">Código</h6>
         <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
+        <input placeholder="Test" className="inputField" type="text" onChange={this.onChangeTest} required></input>
         <h6 className="titleInput">Radio Base</h6>
         <input placeholder="Nodo Principal" className="inputField" type="text" onChange={onChangeBS} required></input>
         <h6 className="titleInput">Provincia</h6>
