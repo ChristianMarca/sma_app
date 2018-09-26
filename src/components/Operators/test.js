@@ -22,5 +22,10 @@
 // })
 // console.log(prueba)
 
-const url = ' https://api.spotify.com/v1/artists/0OdUWJ0sBjDrqHygGUXeCF'
-fetch (url) .then (data => console.log (data));
+const url = 'http://192.168.1.102:3000/radioBases'
+fetch(url).then (data => console.log (data));
+
+
+
+
+
