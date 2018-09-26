@@ -1,7 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {interruptionCodeAction,interruptionBSAction,interruptionProvinceAction,interruptionCantonAction,interruptionParishAction,interruptionSectorAction} from '../../actions';
+import axios from 'axios';
 
+import {interruptionCodeAction,interruptionBSAction,interruptionProvinceAction,interruptionCantonAction,interruptionParishAction,interruptionSectorAction} from '../../actions';
+import SuggestField from './SuggestFields';
 import './interruption.css'
 
 const mapStateToProps=state=>{
@@ -43,20 +45,31 @@ var autoSize=()=> {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-  textContainer = document.querySelector('.textarea-container');
-  textareaSize = textContainer.querySelector('.textarea-size');
-  input = textContainer.querySelector('textarea');
-  autoSize();
-  input.addEventListener('input', autoSize);
+  try{
+    textContainer = document.querySelector('.textarea-container');
+    textareaSize = textContainer.querySelector('.textarea-size');
+    input = textContainer.querySelector('textarea');
+    autoSize();
+    input.addEventListener('input', autoSize);
+  }
+  catch(e){}
 });
 
 class InterruptionAddress extends React.Component{
+  onChangeTest=(event)=>{
+    console.log(event.target.value.length)
+    event.target.value.length>=3 && axios.get(`http://192.168.1.102:3000/radioBases?id=${event.target.value}`)
+      .then(resp=>{console.log(resp.data)})
+      .catch(console.log)
+  }
   render(){
     const {onChangeInterruptionCode,onChangeBS,onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
     return(
-      <form className="addressContainer">
+      <div className="addressContainer">
+        <SuggestField />
         <h6 className="titleInput">Código</h6>
         <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
+        <input placeholder="Test" className="inputField" type="text" onChange={this.onChangeTest} required></input>
         <h6 className="titleInput">Radio Base</h6>
         <input placeholder="Nodo Principal" className="inputField" type="text" onChange={onChangeBS} required></input>
         <h6 className="titleInput">Provincia</h6>
@@ -71,7 +84,7 @@ class InterruptionAddress extends React.Component{
           <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
           <div className="textarea-size"></div>
         </div>
-      </form>
+      </div>
     )
   }
 }

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import Dashboard from './containers/Dashboard/Dashboard'
-import AddReport from './containers/Operators/AddReport/AddReport';
-import Maps from './containers/Maps/maps';
+import propTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+
+// import Dashboard from './containers/Dashboard/Dashboard'
+// import AddReport from './containers/Operators/AddReport/AddReport';
+// import Maps from './containers/Maps/maps';
 // import logo from './logo.svg';
 import './App.css';
 
@@ -13,16 +16,28 @@ const mapStateToProps=state=>{
 }
 
 class App extends Component {
+
+  changeNav=()=>{
+    var x = document.getElementById("myTopnav");
+    x.className === "listNav"?x.className += " responsive":x.className = "listNav";
+    // if (x.className === "listNav") {
+    //     x.className += " responsive";
+    // } else {
+    //     x.className = "listNav";
+    // }
+  }
+
   render() {
     // console.log('This is sparta',this.state.onChangeInputReducer.textState)
+    const {children}= this.props;
     return (
       <div className="App">
           <ul className="listNav" id="myTopnav">
-           <li className="headerItem active"><a className="ItemList">SMA</a></li>
-            <li className="headerItem"><a className="ItemList"><i className="fas fa-chart-line"></i> Activity</a></li>
-            <li className="headerItem"><a className="ItemList"><i className="fas fa-file-medical-alt"></i> Report</a></li>
-            <li className="headerItem"><a className="ItemList"><i className="fas fa-chart-bar"></i> Stadistics</a></li>
-            <li className="headerItem"><a className="ItemList"><i className="fas fa-map-marked-alt"></i> Maps</a></li>
+           <li className="headerItem active">SMA</li>
+            <li className="headerItem" onClick={this.changeNav}><Link to="/"><i className="fas fa-chart-line"></i> Activity</Link></li>
+            <li className="headerItem" onClick={this.changeNav}><Link to="/newinterruption"><i className="fas fa-file-medical-alt"></i> Report</Link></li>
+            <li className="headerItem" onClick={this.changeNav}><i className="fas fa-chart-bar"></i> Stadistics</li>
+            <li className="headerItem" onClick={this.changeNav}><Link to="/maps"><i className="fas fa-map-marked-alt"></i> Maps</Link></li>
 
             <li className="headerItemRight">
               <a className="searchItem">
@@ -36,12 +51,18 @@ class App extends Component {
               <i className="fas fa-bars"></i>
             </li>
           </ul>
-           <Dashboard />
+          {/* <Dashboard />
           <AddReport />
-          <Maps />
+          <Maps /> */}
+          <div>
+            {children}
+          </div>
       </div>
     );
   }
 }
 
+App.propTypes={
+  children: propTypes.object.isRequired,
+}
 export default connect(mapStateToProps)(App);

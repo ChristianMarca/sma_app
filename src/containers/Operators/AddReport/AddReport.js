@@ -1,11 +1,30 @@
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//El componente AddReport realiza la función de: Recibir las parametros del formulario y validar parea el envío al servidor
+//            Autor: Christian Marca
+//            Fecha de Creación: 25/09/2018
+//            Fecha de Ultima Modificación:----------
+//            Descripción: Es el contenedor de los componentes de fomulario y permite la valudación de la información antes de ser cargada al servidor para procegir el proceso de el amnejo de la interrupción
+//            inputs: Campos de información de la interrupción
+//            outputs: Objeto con la información del formulario pasada por primera verificación de datos
+//            methods: Reducers de comabio de estado
+//            resumen: Toma la entrada del usuario y genera un objeto con datos validos para el envío hacia el servidor.
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//AddReport
+
 import React from 'react';
 import { interruptionTypeAction} from '../../../actions';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import axios from 'axios';
 
 import InterruptionAddress from '../../../components/Operators/InterruptionAddress';
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
 import InterruptionCauses from '../../../components/Operators/InterruptionCauses';
-import InterruptionFiles from '../../../components/Operators/InterruptionFiles'
+import InterruptionFiles from '../../../components/Operators/InterruptionFiles';
 
 import '../Operators.css'
 
@@ -13,6 +32,9 @@ const mapStateToProps=state=>{
 	return {
     // Elección del tipo de interrupción
     interruptionType: state.interruptionTypeReducer.interruptionType,
+    interruptionRB: state.interruptionAddressReducer,
+    interruptionDate: state.interruptionDateReducer,
+    interruptionCauses: state.interruptionCausesReducer
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -26,7 +48,7 @@ class AddReport extends React.Component{
   constructor(){
     super();
     this.state={
-      collapsar:false,
+      submitForm:false,
     }
   }
   componentDidMount(){
@@ -41,21 +63,34 @@ class AddReport extends React.Component{
     document.getElementById("buttonTypeS").style.background=nextProps.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';
     document.getElementById("buttonTypeS").style.color=nextProps.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
   }
-  changeNav=()=>{
-    var x = document.getElementById("myTopnav");
-    x.className === "listNav"?x.className += " responsive":x.className = "listNav";
-    // if (x.className === "listNav") {
-    //     x.className += " responsive";
-    // } else {
-    //     x.className = "listNav";
-    // }
+  handleSubmit=async(event)=> {
+    event.preventDefault();
+    const {interruptionType,interruptionRB,interruptionDate,interruptionCauses}=this.props
+    var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
+    if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
+    var keys={
+        interruptionType,
+        interruptionRB,
+        interruptionDate,
+        interruptionCauses
+    }
+    axios.post('http://192.168.1.140:3000/radioBases/newInterruption',keys)
+      .then(resp=>{console.log(resp.data)})
+      .catch(err=>console.log(err))
+    // axios.get(`http://192.168.1.140:3000/radioBases?province=${interruptionRB.interruptionProvince}`)
+    //   .then(resp=>{console.log(resp.data)})
+    //   .catch(console.log)
+    this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
+  }
+  cancel=()=>{
+    this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
 
   render(){
     const {onSubmitInterruptionType}=this.props;
     return(
 
-      <div className="containeNewInterruption">
+      <form className="containeNewInterruption" onSubmit={this.handleSubmit}>
 
           {/* <ul className="listNav" id="myTopnav">
            <li className="headerItem active"><a className="ItemList">SMA</a></li>
@@ -81,11 +116,11 @@ class AddReport extends React.Component{
           <div className="itemContainer">
             <div className="card-header newHeader">
               <h4>Agregar Nueva Interrupción</h4>
-              <form className="typeButtons">
+              <div className="typeButtons">
                   {/* <a className="">Tipo de interrupción</a> */}
                   <button type="button" id="buttonTypeS" className="buttonTypeRight" onClick={()=>onSubmitInterruptionType('Scheduled')} ><i className="far fa-calendar-alt"></i> Programada</button>
                   <button type="button" id="buttonTypeR" className="buttonTypeLeft" onClick={()=>onSubmitInterruptionType('Random')} ><i className="fas fa-random"></i>  Fortuita</button>
-              </form>
+              </div>
             </div>
           </div>
           <div className="card-body cardComponents">
@@ -103,17 +138,18 @@ class AddReport extends React.Component{
             </div>
             <div className="card cardInput">
               <h6 className="card-header">Anexos</h6>
-              <form className="itemContainer">
+              <div className="itemContainer">
                 <InterruptionFiles />
-              </form>
+              </div>
             </div>
           </div>
           <div className="submitsButtons">
             <button type="submit" id="buttonTypeS" className="buttonSubmits" ><i className="fas fa-save"></i> Save</button>
-            <button type="submit" id="buttonTypeS" className="buttonSubmits" ><i className="fas fa-ban"></i> Cancel</button>
+            <button type="button" id="buttonTypeS" className="buttonSubmits" onClick={this.cancel} ><i className="fas fa-ban"></i> Cancel</button>
+            {this.state.submitForm && <Redirect to="/" push={true} />}
           </div>
         </div>
-      </div>
+      </form>
     )
   }
 };

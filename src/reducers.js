@@ -9,8 +9,8 @@ import {
   INTERRUPTION_START,
   INTERRUPTION_END,
   INTERRUPTION_TIME,
-
-
+  INTERRUPTION_CAUSES,
+  INTERRUPTION_TAGS
 } from './constants';
 import moment from 'moment';
 // Elección del tipo de interrupción
@@ -58,8 +58,8 @@ export const interruptionAddressReducer =(state=initialStateBS, action={})=>{
 
 //Inicio de Interrupció
 const initialStateDate={
-  interruptionStart: moment(),
-  interruptionEnd: moment(),
+  interruptionStart: moment().toDate(),
+  interruptionEnd: moment().toDate(),
   interruptionTime:"",
 };
 
@@ -71,6 +71,22 @@ export const interruptionDateReducer =(state=initialStateDate, action={})=>{
       return Object.assign({},state,{interruptionEnd: action.payload})
     case INTERRUPTION_TIME:
       return Object.assign({},state,{interruptionTime: action.payload})
+    default:
+      return state;
+  }
+};
+
+const initialStateCauses={
+  interruptionCauses: "",
+  interruptionTags:[],
+};
+
+export const interruptionCausesReducer =(state=initialStateCauses, action={})=>{
+  switch(action.type){
+    case INTERRUPTION_CAUSES:
+      return Object.assign({},state,{interruptionCauses: action.payload})
+    case INTERRUPTION_TAGS:
+      return Object.assign({},state,{interruptionTags: action.payload})
     default:
       return state;
   }

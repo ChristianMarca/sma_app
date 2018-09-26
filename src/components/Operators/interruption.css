@@ -72,12 +72,34 @@ textarea {
   border: 1px solid #2e2e2e;
   width: 100%;
   /* height: auto; */
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
   margin-bottom: 10px;
   font-size: 13px;
   padding: 5px;
 }
+.react-datetime-picker__button{
+  border-radius: 5px;
+  border: 1px solid #2e2e2e;
+  width: 100%;
+  /* height: auto; */
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  padding: 5px;
+}
+/* .containerDateField{
+  max-width: 100%;
+  width: 100%;
+} */
+.scheduledContainer{
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .timeCounter{
   font-family: cursive;
   font-size: 23px;
