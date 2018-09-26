@@ -141,7 +141,7 @@ class SuggestFields extends React.Component {
     });
   };
 
-  render() {  
+  render() {
     const { ID, suggestionsID, isLoadingID,Est,suggestionsEst,isLoadingEst } = this.state;
     const inputPropsID = {
       placeholder: "Type 'c'",
