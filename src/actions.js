@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   INTERRUPTION_TYPE,
   INTERRUPTION_CODE,
@@ -10,7 +11,10 @@ import {
   INTERRUPTION_END,
   INTERRUPTION_TIME,
   INTERRUPTION_CAUSES,
-  INTERRUPTION_TAGS
+  INTERRUPTION_TAGS,
+  ID_REQUEST_PENDING,
+  ID_REQUEST_SUCCESS,
+  ID_REQUEST_FAILED
 } from './constants';
 
 // Elección del tipo de interrupción
@@ -104,3 +108,10 @@ export const interruptionTagsAction=(tags)=>({
   type: INTERRUPTION_TAGS,
   payload: tags
 });
+
+export const requestIDAction =(newValue,typeSearch)=>(dispatch)=>{
+  dispatch({type: ID_REQUEST_PENDING});
+  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases?${typeSearch}=${newValue}`)
+    .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
+    .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
+}

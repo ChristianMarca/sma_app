@@ -34,7 +34,7 @@ const mapStateToProps=state=>{
     interruptionType: state.interruptionTypeReducer.interruptionType,
     interruptionRB: state.interruptionAddressReducer,
     interruptionDate: state.interruptionDateReducer,
-    interruptionCauses: state.interruptionCausesReducer
+    interruptionCauses: state.interruptionCausesReducer,
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -74,7 +74,7 @@ class AddReport extends React.Component{
         interruptionDate,
         interruptionCauses
     }
-    axios.post('http://192.168.1.140:3000/radioBases/newInterruption',keys)
+    axios.post('http://192.168.1.102:3000/radioBases/newInterruption',keys)
       .then(resp=>{console.log(resp.data)})
       .catch(err=>console.log(err))
     // axios.get(`http://192.168.1.140:3000/radioBases?province=${interruptionRB.interruptionProvince}`)

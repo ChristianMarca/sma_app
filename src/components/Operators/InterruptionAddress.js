@@ -2,9 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 
-import {interruptionCodeAction,interruptionBSAction,interruptionProvinceAction,interruptionCantonAction,interruptionParishAction,interruptionSectorAction} from '../../actions';
-import SuggestField from './SuggestFields';
+import {interruptionCodeAction,
+  interruptionBSAction,
+  interruptionProvinceAction,
+  interruptionCantonAction,
+  interruptionParishAction,
+  interruptionSectorAction,
+} from '../../actions';
+// import SuggestField from './SuggestFields';
+import SuggestionID from './SuggestionID';
 import './interruption.css'
+import SuggestionEST from './SuggestionEST';
 
 const mapStateToProps=state=>{
 	return {
@@ -63,21 +71,24 @@ class InterruptionAddress extends React.Component{
       .catch(console.log)
   }
   render(){
-    const {onChangeInterruptionCode,onChangeBS,onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
+    const {onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
+    const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
     return(
       <div className="addressContainer">
-        <SuggestField />
+        {/* <SuggestField /> */}
         <h6 className="titleInput">Código</h6>
-        <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
-        <input placeholder="Test" className="inputField" type="text" onChange={this.onChangeTest} required></input>
+        <SuggestionID  />
+        {/* <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
+        <input placeholder="Test" className="inputField" type="text" onChange={this.onChangeTest} required></input> */}
         <h6 className="titleInput">Radio Base</h6>
-        <input placeholder="Nodo Principal" className="inputField" type="text" onChange={onChangeBS} required></input>
+        <SuggestionEST />
+        {/* <input placeholder="Nodo Principal" className="inputField" type="text" onChange={onChangeBS} required></input> */}
         <h6 className="titleInput">Provincia</h6>
-        <input placeholder="Azuay" className="inputField" type="text" onChange={onChangeProvince} required></input>
+        <input placeholder="Azuay" className="inputField" type="text" value={interruptionProvince} onChange={onChangeProvince} required></input>
         <h6 className="titleInput">Cantón</h6>
-        <input placeholder="Cantón" className="inputField" type="text" onChange={onChangeCanton}  required></input>
+        <input placeholder="Cantón" className="inputField" type="text" value={interruptionCanton} onChange={onChangeCanton}  required></input>
         <h6 className="titleInput">Paroquia</h6>
-        <input placeholder="Parroquia" className="inputField" type="text" onChange={onChangeParish}  required></input>
+        <input placeholder="Parroquia" className="inputField" type="text" value={interruptionParish} onChange={onChangeParish}  required></input>
         <h6 className="titleInput">Lugar Afectado</h6>
         {/* <input placeholder="Azuay" className="inputField" id="inputResize" type="text" size="1" onChange={onChangeSector} required></input> */}
         <div className="textarea-container">
