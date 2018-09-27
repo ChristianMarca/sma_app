@@ -11,7 +11,10 @@ import {
 	interruptionTypeReducer,
 	interruptionAddressReducer,
 	interruptionDateReducer,
-	interruptionCausesReducer
+	interruptionCausesReducer,
+	reducerSuggestID,
+	reducerSuggestEST,
+	requestIDReducer
 	} from './reducers';
 
 //Css styles
@@ -32,12 +35,16 @@ const rootReducers=combineReducers(
 	{interruptionTypeReducer,
 		interruptionAddressReducer,
 		interruptionDateReducer,
-		interruptionCausesReducer
+		interruptionCausesReducer,
+		reducerSuggestID,
+		reducerSuggestEST,
+		requestIDReducer
 	})
 
 const store = createStore(rootReducers, applyMiddleware(thunkMiddleware,looger))
-// const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
+//const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
 // const store = createStore(clickButtonReducer, applyMiddleware(thunkMiddleware,looger))
+export default store;
 
 ReactDOM.render(
 	<Provider store={store}>
