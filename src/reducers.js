@@ -1,5 +1,6 @@
 import {
   INTERRUPTION_TYPE,
+  INTERRUPTION_ID_BS,
   INTERRUPTION_CODE,
   INTERRUPTION_BS,
   INTERRUPTION_PROVINCE,
@@ -40,6 +41,7 @@ export const interruptionTypeReducer =(state=initialStateType, action={})=>{
 
 //Código de Estación Base
 const initialStateBS={
+  interruptionIdBs: "",
   interruptionCode: "",
   interruptionBS: "",
   interruptionProvince: "",
@@ -50,6 +52,8 @@ const initialStateBS={
 
 export const interruptionAddressReducer =(state=initialStateBS, action={})=>{
   switch(action.type){
+    case INTERRUPTION_ID_BS:
+      return Object.assign({},state,{interruptionIdBs: action.payload})
     case INTERRUPTION_CODE:
       return Object.assign({},state,{interruptionCode: action.payload})
     case INTERRUPTION_BS:

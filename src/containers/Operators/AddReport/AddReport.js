@@ -16,7 +16,7 @@
 //AddReport
 
 import React from 'react';
-import { interruptionTypeAction} from '../../../actions';
+import { interruptionTypeAction,interruptionSubmitedAction} from '../../../actions';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
@@ -40,7 +40,8 @@ const mapStateToProps=state=>{
 const mapDispatchToProps=(dispatch)=>{
 	return{
     // Elección del tipo de interrupción
-    onSubmitInterruptionType: (type)=> dispatch(interruptionTypeAction(type))
+    onSubmitInterruptionType: (type)=> dispatch(interruptionTypeAction(type)),
+    onSubmitInterruptionCamplete: ()=>dispatch(interruptionSubmitedAction())
 	}
 }
 
@@ -75,12 +76,16 @@ class AddReport extends React.Component{
         interruptionCauses
     }
     axios.post('http://192.168.1.102:3000/radioBases/newInterruption',keys)
-      .then(resp=>{console.log(resp.data)})
-      .catch(err=>console.log(err))
+      .then(resp=>{
+        console.log(resp.data);
+        this.props.onSubmitInterruptionCamplete()
+        this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
+      })
+      .catch(err=>alert(err.response.data))
     // axios.get(`http://192.168.1.140:3000/radioBases?province=${interruptionRB.interruptionProvince}`)
     //   .then(resp=>{console.log(resp.data)})
     //   .catch(console.log)
-    this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
+    // this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   cancel=()=>{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
@@ -89,7 +94,7 @@ class AddReport extends React.Component{
   render(){
     const {onSubmitInterruptionType}=this.props;
     return(
-
+ 
       <form className="containeNewInterruption" onSubmit={this.handleSubmit}>
 
           {/* <ul className="listNav" id="myTopnav">

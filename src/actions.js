@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   INTERRUPTION_TYPE,
+  INTERRUPTION_ID_BS,
   INTERRUPTION_CODE,
   INTERRUPTION_BS,
   INTERRUPTION_PROVINCE,
@@ -14,7 +15,8 @@ import {
   INTERRUPTION_TAGS,
   ID_REQUEST_PENDING,
   ID_REQUEST_SUCCESS,
-  ID_REQUEST_FAILED
+  ID_REQUEST_FAILED,
+  INTERRUPTION_SUBMITED
 } from './constants';
 
 // Elección del tipo de interrupción
@@ -42,6 +44,12 @@ export const interruptionTypeAction=(type)=>{
     payload: type
   }
 };
+
+// ID BS de interrupción
+export const interruptionIdBsAction=(id)=>({
+  type: INTERRUPTION_ID_BS,
+  payload: id
+});
 
 // Código de interrupción
 export const interruptionCodeAction=(code)=>({
@@ -111,7 +119,11 @@ export const interruptionTagsAction=(tags)=>({
 
 export const requestIDAction =(newValue,typeSearch)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
-  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases?${typeSearch}=${newValue}`)
+  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}`)
     .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
     .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
 }
+
+export const interruptionSubmitedAction=()=>({
+  type: INTERRUPTION_SUBMITED,
+});
