@@ -2,11 +2,12 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import {connect} from 'react-redux';
 import {requestIDAction,
+  interruptionIdBsAction,
   interruptionProvinceAction,
   interruptionCantonAction,
   interruptionParishAction,
   interruptionCodeAction,
-  interruptionBSAction
+  interruptionBSAction,
 } from '../../actions';
 import {UPDATE_INPUT_VALUE_EST,
   CLEAR_SUGGESTIONS_EST,
@@ -24,7 +25,7 @@ const getMatchingLanguages=(value)=> {
     return [];
   }
   const regex = new RegExp('^' + escapedValue, 'i');
-  return IDs.filter(language => regex.test(language.est));
+  return IDs.filter(language => regex.test(language.nom_sit));
 }
 
 function escapeRegexCharacters(str) {
@@ -71,12 +72,12 @@ function maybeUpdateSuggestions(suggestions, value) {
 }
 
 function getSuggestionValue(suggestion) {
-  return suggestion.est;
+  return suggestion.nom_sit;
 }
 
 function renderSuggestion(suggestion) {
   return (
-    <div className="renderBox">{suggestion.est}~{suggestion.id}~{suggestion.provincia}~{suggestion.canton}</div>
+    <div className="renderBox">{suggestion.nom_sit}~{suggestion.cell_id}~{suggestion.provincia}~{suggestion.canton}</div>
   );
 }
 
@@ -97,8 +98,9 @@ function mapDispatchToProps(dispatch) {
 
   return {
     onChange(event, { newValue }) {
-      dispatch(requestIDAction(newValue,"est"));
+      dispatch(requestIDAction(newValue,"nom_sit"));
       dispatch(updateInputValue(newValue));
+      dispatch(interruptionBSAction(newValue))
     },
     onSuggestionsFetchRequested({ value }) {
       dispatch(loadSuggestions(value));
@@ -107,9 +109,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(clearSuggestions());
     },
     onSelectValue: (event,{suggestion})=> {
-      dispatch(updateInputValueID(String(suggestion.id) ));
-      dispatch(interruptionCodeAction(String(suggestion.id) ))
-      dispatch(interruptionBSAction(suggestion.est))
+      dispatch(updateInputValueID(String(suggestion.cell_id) ));
+      dispatch(interruptionIdBsAction(suggestion.id_bs));
+      dispatch(interruptionCodeAction(String(suggestion.cell_id) ))
+      dispatch(interruptionBSAction(suggestion.nom_sit))
       dispatch(interruptionProvinceAction(suggestion.provincia))
       dispatch(interruptionCantonAction(suggestion.canton))
       dispatch(interruptionParishAction(suggestion.parroquia))    

@@ -2,6 +2,7 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import {connect} from 'react-redux';
 import {requestIDAction,
+  interruptionIdBsAction,
   interruptionProvinceAction,
   interruptionCantonAction,
   interruptionParishAction,
@@ -24,7 +25,7 @@ const getMatchingLanguages=(value)=> {
     return [];
   }
   const regex = new RegExp('^' + escapedValue, 'i');
-  return IDs.filter(language => regex.test(language.id));
+  return IDs.filter(language => regex.test(language.cell_id));
 }
 
 function escapeRegexCharacters(str) {
@@ -71,12 +72,12 @@ function maybeUpdateSuggestions(suggestions, value) {
 }
 
 function getSuggestionValue(suggestion) {
-  return String(suggestion.id);
+  return String(suggestion.cell_id);
 }
 
 function renderSuggestion(suggestion) {
   return (
-    <span className="renderBox">{suggestion.id}~{suggestion.est}~{suggestion.provincia}~{suggestion.canton}</span>
+    <span className="renderBox">{suggestion.cell_id}~{suggestion.nom_sit}~{suggestion.provincia}~{suggestion.canton}</span>
   );
 }
 
@@ -96,8 +97,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onChange(event, { newValue }) {
-      dispatch(requestIDAction(newValue,"id"));
+      dispatch(requestIDAction(newValue,"cell_id"));
       dispatch(updateInputValue(newValue));
+      dispatch(interruptionCodeAction(String(newValue) ))
     },
     onSuggestionsFetchRequested({ value }) {
       dispatch(loadSuggestions(value));
@@ -106,9 +108,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(clearSuggestions());
     },
     onSelectValue: (event,{suggestion})=> {
-      dispatch(updateInputValueEST(suggestion.est));
-      dispatch(interruptionCodeAction(String(suggestion.id) ))
-      dispatch(interruptionBSAction(suggestion.est))
+      dispatch(updateInputValueEST(suggestion.nom_sit));
+      dispatch(interruptionIdBsAction(suggestion.id_bs));
+      dispatch(interruptionCodeAction(String(suggestion.cell_id) ))
+      dispatch(interruptionBSAction(suggestion.nom_sit))
       dispatch(interruptionProvinceAction(suggestion.provincia))
       dispatch(interruptionCantonAction(suggestion.canton))
       dispatch(interruptionParishAction(suggestion.parroquia))    
@@ -120,7 +123,7 @@ class SuggestionID extends React.Component {
   render() {
     const { value, suggestions, onChange, onSuggestionsFetchRequested, onSuggestionsClearRequested } = this.props;
     const inputProps = {
-      placeholder: "Ingrese el ID",
+      placeholder: "Cell ID",
       value,
       onChange
     };

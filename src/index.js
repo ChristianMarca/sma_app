@@ -31,17 +31,25 @@ import registerServiceWorker from './registerServiceWorker';
 // registerServiceWorker();
 
 const looger = createLogger();
-const rootReducers=combineReducers(
+const appReducers=combineReducers(
 	{interruptionTypeReducer,
 		interruptionAddressReducer,
 		interruptionDateReducer,
 		interruptionCausesReducer,
 		reducerSuggestID,
 		reducerSuggestEST,
-		requestIDReducer
+		requestIDReducer,
 	})
 
-const store = createStore(rootReducers, applyMiddleware(thunkMiddleware,looger))
+const rootReducer = (state, action) => {
+	if (action.type === 'INTERRUPTION_SUBMITED') {
+		state = undefined
+	}
+
+	return appReducers(state, action)
+}
+
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware,looger))
 //const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
 // const store = createStore(clickButtonReducer, applyMiddleware(thunkMiddleware,looger))
 export default store;
