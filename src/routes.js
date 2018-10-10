@@ -6,7 +6,7 @@ import {Route, Switch} from 'react-router-dom';
 import App from './App';
 import AddReport from './containers/Operators/AddReport/AddReport';
 import Dashboard from './containers/Dashboard/Dashboard';
-import Maps from './containers/Maps/maps';
+import Maps from './containers/Maps/maps.js';
 import Page404 from './containers/Page404';
 
 

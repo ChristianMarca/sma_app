@@ -1,5 +1,6 @@
 import {
   INTERRUPTION_TYPE,
+  INTERRUPTION_ID_BS,
   INTERRUPTION_CODE,
   INTERRUPTION_BS,
   INTERRUPTION_PROVINCE,
@@ -10,7 +11,18 @@ import {
   INTERRUPTION_END,
   INTERRUPTION_TIME,
   INTERRUPTION_CAUSES,
-  INTERRUPTION_TAGS
+  INTERRUPTION_TAGS,
+  ID_REQUEST_PENDING,
+  ID_REQUEST_SUCCESS,
+  ID_REQUEST_FAILED,
+  UPDATE_INPUT_VALUE_ID,
+  CLEAR_SUGGESTIONS_ID,
+  MAYBE_UPDATE_SUGGESTIONS_ID,
+  LOAD_SUGGESTIONS_BEGIN_ID,
+  UPDATE_INPUT_VALUE_EST,
+  CLEAR_SUGGESTIONS_EST,
+  LOAD_SUGGESTIONS_BEGIN_EST,
+  MAYBE_UPDATE_SUGGESTIONS_EST
 } from './constants';
 import moment from 'moment';
 // Elección del tipo de interrupción
@@ -29,6 +41,7 @@ export const interruptionTypeReducer =(state=initialStateType, action={})=>{
 
 //Código de Estación Base
 const initialStateBS={
+  interruptionIdBs: "",
   interruptionCode: "",
   interruptionBS: "",
   interruptionProvince: "",
@@ -39,6 +52,8 @@ const initialStateBS={
 
 export const interruptionAddressReducer =(state=initialStateBS, action={})=>{
   switch(action.type){
+    case INTERRUPTION_ID_BS:
+      return Object.assign({},state,{interruptionIdBs: action.payload})
     case INTERRUPTION_CODE:
       return Object.assign({},state,{interruptionCode: action.payload})
     case INTERRUPTION_BS:
@@ -91,3 +106,115 @@ export const interruptionCausesReducer =(state=initialStateCauses, action={})=>{
       return state;
   }
 };
+
+const initialStateIDSuggest = {
+  value: '',
+  suggestions: [],
+  isLoading: false,
+};
+
+export const  reducerSuggestID=(state = initialStateIDSuggest, action = {})=> {
+  switch (action.type) {
+    case UPDATE_INPUT_VALUE_ID:
+      return {
+        ...state,
+        value: action.value
+      };
+
+    case CLEAR_SUGGESTIONS_ID:
+      return {
+        ...state,
+        suggestions: []
+      };
+
+    case LOAD_SUGGESTIONS_BEGIN_ID:
+      return {
+        ...state,
+        isLoading: true
+      };
+
+    case MAYBE_UPDATE_SUGGESTIONS_ID:
+      // Ignore suggestions if input value changed
+      if (action.value !== state.value) {
+        return {
+          ...state,
+          isLoading: false
+        };
+      }
+
+      return {
+        ...state,
+        suggestions: action.suggestions,
+        isLoading: false
+      };
+
+    default:
+      return state;
+  }
+}
+
+const initialStateESTSuggest = {
+  value: '',
+  suggestions: [],
+  isLoading: false,
+};
+
+export const  reducerSuggestEST=(state = initialStateESTSuggest, action = {})=> {
+  switch (action.type) {
+    case UPDATE_INPUT_VALUE_EST:
+      return {
+        ...state,
+        value: action.value
+      };
+
+    case CLEAR_SUGGESTIONS_EST:
+      return {
+        ...state,
+        suggestions: []
+      };
+
+    case LOAD_SUGGESTIONS_BEGIN_EST:
+      return {
+        ...state,
+        isLoading: true
+      };
+
+    case MAYBE_UPDATE_SUGGESTIONS_EST:
+      // Ignore suggestions if input value changed
+      if (action.value !== state.value) {
+        return {
+          ...state,
+          isLoading: false
+        };
+      }
+
+      return {
+        ...state,
+        suggestions: action.suggestions,
+        isLoading: false
+      };
+
+    default:
+      return state;
+  }
+}
+
+//ID
+const initialStateID={
+  isPendingID: false,
+  ID: {data:[]},
+  errorID:''
+}
+
+export const requestIDReducer=(state=initialStateID, action={})=>{
+  switch(action.type){
+    case ID_REQUEST_PENDING:
+     return Object.assign({},state,{isPendingID: true})
+    case ID_REQUEST_SUCCESS:
+      return Object.assign({},state,{ID: action.payload, isPendingID: false})
+    case ID_REQUEST_FAILED:
+      return Object.assign({},state,{errorID: action.payload, isPendingID: false})
+    default:
+      return state
+  }
+}

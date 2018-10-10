@@ -35,11 +35,11 @@ class InterruptionDate extends React.Component{
   calculateTime=()=>{
     const {interruptionStart,interruptionEnd}=this.props;
     const {onSubmitInterruptionTime}=this.props;
-    var now  = interruptionEnd;
-    var then = interruptionStart;
-    var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
-    var d = moment.duration(ms);
-    var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    const now  = interruptionEnd;
+    const then = interruptionStart;
+    const ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
+    const d = moment.duration(ms);
+    const s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
     onSubmitInterruptionTime(s)
     return(s)
   }
