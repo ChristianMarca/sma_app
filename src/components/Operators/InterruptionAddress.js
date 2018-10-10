@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 class InterruptionAddress extends React.Component{
   onChangeTest=(event)=>{
     console.log(event.target.value.length)
-    event.target.value.length>=3 && axios.get(`http://192.168.1.102:3000/radioBases?id=${event.target.value}`)
+    event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
       .then(resp=>{console.log(resp.data)})
       .catch(console.log)
   }

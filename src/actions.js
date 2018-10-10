@@ -119,7 +119,7 @@ export const interruptionTagsAction=(tags)=>({
 
 export const requestIDAction =(newValue,typeSearch)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
-  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}`)
+  newValue.length >=3 &&axios.get(`http://localhost:3000/radioBases/test?${typeSearch}=${newValue}`)
     .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
     .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
 }
