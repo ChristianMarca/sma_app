@@ -5,9 +5,9 @@ const chartAPI = CreateChartAPI();
 const style = require("./chart.style.css");
 
 export class ChartStaticComponent extends React.Component{
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   rootNodeRef = null;
 
