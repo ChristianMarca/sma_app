@@ -1,6 +1,7 @@
 import React from 'react';
 import {D3RenderSample} from './BarsGraph'
 import {BridgeComponent} from './donut/chartConnector';
+import { BridgeComponentDonut } from "./DonuChart/componentConnector";
 import { getRandomArray } from './randomize';
 import { setup } from './chart-setup';
 
@@ -34,7 +35,7 @@ class Maps extends React.Component{
         body = d.getElementsByTagName('body')[0],
         width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
         height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
-    // console.log(width)
+    console.log(width,height)
 }
   componentDidMount=()=> {
     //if (this.props.dynamic) 
@@ -45,8 +46,9 @@ class Maps extends React.Component{
     return(
       // <div>Maps Here!</div>
       <div className='containerChart'>
-        <D3RenderSample dynamic={true} numBars={50} />
-        <BridgeComponent data={this.state.data}/>
+        <D3RenderSample className="barsChart" dynamic={true} numBars={50} />
+        <BridgeComponent className='donutChart' data={this.state.data}/>
+        <BridgeComponentDonut />
       </div>
     )
   }

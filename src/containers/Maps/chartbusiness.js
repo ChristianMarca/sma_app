@@ -1,13 +1,13 @@
 import { setup } from './chart-setup';
 import { select } from "d3-selection";
 import { scaleLinear, scaleBand } from "d3-scale";
-import {axisBottom, axisLeft, axisRight} from 'd3-axis';
+import {axisBottom, axisLeft} from 'd3-axis';
 import {line, curveLinear} from 'd3-shape';
-import CSSModules from 'react-css-modules';
+//import CSSModules from 'react-css-modules';
 import 'd3-transition';
 const d3 = { select, scaleLinear, scaleBand };
 const styleDefs = require("./dataStyle.css");
-const padding = 30;
+//const padding = 30;
 let div=null;
 
 export const CreateChartAPI = () => {
@@ -92,10 +92,10 @@ export const CreateChartAPI = () => {
 
 
     // add legend
-    var color_hash = {  0 : ["apple", "green"],
-    1 : ["mango", "orange"],
-    2 : ["cherry", "red"]
-  }
+  //   var color_hash = {  0 : ["apple", "green"],
+  //   1 : ["mango", "orange"],
+  //   2 : ["cherry", "red"]
+  // }
 
 	var legend = svg.append("g")
   .attr("class", "legend")
