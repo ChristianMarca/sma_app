@@ -4,17 +4,21 @@ import { CreateDonutAPI } from './Donut';
 import {freqData} from './data';
 const donutAPI = CreateDonutAPI();
 
-const style = require("../chart.style.css");
+//const style = require("../chart.style.css");
 
 export class BridgeComponent extends React.Component{
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   rootNodeRef = null;
 
   setRef = (componentNode) => {
     this.rootNodeRef = componentNode;
+    if (componentNode) {
+      console.log(componentNode.getBoundingClientRect());
+    }
+   // console.log('aqui',componentNode)
   }
 
   componentDidMount() {
@@ -31,8 +35,9 @@ export class BridgeComponent extends React.Component{
   // }
 
   render() {
+    // console.log('aqui',this.setRef)
     return (
-      <div className={style.container} ref={this.setRef} />
+      <div className='donutChart' ref={this.setRef} />
     );
   }
 }
