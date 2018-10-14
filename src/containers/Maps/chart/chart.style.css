@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.bar{
+  color: red;
+  /* background-color: blue; */
+  border-radius: 5px;
+}
+
+rect{
+  color: red;
+  background-color: red;
+}
+
+/* .containerChart{
+  background-color: #2e2e2e;
+} */
+
+.donutChart,.barsChart{
+  max-width: 900px;
+  max-height: 400px;
+  width: 900px;
+  height: 400px;
+}

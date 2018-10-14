@@ -9,6 +9,12 @@
 # production
 /build
 
+# Other files
+/src/containers/Maps/DonutChart
+
+/src/containers/Maps/donut
+
+/src/containers/Maps/testD3
 # misc
 .DS_Store
 .env.local
