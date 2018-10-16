@@ -1,4 +1,4 @@
-.container {
+/* .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,15 +7,77 @@
 
 .bar{
   color: red;
-  background-color: blue;
   border-radius: 5px;
 }
 
 rect{
   color: red;
   background-color: red;
+} */
+
+#containerChart{
+  background-color: rgba(255,0,0,0.25);
+  width: 400px;
+  /* height: 200px; */
+}
+.bridgeComponent{
+  width: 100vw;
+  height: 35vh;
+  background-color: #cff;
 }
 
-.containerChart{
-  background-color: whitesmoke;
+.svg-content {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.tooltip{
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 10px 10px 10px;
+    position: absolute;
+    z-index: 1;
+    /* bottom: 125%;
+    left: 50%; */
+    /* margin-left: -80px; */
+}
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* .legend{
+  padding: 2px;
+  -webkit-text-stroke-color: #2e2e2e;
+  stroke: red;
+  border-radius: 2px;
+} */
+
+.legend {
+  background: #cff; border: 1px dashed black;
+  cursor: pointer;
+  color: red;
+  background-color: blue;
+  color: red;
+  border-color: red;
+  -webkit-text-fill-color: red;
+  fill: black;
+}
+.legend:hover {
+  background: #acc; border: 1px solid black;
+}
+
+.minimap{
+  height:57.5vh;
+  width: 100vw;
+  background-color: red;
 }

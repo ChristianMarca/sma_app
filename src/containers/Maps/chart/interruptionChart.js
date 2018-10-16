@@ -1,13 +1,10 @@
-import * as React from 'react';
-import { CreateChartAPI } from './chartbusiness';
+import React from 'react';
+import { CreateChartAPI } from './chart';
 const chartAPI = CreateChartAPI();
 
 const style = require("./chart.style.css");
 
-export class ChartDynamicComponent extends React.Component{
-  constructor(props) {
-    super(props);
-  }
+export class BridgeComponent extends React.Component{
 
   rootNodeRef = null;
 
@@ -16,7 +13,7 @@ export class ChartDynamicComponent extends React.Component{
   }
 
   componentDidMount() {
-    chartAPI.createChart(this.rootNodeRef, this.props.data);
+    chartAPI.createChart(this.rootNodeRef, this.props.data, this.props.data1, this.props.data2);
   }
 
   shouldComponentUpdate(prevProps) {
@@ -24,12 +21,12 @@ export class ChartDynamicComponent extends React.Component{
   }
 
   componentDidUpdate() {
-    chartAPI.updateChart(this.props.data);
+    chartAPI.updateChart(this.props.data,this.props.data1, this.props.data2);
   }
 
   render() {
     return (
-      <div className={style.container} ref={this.setRef} />
+      <div className="bridgeComponent" ref={this.setRef} />
     );
   }
 }

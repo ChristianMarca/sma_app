@@ -27,9 +27,10 @@ export const CreateDonutAPI=()=>{
 
     // function to handle histogram.
     function histoGram(fD){
+        console.log('h',id.getBoundingClientRect().height)
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 500 - hGDim.l - hGDim.r,
-        hGDim.h = 300 - hGDim.t - hGDim.b;
+        hGDim.w = id.getBoundingClientRect().width*0.60 - hGDim.l - hGDim.r;
+        hGDim.h = id.getBoundingClientRect().height - hGDim.t - hGDim.b;
 
         //create svg for histogram.
         var hGsvg = d3.select(id).append("svg")
@@ -38,8 +39,10 @@ export const CreateDonutAPI=()=>{
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
 
         // create function for x-axis mapping.
+        // var x = d3.scaleBand().rangeRound([0, hGDim.w], 0.1)
         var x = d3.scaleBand().rangeRound([0, hGDim.w], 0.1)
-                .domain(fD.map(function(d) { return d[0]; }));
+                .domain(fD.map(function(d) { return d[0]; }))
+                .paddingInner(0.05);
 
         // Add x-axis to the histogram svg.
         var xAxis= axisBottom()
@@ -78,7 +81,7 @@ export const CreateDonutAPI=()=>{
 
         function mouseover(d){  // utility function to be called on mouseover.
             // filter for selected state.
-            var st = fData.filter(function(s){ return s.State == d[0];})[0],
+            var st = fData.filter(function(s){ return s.State === d[0];})[0],
                 nD = keys(st.freq).map(function(s){ return {type:s, freq:st.freq[s]};});
             // call update functions of pie-chart and legend.
             pC.update(nD);
@@ -115,7 +118,9 @@ export const CreateDonutAPI=()=>{
 
     // function to handle pieChart.
     function pieChart(pD){
-        var pC ={},    pieDim ={w:250, h: 250};
+        var pC ={};
+        //var pieDim ={w:250, h: 250};
+        var pieDim={w:id.getBoundingClientRect().width*0.30,h:id.getBoundingClientRect().height}
         pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
 
         // create svg for pie chart.
@@ -176,9 +181,12 @@ export const CreateDonutAPI=()=>{
         var tr = legend.append("tbody").selectAll("tr").data(lD).enter().append("tr");
 
         // create the first column for each segment.
-        tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
+        tr.append("td").append("svg")
+            .attr("width", '16').attr("height", '16').append("rect")
             .attr("width", '16').attr("height", '16')
-      .attr("fill",function(d){ return segColor(d.type); });
+            .attr("fill",function(d){ return segColor(d.type); })
+            //.attr("x",0)
+            //.attr('y',0);
 
         // create the second column for each segment.
         tr.append("td").text(function(d){ return d.type;});
@@ -217,7 +225,8 @@ export const CreateDonutAPI=()=>{
 
     // calculate total frequency by state for all segment.
     var sF = fData.map(function(d){return [d.State,d.total];});
-
+    console.log(sF)
+    console.log(tF)
     var hG = histoGram(sF), // create the histogram.
         pC = pieChart(tF), // create the pie-chart.
         leg= legend(tF);  // create the legend.
