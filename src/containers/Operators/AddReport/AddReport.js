@@ -117,7 +117,7 @@ class AddReport extends React.Component{
             </li>
           </ul> */}
 
-        <div className="bodyContainer card">
+        <div className="bodyContainer">
           <div className="itemContainer">
             <div className="card-header newHeader">
               <h4>Agregar Nueva Interrupción</h4>

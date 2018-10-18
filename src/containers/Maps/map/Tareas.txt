@@ -1,0 +1,52 @@
+Alexis
+-Tarjetas (Componentes Dinamicos, reutilzables) (State-React)
+  Rusticas (Materialize, Bootstrap, React-Boostrap)
+-Visualuzación de interrupcion de la Arcotel (Input de commentarios / Files)
+    Steaming/Paginación
+-Conectar BSs~SMA_App
+-SMA_App agregar RBs
+
+Christian
+-Dashboard
+-Logins/Sesiones
+-Elaboración Informe y Servidor de correo electronico
+  (Javascript/Python)---Sencillo---(Abrierto Múdulo la firma digital)
+-Update RBs
+-Tarjetas (Redux)
+    Padre
+  Hijo  Hijo
+            Nieto
+30/10/2018
+
+Docker/Widows server, Linux
+
+Cambiar Iconos
+-- La tenemos tiempo
+    GeoJson(*)---for
+      ==>>>RAM y CPU
+      Alternativas...
+  cambiar iconos
+-- La que no tenemos tiempo
+  semaformizada con el icono en targeta
+-- Apartado de Estadisticas //---//
+  Pero ARCOTEL --- dashboard (---)
+
+*React.js
+*Node.js
+*Express.js
+*Postgresql
+*Redis
+*Docker
+*Redux
+*React-router
+*Leaflet
+*d3.js
+*knex.js
+*+GarbageCollect.js
+*Git
+*(Dependencias de Desarrollo)
+
+Documentación/Manual
+  -Comentarios a funciones/clases/Metodos
+  -Captura de pantalla/ explicar
+  -about/pag404/

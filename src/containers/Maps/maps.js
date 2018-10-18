@@ -1,8 +1,8 @@
 import React from 'react';
 import { BridgeComponent } from "./chart/interruptionChart";
 import { getRandomArray } from './randomize';
-import { setup } from './chart-setup';
-
+import { setup } from './chart/chart-setup';
+import Map from "./map/mapa";
 
 import './chart.style.css'
 
@@ -48,12 +48,28 @@ class Maps extends React.Component{
   render(){
     return(
       // <div>Maps Here!</div>
-      // <div id="containerChart" className='svg-containerChart'>
-        <div>
-          <div className="minimap">data Here</div>
-          <BridgeComponent data={this.state.data} data1={this.state.data1} data2={this.state.data2} />
+      <div id="containerChart" className='svg-containerChart'>
+        <div className='containersa'>
+          <div className="minimap">
+            <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+              <div className="tc">
+                <img src="http://tachyons.io/img/avatar_1.jpg" className="br-100 h3 w3 dib" title="Photo of a kitty staring at you" />
+                <h1 className="f4">Mimi Whitehouse</h1>
+                <hr className="mw3 bb bw1 b--black-10"/>
+              </div>
+              <p className="lh-copy measure center f6 black-70">
+                Quite affectionate and outgoing.
+                She loves to get chin scratches and will
+                roll around on the floor waiting for you give her more of them.
+              </p>
+            </article>
+          </div>
+            <div className="minimap">
+              <Map isDashboardComponent={false}/>
+            </div>
         </div>
-      // </div>
+          <BridgeComponent data={this.state.data} data1={this.state.data1} data2={this.state.data2} /> 
+      </div>
     )
   }
 }

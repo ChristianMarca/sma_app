@@ -26,3 +26,15 @@ rect{
   width: 900px;
   height: 400px;
 }
+
+.axis line{
+  stroke:white;
+}
+
+.axis path{
+  stroke: white;
+}
+
+.axis text{
+  fill: white;
+} 

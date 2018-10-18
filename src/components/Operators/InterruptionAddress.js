@@ -74,7 +74,7 @@ class InterruptionAddress extends React.Component{
     const {onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
     const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
     return(
-      <div className="addressContainer">
+      <div className="addressContainer card-body">
         {/* <SuggestField /> */}
         <h6 className="titleInput">Código</h6>
         <SuggestionID  />

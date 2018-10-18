@@ -1,0 +1,102 @@
+.button_search_style.leaflet-control {
+    background: white;
+    background-image: url(https://cdn2.iconfinder.com/data/icons/filled-icons/493/Search-512.png);
+    background-Size: 32px 32px;
+    width: 35px;
+    height: 35px;
+    font-size: 25px;
+    line-height: 1em;
+    text-align: center;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    z-index: 100000;
+    transition: 0.1s;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    background-clip: padding-box;
+}
+
+.button_search_style.leaflet-control:hover {
+    transform: scale(1.1);
+    background-Size: 35.2px 35.2px;
+    border: 0px solid rgba(0, 0, 0, 0.2);
+    background-clip: padding-box;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    background-clip: padding-box;
+    transition: 0.5s;
+}
+
+.leaflet-touch:hover .leaflet-control-layers:hover,
+.leaflet-touch:hover .leaflet-bar :hover {
+    transform: scale(1.3);
+    background-color: #FFFFFF;
+}
+
+
+/* //#################################### */
+
+.leaflet-bar button,
+.leaflet-bar button:hover {
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    background-image: url(https://cdn2.iconfinder.com/data/icons/filled-icons/493/Search-512.png);
+    background-Size: 32px 32px;
+}
+
+.leaflet-bar button {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    display: block;
+    background-image: url(https://cdn2.iconfinder.com/data/icons/filled-icons/493/Search-512.png);
+    background-Size: 32px 32px;
+}
+
+.leaflet-bar button:hover {
+    background-color: #f4f4f4;
+    background-image: url(https://cdn2.iconfinder.com/data/icons/filled-icons/493/Search-512.png);
+    background-Size: 32px 32px;
+}
+
+.leaflet-bar button:first-of-type {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.leaflet-bar button:last-of-type {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: none;
+}
+
+.leaflet-bar.disabled,
+.leaflet-bar button.disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: .4;
+}
+
+.easy-button-button .button-state {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.leaflet-touch .leaflet-bar button {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}

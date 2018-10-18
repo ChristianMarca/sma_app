@@ -1,0 +1,62 @@
+.clusterConecel {
+  background-clip: padding-box;
+  background-color: rgba(218, 71, 76, 0.6);
+  border-radius: 20px;
+}
+
+.clusterConecel div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: rgba(218, 38, 44, 0.6);
+}
+
+.clusterConecel span {
+  line-height: 30px;
+}
+
+.clusterOtecel {
+  background-clip: padding-box;
+  background-color: rgba(181, 226, 140, 0.6);
+  border-radius: 20px;
+}
+
+.clusterOtecel div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: rgba(110, 204, 57, 0.6);
+}
+
+.clusterOtecel span {
+  line-height: 30px;
+}
+
+.clusterCNT {
+  background-clip: padding-box;
+  background-color: rgba(83, 184, 227, 0.6);
+  border-radius: 20px;
+}
+
+.clusterCNT div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  background-color: rgba(0, 159, 227, 0.6);
+}
+
+.clusterCNT span {
+  line-height: 30px;
+}

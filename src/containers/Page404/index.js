@@ -1,9 +1,10 @@
 import React from 'react';
+import './style.css'
 
 const Page404=()=>{
   return(
-    <div>
-      <h1>Page404</h1>
+    <div className="notFound">
+      <h1 className="info">Page404</h1>
     </div>
   )
 }
