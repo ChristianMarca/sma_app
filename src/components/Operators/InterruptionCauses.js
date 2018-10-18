@@ -59,14 +59,17 @@ class InterruptionCauses extends React.Component{
   }
   render(){
     return(
-      <div className="addressContainer">
+      <div className="addressContainer card-body">
         <h6 className="titleInput">Causas</h6>
-        <div className="card searchContainer">
+        {/* <div className="card searchContainer"> */}
+        <div className="searchContainer">
           <div className="textarea-containerCauses">
-            <textarea placeholder="Azuay" id="inputCauses" className="card-header" type="text" size="1" onChange={this.regexA}  required></textarea>
+            <textarea placeholder="Azuay" id="inputCauses"
+              //  className="card-header" 
+               type="text" size="1" onChange={this.regexA}  required></textarea>
             <div className="textarea-size"></div>
           </div>
-          <p className="textField card-body" id="resultado"></p>
+          <p className="textField" id="resultado"></p>
         </div>
       </div>
     )

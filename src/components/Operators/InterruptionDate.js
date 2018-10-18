@@ -79,7 +79,7 @@ class InterruptionDate extends React.Component{
     const {onSubmitInterruptionStart,interruptionType}=this.props;
     return(
       <div>
-        <div className="addressContainer">
+        <div className="addressContainer card-body">
           <h6 className="titleInput">Inicio</h6>
           <DateTimePicker
             onChange={onSubmitInterruptionStart}

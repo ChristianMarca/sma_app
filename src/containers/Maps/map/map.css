@@ -1,0 +1,421 @@
+    /* .container {
+    height: 100%;
+} */
+
+    #map {
+        /* // background-color: 'green'; */
+        /* height: '100vh'; */
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        border-radius: 5px;
+        /* width: '100px';
+height: 100vh; */
+    }
+
+    /* .navContainer {
+        width: 100%;
+    } */
+
+    .collapseMenu1 {
+        right: 15px;
+        color: white;
+        z-index: 1;
+        position: absolute;
+        background: #2E2E2E;
+        /* // width: 100%; */
+    }
+
+    @media only screen and (max-width: 768px) {
+        .collapseMenu1 {
+            right: 15px;
+            color: white;
+            z-index: 1;
+            position: absolute;
+            background: #2E2E2E;
+            width: 100%;
+        }
+    }
+
+    .navContainer .collapseMenu2 {
+        /* // display: block;
+            // z-index: 1;
+            // position: absolute;
+            // background: #373a47; */
+        text-decoration: none;
+        display: block;
+        padding: 1em;
+        color: white;
+        /* // z-index: 1;
+            // position: absolute; */
+        justify-content: flex-end;
+    }
+
+    .mapa {
+        padding-right: 3px;
+    }
+
+    .Columna {
+        width: 1000px;
+        display: flex;
+    }
+
+    .navbar-header {
+        /* // background-color: #F16E10; */
+        border: 0px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .navbar-collapse {
+        color: red;
+        font-size: 20px;
+        align-content: center;
+        padding: 0px;
+        color: red;
+    }
+
+    .info {
+        text-align: center;
+        /* text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+            border-radius: 9px 9px 9px 9px;
+            -moz-border-radius: 9px 9px 9px 9px;
+            -webkit-border-radius: 9px 9px 9px 9px;
+            border: 0px solid #000000; */
+    }
+    /* Position and sizing of burger button */
+
+    .bm-menu-wrap,
+    .bm-overlay {
+        top: 0;
+        left: 0;
+    }
+
+    .bm-burger-button {
+        position: fixed;
+        width: 0px;
+        height: 0px;
+        left: 0px;
+        top: 0px;
+    }
+    /* Color/shape of burger icon bars */
+
+    .bm-burger-bars {
+        background: #2E2E2E;
+    }
+    /* Position and sizing of clickable cross button */
+
+    .bm-cross-button {
+        position: fixed;
+        /* // height: 24px;
+            // width: 24px; */
+    }
+
+    .bm-morph-shape {
+        fill: #2E2E2E;
+    }
+    /* Color/shape of close button cross */
+
+    .bm-cross {
+        background: #bdc3c7;
+    }
+    /* General sidebar styles */
+
+    .bm-menu {
+        background: #2E2E2E;
+        padding: 3em 0.9em 0em 0.9em;
+        font-size: 0.9em;
+        width: 100%;
+        overflow: hidden !important;
+        overflow-y: scroll !important;
+    }
+    /* Morph shape necessary with bubble or elastic */
+
+    /*Hide oll scrollbar*/
+    ::-webkit-scrollbar { 
+        display: none; 
+    }
+
+    .bm-morph-shape {
+        fill: #2E2E2E;
+    }
+    /* Wrapper for item list */
+
+    .bm-item-list {
+        color: #b8b7ad;
+        /* // padding: 0.8em; */
+        width: 100%;
+    }
+    /* Individual item */
+
+    .bm-item {
+        display: inline-block;
+    }
+    /* Styling of overlay */
+
+    .bm-overlay {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    .selection {
+        width: 100%;
+        height: 10px;
+        background: red;
+    }
+
+    .panel {
+        width: 100%;
+        position: relative;
+    }
+
+    .panelHead {
+        background: #2E2E2E;
+    }
+
+    .GrupButtons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .panelTitle {
+        color: whitesmoke;
+    }
+
+    .GroupButtons{
+        display: block;
+        text-align: center;
+    }
+
+    .buttons {
+        background: whitesmoke;
+        color: #2E2E2E;
+        border-top-color: #2E2E2E;
+        border-bottom-color: #2E2E2E;
+        padding: 0.75em;
+        font-size: 12px;
+        cursor: pointer;
+        float: none;
+    }
+
+    .buttonRight {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-right-color: #2E2E2E;
+        border-left-color: #2E2E2E;
+    }
+
+    .buttonLeft {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-right-color: #2E2E2E;
+        border-left-color: #2E2E2E;
+    }
+
+    .buttonSubmit {
+        border-radius: 5px;
+        border-color: #7c8195;
+        color: black;
+        background-color: rgba(255,255,255,0.5);
+        width: 100%;
+        margin-top: 10px;
+        cursor: pointer;
+        position: relative;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .buttonPanel {
+        width: 100%;
+        position: relative;
+        /* display: flex; */
+    }
+
+    .buttonSubmit:hover {
+        background: rgba(255,0,0,0.25);
+        color: rgba(255,255,255,0.5);
+    }
+
+    .buttons:hover {
+        background: #2E2E2E;
+        color: whitesmoke;
+        border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .cardComponent {
+        width: 100%;
+        height: auto;
+        position: relative;
+        font-size: 15px;
+        border-radius: 5px;
+        /* border: 1px solid whitesmoke; */
+        /* background: whitesmoke; */
+        background: rgba(255,255,255,0.95);
+        /* padding-left: 5px;
+        padding-right: 5px; */
+        /* margin-right: 10px;
+        margin-left: 10px; */
+        align-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .itemComponent{
+        display: inline-block;
+        align-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid whitesmoke;
+    }
+    .itemListComponent{
+        -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+        box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+        transition: 0.25s;
+        cursor: pointer;
+    }
+    .itemListComponent:hover{
+        transform: scale(1.01);
+        background-color: rgba(255,255,255,0.95);
+    }
+
+    .informationContainer {
+        width: 100%;
+        height: 78vh;
+        text-align: center;
+    }
+
+    .titleCardComponent {
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        background: #2E2E2E;
+    }
+
+    .imageComponent {
+        width: auto;
+        height: 35px;
+        margin-top: 2px;
+        /* margin: 0; */
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .superCard {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .title {
+        text-align: center;
+        /* font-size: 30px; */
+        color: whitesmoke;
+        /* text-shadow: 4px 4px 2px rgba(150, 150, 150, 1); */
+    }
+
+    .informationCard {
+        color: whitesmoke;
+        text-align: center;
+        color: #2E2E2E;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .title {
+            font-size: 20px
+        }
+        .imageComponent {
+            width: 15%;
+            height: auto;
+        }
+        .cardComponent {
+            height: 65vh;
+            overflow: scroll;
+        }
+    }
+
+    .shadow-sm {
+        box-shadow: 0px 0px 4px 2px rgba( 0, 0, 0, 0.2)
+    }
+
+    .special-border {
+        border: 1px solid;
+        border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+        border-radius: 3px;
+    }
+
+    .border-3color {
+        border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+    }
+
+    .contentListItem {
+        font-size: 12px;
+    }
+
+    .contentListHead {
+        font-size: 13px;
+    }
+
+
+.sk-cube-grid {
+    /* position: relative; */
+    position: absolute;
+    left: 45%;
+    top: 21%;
+  width: 40px;
+  height: 40px;
+  margin: 100px auto;
+  z-index: 2000;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: #2E2E2E;
+  float: left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+}
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+          animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+          animation-delay: 0s; }
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+          animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+          animation-delay: 0.2s; }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1); 
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1);
+  } 
+} 

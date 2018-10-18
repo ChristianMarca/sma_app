@@ -1,0 +1,183 @@
+.containerHome{
+  display: grid;
+  max-height: 93.5vh;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1px;
+  /* grid-auto-rows: repeat(2, 1fr); */
+}
+.carrucelContainer{
+  grid-column: 1/3;
+  grid-row: 1;
+  margin: 5px 0 0 10%;
+  /* width: 50vw; */
+  width: calc(100% - 5px);
+  height: 100%;
+  /* max-height: 55.5vh; */
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 10px 13px -11px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+    box-shadow: 0px 10px 18px -11px #000000, 5px 5px 20px 5px rgba(0,0,0,0);
+}
+/* .videosContainer{
+  grid-column: 1/2;
+  grid-row: 2;
+} */
+.videoContainer{
+  margin: 0px 0 0 20%;
+  width: 100%;
+  height: calc(100vh - 55.5vh - 9vh);
+  /* padding-left: 5px; */
+  -webkit-box-shadow: 0px 10px 13px -11px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: 0px 10px 18px -11px #000000, 5px 5px 20px 5px rgba(0,0,0,0);
+  border-radius: 5px;
+  grid-column: 1;
+  grid-row: 2;
+}
+.videoContainer1{
+  width: 100%;
+  margin: 0 0 0 20%;
+  height: calc(100vh - 55.5vh - 9vh);
+  padding-left: 5px;
+  -webkit-box-shadow: 0px 10px 13px -11px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: 0px 10px 18px -11px #000000, 5px 5px 20px 5px rgba(0,0,0,0);
+  border-radius: 5px;
+  grid-column: 2;
+  grid-row: 2;
+}
+.loginMenu{
+  width: 48vw;
+  height: 100%;
+  /* max-height: 93.5vh; */
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  align-self: center;
+  display: flex;
+  /* background-color: red; */
+  grid-column: 3;
+  grid-row: 1/3;
+  overflow-y: scroll;
+}
+::-webkit-scrollbar { 
+  display: none; 
+}
+
+@media all and (max-width:780px){
+  .containerHome{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    /* grid-auto-rows: repeat(2, 1fr); */
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .loginMenu{
+    width: 100vw;
+    height: 93.5vh;
+    grid-column: 1/3;
+    grid-row: 1;
+    /* overflow: hidden; */
+  }
+  .carrucelContainer{
+    grid-column: 1/3;
+    grid-row: 2;
+    margin: 5px;
+    width: 100vw;
+    height: auto;
+  }
+  .videoContainer{
+    grid-column: 1/3;
+    grid-row: 3;
+    width: 100vw;
+  }  
+  .videoContainer1{
+    grid-column: 1/3;
+    grid-row: 4;
+    width: 100vw;
+  }  
+}
+
+
+/*Loging*/
+
+/*Loging CSS*/
+@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+.login-block{
+  /* background: #DE6262;
+  background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262);  
+  background: linear-gradient(to bottom, #FFB88C, #DE6262);  */
+  /* float:left; */
+  position: relative;
+  /* align-content: center;
+  align-items: center;
+  text-align: center;
+  align-self: center; */
+  left: 25%!important;
+  /* height: auto; */
+  width:60%;
+  /* height: 100vh; */
+  padding : 50px 0;
+  align-content: center; align-self: center;
+  align-items: center;
+}
+.banner-sec{background:url(https://static.pexels.com/photos/33972/pexels-photo.jpg)  no-repeat left bottom; 
+  background-size:cover; 
+  min-height:500px; 
+  border-radius: 0 10px 10px 0; 
+  padding:0;
+  width: 60%;
+}
+.containerLogin{background:#fff; border-radius: 10px;height: 80vh;
+  -webkit-box-shadow: 0px 10px 13px -11px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: 0px 10px 18px -11px #000000, 5px 5px 20px 5px rgba(0,0,0,0);
+}
+.form-group{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+.form-control{
+  width: 60%;
+  /* left: 50%; */
+}
+.login-sec{
+  padding: 50px 30px; 
+  position:relative;
+  width: 100%;
+  /* height: auto!important; */
+  }
+.login-sec .copy-text{position:relative; width:100%; font-size:13px; text-align:center;}
+/* .login-sec .copy-text i{color:#FEB58A;} */
+.login-sec .copy-text a{color:#E36262;}
+.login-sec h2{margin-bottom:30px; font-weight:800; font-size:30px; color: #DE6262;}
+.login-sec h2:after{content:" "; width:100px; height:5px; background:#FEB58A; display:block; margin-top:20px; border-radius:3px; margin-left:auto;margin-right:auto}
+.btn-login{background: #DE6262; color:#fff; font-weight:600;}
+i{cursor: pointer;}
+
+@media all and (max-width:780px){
+  .login-block{
+    position: relative;
+    left: 0!important;
+    align-content: flex-start;
+    height: auto;
+    width:100vw;
+    max-width: 100vw;
+    overflow-x: unset;
+    padding: 0;
+  }
+  .containerLogin{
+    height: auto! important;
+  }
+  .videoContainer,.videoContainer1{
+    margin: 0;
+  }
+  .loginMenu{
+    left: 0;
+    width:100vw;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    /* overflow:inherit; */
+  }
+
+}
