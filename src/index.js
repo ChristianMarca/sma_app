@@ -14,7 +14,8 @@ import {
 	interruptionCausesReducer,
 	reducerSuggestID,
 	reducerSuggestEST,
-	requestIDReducer
+	requestIDReducer,
+	sessionReducer
 	} from './reducers';
 
 //Css styles
@@ -39,6 +40,7 @@ const appReducers=combineReducers(
 		reducerSuggestID,
 		reducerSuggestEST,
 		requestIDReducer,
+		sessionReducer
 	})
 
 const rootReducer = (state, action) => {

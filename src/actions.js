@@ -16,7 +16,10 @@ import {
   ID_REQUEST_PENDING,
   ID_REQUEST_SUCCESS,
   ID_REQUEST_FAILED,
-  INTERRUPTION_SUBMITED
+  INTERRUPTION_SUBMITED,
+  SESSION_INIT,
+  SESSION_LOGOUT,
+  DATA_USER
 } from './constants';
 
 // Elección del tipo de interrupción
@@ -126,4 +129,21 @@ export const requestIDAction =(newValue,typeSearch)=>(dispatch)=>{
 
 export const interruptionSubmitedAction=()=>({
   type: INTERRUPTION_SUBMITED,
+});
+
+
+//Session Managment
+//signin
+export const isSignInAction=(isSignin)=>({
+  type: SESSION_INIT,
+  payload: isSignin
+});
+//singout
+export const isSignOutAction=(tags)=>({
+  type: SESSION_LOGOUT,
+  payload: tags
+});//Tags
+export const receiveDataUserAction=(dataUser)=>({
+  type: DATA_USER,
+  payload: dataUser
 });

@@ -1,4 +1,5 @@
 .listNav{
+  position: relative;
   list-style: none;
   width: 100%;
   margin: 0;
@@ -11,7 +12,7 @@
   /* -webkit-flex-flow: row wrap; */
   background: #2E2E2E;
   color: rgba(255,255,255,0.5);
-  overflow: hidden;
+  /* overflow: hidden; */
   align-items: center;
 }
 .listNav li {

@@ -281,7 +281,7 @@ class SideMenu extends React.Component {
   render() {
     //const {menu} = this.props;
     //console.log('hubo un cambio', menu)
-    const {menuList} = this.props;
+    // const {menuList} = this.props;
 
     //const element = this._div.innerHTML = <CajaTxt className='menu' value={this.changeName.toString()} menuList={menuList} locate={this.locate}/>
     const eleme = <button onClick={this.handleOpenModal}>Trigger Modal</button>

@@ -240,9 +240,9 @@ class Map extends React.Component {
     }).catch(err => console.log(err))
     //Fin de funcion de pedido de datos
 
-    const handleData = (datos) => {
-      this.props.obtainList(datos)
-    }
+    // const handleData = (datos) => {
+    //   this.props.obtainList(datos)
+    // }
     
     this.props.isDashboardComponent!==true &&
     L.easyButton('https://cdn2.iconfinder.com/data/icons/filled-icons/493/Search-512.png', function(btn, map) {

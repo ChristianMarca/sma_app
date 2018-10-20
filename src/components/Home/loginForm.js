@@ -1,5 +1,26 @@
 import React from 'react';
+import { connect } from "react-redux";
+// import axios from 'axios';
+// import { Redirect } from "react-router-dom";
+import { isSignInAction, receiveDataUserAction } from "../../actions";
 import './style.css';
+
+const mapStateToProps=state=>{
+	return {
+    // Elección del tipo de interrupción
+    interruptionType: state.interruptionTypeReducer.interruptionType,
+    interruptionRB: state.interruptionAddressReducer,
+    interruptionDate: state.interruptionDateReducer,
+    interruptionCauses: state.interruptionCausesReducer,
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    // Elección del tipo de interrupción
+        onSigninApproved: ()=> dispatch(isSignInAction(true)),
+        onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
+	}
+}
 
 class LoginForm extends React.Component{
     constructor(){
@@ -12,8 +33,7 @@ class LoginForm extends React.Component{
     }
 
     onEmailChange=(event)=>{
-        console.log('evento', event.target.value)
-		this.setState({signInEmail: event.target.value})
+        this.setState({signInEmail: event.target.value})
     }
 
     onPasswordChange=(event)=>{
@@ -22,64 +42,70 @@ class LoginForm extends React.Component{
     
     onRememberChange=(event)=>{
         this.setState((prevState)=>({signInRemember: !prevState.signInRemember}))
-	}
+    }
+    
+    onCLickEvent=()=>{
+        let message=document.getElementById("failMessage");
+        if (message.style.visibility === 'visible'){
+            message.style.visibility = 'hidden';
+            message.style.height='0';
+            message.style.padding='0';
+        }
+    }
 
 	saveAuthTokenInSession=(token)=>{
-        this.props.singnInRemember=true?
+        this.state.signInRemember===true?
 		window.localStorage.setItem('token',token):
 		window.sessionStorage.setItem('token',token);
     }
 
     onSubmitSignIn=(event)=>{
-        console.log(this.state)
+        // console.log(this.state)
+        let message=document.getElementById("failMessage");
+        if (message.style.visibility === 'visible'){
+            message.style.visibility = 'hidden';
+            message.style.height='0';
+            message.style.padding='0';
+        }
         event.preventDefault()
-        fetch('http://192.168.1.102:3000/authentication/signin',{
-            method: 'post',
+		fetch('http://192.168.1.102:3000/authentication/signin',{
+			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
 				email: this.state.signInEmail,
 				password: this.state.signInPasword,
 			})
-        }).then((resp) => {
-            return resp.json();
-        }).then((data)=>{
-            console.log('la data', data)
         })
-        .catch((err) => {
-            console.log('El error', err)
-        });
-		// fetch('http://localhost:3000/signin',{
-		// 	method: 'post',
-		// 	headers: {'Content-Type': 'application/json'},
-		// 	body: JSON.stringify({
-		// 		email: this.state.signInEmail,
-		// 		password: this.state.signInPasword,
-		// 	})
-		// }).then(respon=>{
-		// 	return respon.json()
-		// }).then(data=>{
-		// 	// console.log(data)
-		// 	if (data.userId && data.success=== true){
-		// 		this.saveAuthTokenInSession(data.token);
-		// 		fetch(`http://localhost:3000/profile/${data.userId}`,{
-		// 				method: 'GET',
-		// 				headers: {
-		// 						'Content-Type': 'application/json',
-		// 						'authorization': data.token
-		// 				},
-		// 				})
-		// 				.then(resp=>resp.json())
-		// 				.then(user=>{
-		// 						if (user && user.email){
-		// 								this.props.loadUser(user);
-		// 								this.props.onRouteChange('Home')
-		// 						}
-		// 				})
-		// 				.catch(console.log)
-		// 		}else{
-		// 		// console.log('Email or Passward Incorrect')
-		// 	}
-		// }).catch(console.log)
+        .then(respon=>{return respon.json()})
+        .then(data=>{
+			// console.log(data)
+			if (data.userId && data.success=== true){
+				this.saveAuthTokenInSession(data.token);
+				fetch(`http://192.168.1.102:3000/authentication/profile/${data.userId}`,{
+						method: 'GET',
+						headers: {
+								'Content-Type': 'application/json',
+								'authorization': data.token
+						},
+						})
+						.then(resp=>resp.json())
+						.then(user=>{
+								if (user && user.email){
+                                        console.log(user, 'continue')
+                                        this.props.onSigninApproved()
+                                        this.props.onReceiveDataUser(user)
+										// this.props.loadUser(user);
+										// this.props.onRouteChange('Home')
+								}
+						})
+						.catch(console.log)
+				}else{
+                    const message=document.getElementById("failMessage");
+                    message.style.visibility="visible";
+                    message.style.height='auto';
+                    message.style.padding='.5em';
+			}
+		}).catch(console.log)
 
 	}
 
@@ -93,11 +119,14 @@ class LoginForm extends React.Component{
                             <form className="login-form">
                                 <div className="form-group">
                                     <label htmlFor="exampleInputEmail1" className="text-uppercase">Email</label>
-                                    <input onChange={this.onEmailChange} type="email" name="email-address" id="email-address" className="form-control" placeholder="" />
+                                    <input onChange={this.onEmailChange} onClick={this.onCLickEvent} type="email" name="email-address" id="email-address" className="form-control" placeholder="" required />
                                 </div>
                                 <div     className="form-group">
-                                    <label htmlFor="exampleInputPassword1" className="text-uppercase">Contraceña</label>
-                                    <input onChange={this.onPasswordChange} type="password" name="password" id="password" className="form-control" placeholder="" />
+                                    <label htmlFor="exampleInputPassword1" className="text-uppercase">Contraseña</label>
+                                    <input onChange={this.onPasswordChange} onClick={this.onCLickEvent} type="password" name="password" id="password" className="form-control" placeholder="" required />
+                                </div>
+                                <div className="failLogin" id="failMessage">
+                                    <i className="fas fa-exclamation-triangle"></i>Correo o Contraseña incorrectos
                                 </div>
                                 <div className="form-check">
                                     <label className="form-check-label">
@@ -108,7 +137,7 @@ class LoginForm extends React.Component{
                                     <button type="submit" onClick={this.onSubmitSignIn} className="btn btn-login float-right">Submit</button>
                                 </div>
                             </form>
-                            <div className="copy-text">La presenta plataforma se encuentra en proceso de desarrollo, para mas información dirigirse a  <i className="fab fa-github" ><a href="https://github.com/ChristianMarca"></a></i> o en  <a href="http://www.arcotel.gob.ec/">ARCOTEL</a>
+                            <div className="copy-text">La presenta plataforma se encuentra en proceso de desarrollo, para mas información dirigirse a  <i className="fab fa-github" ></i> o en  <a href="http://www.arcotel.gob.ec/">ARCOTEL</a>
                             </div>
                         </div>
                         {/* <div className="col-md-8 banner-sec"> */}
@@ -128,4 +157,4 @@ class LoginForm extends React.Component{
     }
 }
 
-export default LoginForm;
+export default connect(mapStateToProps,mapDispatchToProps)(LoginForm);

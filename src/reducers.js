@@ -22,7 +22,10 @@ import {
   UPDATE_INPUT_VALUE_EST,
   CLEAR_SUGGESTIONS_EST,
   LOAD_SUGGESTIONS_BEGIN_EST,
-  MAYBE_UPDATE_SUGGESTIONS_EST
+  MAYBE_UPDATE_SUGGESTIONS_EST,
+  SESSION_INIT,
+  SESSION_LOGOUT,
+  DATA_USER,
 } from './constants';
 import moment from 'moment';
 // Elección del tipo de interrupción
@@ -218,3 +221,23 @@ export const requestIDReducer=(state=initialStateID, action={})=>{
       return state
   }
 }
+
+//Sesion Managment
+// Elección del tipo de interrupción
+const initialStateSession={
+  isSessionInit: false,
+  dataUser:{}
+};
+
+export const sessionReducer =(state=initialStateSession, action={})=>{
+  switch(action.type){
+    case SESSION_INIT:
+      return Object.assign({},state,{isSessionInit: action.payload})
+    case SESSION_LOGOUT:
+      return Object.assign({},state,{isSessionInit: action.payload})
+    case DATA_USER:
+      return Object.assign({},state,{dataUser: action.payload})
+    default:
+      return state;
+  }
+};
