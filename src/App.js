@@ -6,6 +6,7 @@ import ProfileIcon from "./components/profile/ProfileIcon";
 import { isSignInAction, receiveDataUserAction } from "./actions";
 import Modal from './components/Modal/Modal';
 import Profile from './components/profile/Profile';
+import { API_URL } from "./config";
 
 // import Dashboard from './containers/Dashboard/Dashboard'
 // import AddReport from './containers/Operators/AddReport/AddReport';
@@ -38,10 +39,9 @@ class App extends Component {
   }
   
   componentDidMount(){
-    const token = sessionStorage.getItem('token')||localStorage.getItem('token');
-    console.log('el token', token)
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     if(token){
-        fetch(`http://localhost:3000/authentication/signin`,{
+        fetch(`${API_URL}/authentication/signin`,{
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,9 +50,8 @@ class App extends Component {
         })
         .then(resp=>resp.json())
         .then(data=>{
-            console.log('sel token', data)
             if( data && data.id_user){
-                fetch(`http://localhost:3000/authentication/profile/${data.id_user}`,{
+                fetch(`${API_URL}/authentication/profile/${data.id_user}`,{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

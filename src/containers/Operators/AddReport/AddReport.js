@@ -16,10 +16,15 @@
 //AddReport
 
 import React from 'react';
-import { interruptionTypeAction,interruptionSubmitedAction} from '../../../actions';
+import { interruptionTypeAction,
+  interruptionSubmitedAction,
+  isSignInAction,
+  receiveDataUserAction,
+} from '../../../actions';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
+import {Redirect, withRouter} from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from "../../../config";
 
 import InterruptionAddress from '../../../components/Operators/InterruptionAddress';
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
@@ -41,7 +46,9 @@ const mapDispatchToProps=(dispatch)=>{
 	return{
     // Elección del tipo de interrupción
     onSubmitInterruptionType: (type)=> dispatch(interruptionTypeAction(type)),
-    onSubmitInterruptionCamplete: ()=>dispatch(interruptionSubmitedAction())
+    onSubmitInterruptionComplete: ()=>dispatch(interruptionSubmitedAction()),
+    onSignInApproved: ()=> dispatch(isSignInAction(true)),
+    onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
 	}
 }
 
@@ -53,10 +60,50 @@ class AddReport extends React.Component{
     }
   }
   componentDidMount(){
-    document.getElementById("buttonTypeR").style.background=this.props.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
-    document.getElementById("buttonTypeR").style.color=this.props.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';;
-    document.getElementById("buttonTypeS").style.background=this.props.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';
-    document.getElementById("buttonTypeS").style.color=this.props.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    if(token){
+      fetch(`${API_URL}/authentication/signin`,{
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json',
+              'authorization': token
+          },
+      })
+      .then(resp=>resp.json())
+      .then(data=>{
+          if( data && data.id_user){
+              fetch(`${API_URL}/authentication/profile/${data.id_user}`,{
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'authorization': token
+              },
+              })
+              .then(resp=>resp.json())
+              .then(user=>{
+                  console.log('adqui esta',user)
+                  if (user && user.email){
+                    console.log(user, 'continueWithToken')
+                    this.props.onSignInApproved();
+                    this.props.onReceiveDataUser(user);
+
+                      // this.loadUser(user);
+                      // this.onRouteChange('Home')
+                      document.getElementById("buttonTypeR").style.background=this.props.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
+                      document.getElementById("buttonTypeR").style.color=this.props.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';;
+                      document.getElementById("buttonTypeS").style.background=this.props.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';
+                      document.getElementById("buttonTypeS").style.color=this.props.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
+                  }
+              })
+          }
+      })
+      .catch(err=>{
+        // this.props.history.push('/');
+        console.log('Aqui un error', err)
+      })
+    }else{
+      this.props.history.push('/');
+    }
   }
   componentWillReceiveProps(nextProps){
     document.getElementById("buttonTypeR").style.background=nextProps.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
@@ -78,7 +125,7 @@ class AddReport extends React.Component{
     axios.post('http://localhost:3000/radioBases/newInterruption',keys)
       .then(resp=>{
         console.log(resp.data);
-        this.props.onSubmitInterruptionCamplete()
+        this.props.onSubmitInterruptionComplete()
         this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
       })
       .catch(err=>alert(err.response.data))
@@ -159,4 +206,4 @@ class AddReport extends React.Component{
   }
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(AddReport);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(AddReport));

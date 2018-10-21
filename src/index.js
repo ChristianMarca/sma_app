@@ -44,7 +44,8 @@ const appReducers=combineReducers(
 	})
 
 const rootReducer = (state, action) => {
-	if (action.type === 'INTERRUPTION_SUBMITED') {
+	// if ((action.type === 'INTERRUPTION_SUBMITED') || (action.type === 'SESSION_LOGOUT')) {
+	if (action.type === 'SESSION_LOGOUT') {
 		state = undefined
 	}
 

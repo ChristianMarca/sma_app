@@ -1,12 +1,31 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+// import axios from "axios";
+import { isSignInAction, receiveDataUserAction } from "../../actions";
 import { BridgeComponent } from "./chart/interruptionChart";
 import { getRandomArray } from './randomize';
 import { setup } from './chart/chart-setup';
 import Map from "./map/mapa";
+import { API_URL } from "../../config";
 
 import './chart.style.css'
 
 const numBars=12;
+
+const mapStateToProps=state=>{
+	return {
+    sessionController: state.sessionReducer,
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    // Elección del tipo de interrupción
+    onSignInApproved: ()=> dispatch(isSignInAction(true)),
+    onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
+	}
+}
+
 class Maps extends React.Component{
   constructor(props) {
     super(props);
@@ -40,16 +59,65 @@ class Maps extends React.Component{
         height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
     console.log(width,height)
 }
-  componentDidMount=()=> {
-    //if (this.props.dynamic) 
-    this.startDynamicData();
-    window.addEventListener("resize", this.updateDimensions);
+  // componentDidMount=()=> {
+  //   //if (this.props.dynamic) 
+  //   this.startDynamicData();
+  //   window.addEventListener("resize", this.updateDimensions);
+  // }
+
+  componentDidMount(){
+    const token = sessionStorage.getItem('token')||localStorage.getItem('token');
+    if(token){
+      fetch(`${API_URL}/authentication/signin`,{
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json',
+              'authorization': token
+          },
+      })
+      .then(resp=>resp.json())
+      .then(data=>{
+          if( data && data.id_user){
+              fetch(`${API_URL}/authentication/profile/${data.id_user}`,{
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'authorization': token
+              },
+              })
+              .then(resp=>resp.json())
+              .then(user=>{
+                  console.log('adqui esta',user)
+                  if (user && user.email){
+                    console.log(user, 'continueWithToken')
+                    this.props.onSignInApproved();
+                    this.props.onReceiveDataUser(user);
+
+                      // this.loadUser(user);
+                      // this.onRouteChange('Home')
+                      // alert('entro')
+                      this.startDynamicData();
+                      window.addEventListener("resize", this.updateDimensions);
+                  }
+              })
+          }
+      })
+      .catch(err=>{
+        // this.props.history.push('/');
+      })
+    }else{
+      this.props.history.push('/');
+      console.log('pero si entro aca')
+    }
   }
+  shouldComponentUpdate=(nextProps,nextState)=>{
+    console.log(this.props.sessionController,'info',this.props.sessionController.isSessionInit)
+    return this.props.sessionController.isSessionInit?true:false
+  }
+
   render(){
-    return(
-      // <div>Maps Here!</div>
-      <div id="containerChart" className='svg-containerChart'>
-        <div className='containersa'>
+    const loginRender=<div>
+      <div className='containersa'>
           <div className="minimap">
             <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
               <div className="tc">
@@ -68,10 +136,16 @@ class Maps extends React.Component{
               <Map isDashboardComponent={false}/>
             </div>
         </div>
-          <BridgeComponent data={this.state.data} data1={this.state.data1} data2={this.state.data2} /> 
+          <BridgeComponent data={this.state.data} data1={this.state.data1} data2={this.state.data2} />
+    </div>
+    console.log('info', this.props.sessionController)
+    return(
+      // <div>Maps Here!</div>
+      <div id="containerChart" className='svg-containerChart'>
+        {this.props.sessionController.isSessionInit?loginRender:<div></div>} 
       </div>
     )
   }
 }
 
-export default Maps;
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Maps));

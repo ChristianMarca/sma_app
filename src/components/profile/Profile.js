@@ -1,4 +1,5 @@
 import React from 'react';
+import { API_URL } from "../../config";
 import './Profile.css'
 
 class Profile extends React.Component{
@@ -33,7 +34,7 @@ class Profile extends React.Component{
     }
   }
   onProfileUpadate=(data)=>{
-    fetch(`http://localhost:3000/profile/${this.props.user.id}`,{
+    fetch(`${API_URL}/authentication/profile/${this.props.user.id}`,{
       method: 'post',
       headers: {
         'Content-Type': 'application/json',

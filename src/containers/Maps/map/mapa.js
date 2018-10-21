@@ -24,6 +24,8 @@ import 'leaflet-slidemenu/src/L.Control.SlideMenu.css';
 
 import axios from 'axios';
 
+import { API_URL } from "../../../config";
+
 var markerConecel = L.markerClusterGroup({
   spiderfyOnMaxZoom: true,
   showCoverageOnHover: true,
@@ -206,11 +208,13 @@ class Map extends React.Component {
   }
 
   dataRequest= async()=>{
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     this.props.isDashboardComponent!==true?(()=>{
-      axios('http://192.168.1.102:3000/mapa/data_radiobase', {
+      axios(`${API_URL}/mapa/data_radiobase`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': token
       }
     })//.then(response => response.json()).then(datosnuev => datosnuev.jsonData).then(myData => {
       .then(datosnuev => datosnuev.data.jsonData).then(myData => {
@@ -325,81 +329,7 @@ class Map extends React.Component {
     }
     return null;
   }
-
-  componentDidUpdate(prevProps,prevState){
-    if(this.state.changedata===null){
-      try {
-        this.map.flyTo(L.latLng(this.state.data.coordinates[1], this.state.data.coordinates[0]), 18);
-      } catch (err) {
-        // console.log(err)
-      }
-    }
-    if((this.state.changeButtons===null) && (prevState.lastButtons!==this.props.optionsButtons) ){
-      document.getElementById("spinner").style.visibility = "visible";
-      try {
-        markerConecel.clearLayers();
-        markerOtecel.clearLayers();
-        markerCNT.clearLayers();
-
-        fetch('http://192.168.1.102:3000/mapa/filter_radiobase', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({campos: this.props.optionsButtons})
-        }).then(response => {return response.json()})//.then(jsonData => {
-          .then(datosnuev => datosnuev.jsonData).then(myData => {
-          //keys = [];
-          var keys = Object.keys(myData);
-          var acumm = [];
-
-          var layersComplete = keys.map((actual, indice)=> {
-
-            if (myData[keys[indice]]['features']!==null){
-              acumm = acumm.concat(myData[keys[indice]]['features'])
-            }
-
-            return this.clusterFunction(myData[keys[indice]]['features'])
-          })
-          var rbTodo = {
-            features: acumm,
-            type: "FeatureCollection"
-          }
-          this.getData(rbTodo).then(datos => {
-            this.setState({dataToSearch: datos})
-            handleData(datos)
-            return datos
-          });
-          var completo = {layers:layersComplete, llaves:keys}
-          return completo
-        }).then(completo => {
-          completo.llaves.map((actual,indice)=>{
-            if(actual==="CONECEL"){
-              markerConecel.addLayer(completo.layers[indice]);
-              return this.map.addLayer(markerConecel);
-            }
-            if(actual==="OTECEL"){
-              markerOtecel.addLayer(completo.layers[indice]);
-              return this.map.addLayer(markerOtecel);
-            }
-            if(actual==="CNT"){
-              markerCNT.addLayer(completo.layers[indice]);
-              return this.map.addLayer(markerCNT);
-            }
-            return "No Found"
-          })
-          document.getElementById("spinner").style.visibility = "hidden";
-        }).catch(err => console.log(err))
-
-        const handleData = (datos) => {
-          this.props.obtainList(datos)
-        }
-      } catch (err) {
-        // console.log(err)
-      }
-    }
-  }
-
+  
   render() {
     return (<div id="map">
       {/* <div className="spinner" id='spinner'></div> */}
