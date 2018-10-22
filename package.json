@@ -13,20 +13,20 @@
     "leaflet-slidemenu": "^0.4.1",
     "leaflet.markercluster": "^1.4.1",
     "moment": "^2.22.2",
-    "node-sass": "^4.9.3",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-autosuggest": "^9.4.2",
     "react-css-modules": "^4.7.7",
-    "react-datetime-picker": "^1.6.1",
+    "react-datetime-picker": "^1.7.0",
     "react-dom": "^16.5.2",
-    "react-dropzone": "^5.1.0",
+    "react-dropzone": "^5.1.1",
     "react-modal": "^3.6.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
     "react-youtube": "^7.8.0",
-    "redux": "^4.0.0",
+    "reactstrap": "^6.5.0",
+    "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "tachyons": "^4.11.1"
@@ -39,6 +39,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.3.1"
+    "@fortawesome/fontawesome-free": "^5.4.1"
   }
 }

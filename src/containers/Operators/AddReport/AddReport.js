@@ -122,7 +122,7 @@ class AddReport extends React.Component{
         interruptionDate,
         interruptionCauses
     }
-    axios.post('http://localhost:3000/radioBases/newInterruption',keys)
+    axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{
         console.log(resp.data);
         this.props.onSubmitInterruptionComplete()

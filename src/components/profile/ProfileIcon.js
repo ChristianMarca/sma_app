@@ -2,7 +2,7 @@ import React from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {withRouter} from 'react-router-dom';
 import { connect } from "react-redux";
-
+import { API_URL } from "../../config";
 import { isSignOutAction } from "../../actions";
 import './Profile.css';
 
@@ -35,7 +35,18 @@ class ProfileIcon extends React.Component{
   }
   onSingOutSubmit=(event)=>{
     event.preventDefault();
-    window.localStorage.removeItem("token")||window.sessionStorage.removeItem("token")
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    fetch(`${API_URL}/authentication/revokeToken`,{
+      method: 'GET',
+      headers:{
+        'Content-Type': 'application/json',
+         'authorization': token
+      }
+    })
+    .then(resp=>resp.json())
+    .then(console.log)
+    .catch(console.log)
+    window.localStorage.removeItem("token")||window.sessionStorage.removeItem("token");
     this.props.onSignOutApproved()
     this.props.history.push('/');
     // return <Redirect to="/" push={true} />

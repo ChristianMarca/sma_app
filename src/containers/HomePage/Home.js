@@ -1,10 +1,24 @@
 import React from 'react';
-import CarrucelComponent from '../../components/Home/images';
 import YouTube from 'react-youtube';
+import { connect } from "react-redux";
+import CarrucelComponent from '../../components/Home/images';
 import LoginForm from "../../components/Home/loginForm";
+import InfoCard from "../../components/Home/infoCard";
 // import {ImageInfo} from '../../components/Home/infoImages';
 
 import "./style.css";
+
+const mapStateToProps=state=>{
+	return {
+    // Elección del tipo de interrupción
+    sessionData: state.sessionReducer,
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    
+	}
+}
 
 class HomePage extends React.Component{
     _onReady(event) {
@@ -19,13 +33,14 @@ class HomePage extends React.Component{
               autoplay: 0
             }
           };
+          console.log(this.props.sessionData.isSessionInit,'dadsd')
         return(
             <div className="containerHome">
                 <div className="carrucelContainer">
                     	<CarrucelComponent />
                 </div>
                 <div className="loginMenu">
-                    <LoginForm />              
+                    {this.props.sessionData.isSessionInit?<InfoCard />:<LoginForm />}              
                 </div>
                 {/* <div className="videosContainer"> */}
                     <div className="videoContainer">
@@ -48,4 +63,4 @@ class HomePage extends React.Component{
     }
 }
 
-export default HomePage;
+export default connect(mapStateToProps,mapDispatchToProps)(HomePage);
