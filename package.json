@@ -11,6 +11,8 @@
     "moment": "^2.22.2",
     "node-sass": "^4.9.3",
     "prop-types": "^15.6.2",
+    "rc-dropdown": "^2.2.1",
+    "rc-menu": "^7.4.16",
     "react": "^16.5.2",
     "react-autosuggest": "^9.4.2",
     "react-css-modules": "^4.7.7",
@@ -32,6 +34,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.3.1"
+    "@fortawesome/fontawesome-free": "^5.3.1",
+    "nodemon": "^1.18.4"
   }
 }

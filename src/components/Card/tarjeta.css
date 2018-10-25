@@ -1,0 +1,7 @@
+td {
+  padding: 1em;
+  width: 0.5em;
+}
+#tarjeta:hover {
+  background-color: #f5f5f5;
+}

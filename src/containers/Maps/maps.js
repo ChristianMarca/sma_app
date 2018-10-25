@@ -1,7 +1,7 @@
 import React from 'react';
 import { BridgeComponent } from "./chart/interruptionChart";
 import { getRandomArray } from './randomize';
-import { setup } from './chart-setup';
+import { setup } from './chart/chart-setup';
 
 
 import './chart.style.css'
@@ -41,7 +41,7 @@ class Maps extends React.Component{
     console.log(width,height)
 }
   componentDidMount=()=> {
-    //if (this.props.dynamic) 
+    //if (this.props.dynamic)
     this.startDynamicData();
     window.addEventListener("resize", this.updateDimensions);
   }
