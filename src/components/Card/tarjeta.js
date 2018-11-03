@@ -1,20 +1,20 @@
 import React from "react";
-import "./tarjeta.css";
+//import "./tarjeta.css";
 
 export default class ListaInt extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      campos: [],
-      col: {}
-    }
-  }
 
   columnas() {
     let {columns} = this.props;
     let {data} = this.props;
-    let seleccion = columns.map(elemento => {return (<td>{data[elemento]}</td>)})
-    //console.log('tarjeta',seleccion)
+    let seleccion = [];
+    if(Array.isArray(data)){
+      let selec = columns.map((elemento,index) => {return (<td key={index}>{elemento}</td>)})
+      seleccion = Array.prototype.concat(selec,[<td key="RevC">Revision</td>])
+    }else{
+      let selec = columns.map((elemento,index) => {return (<td key={index}>{data[elemento]}</td>)})
+      seleccion = Array.prototype.concat(selec,[<td key="Ins"><button>Inspeccionar</button></td>])
+    }
+
     return (seleccion)
   }
 
@@ -24,7 +24,7 @@ export default class ListaInt extends React.Component {
   }*/
 
   render() {
-    let card = <div id="tarjeta">{this.columnas()}</div>;
+    let card = <tr>{this.columnas()}</tr>;
     return (card)
   }
 }

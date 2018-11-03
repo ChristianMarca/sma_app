@@ -1,11 +1,11 @@
-th {
-   background-color: rgba(30,144,200, 0.3);
+.button {
    padding: 1em;
-   color: black;
+}
 
+.TBod Head {
+  margin: center;
+  background-color: ##117B7B;
 }
-/*
-table {
-  margin: center  ;
+.Filas:hover {
+  background-color: #f5f5f5;
 }
-*/

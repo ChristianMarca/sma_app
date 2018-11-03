@@ -1,5 +1,5 @@
-th {
-   background-color: rgba(30,144,200, 0.3);
+.Lista {
+
    padding: 1em;
    color: black;
 
@@ -7,5 +7,5 @@ th {
 /*
 table {
   margin: center  ;
-}
+}background-color: rgba(30,144,200, 0.3);
 */
