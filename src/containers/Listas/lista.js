@@ -6,94 +6,29 @@ import Dropdown from 'rc-dropdown';
 import Menu, {Item as MenuItem, Divider} from 'rc-menu';
 import 'rc-dropdown/assets/index.css';
 
-
-var datosI = [
-  {
-    fecha: "2018/05/12",
-    cellId: 40,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "Conecel",
-    estado: "Activo"
-  }, {
-    fecha: "2018/06/12",
-    cellId: 5,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "Otecel",
-    estado: "Activo"
-  }, {
-    fecha: "2018/10/14",
-    cellId: 54,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "CNT",
-    estado: "Activo"
-  }, {
-    fecha: "2018/02/01",
-    cellId: 74,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "Conecel",
-    estado: "Activo"
-  }, {
-    fecha: "Activo",
-    cellId: 14,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "CNT",
-    estado: "Activo"
-  }, {
-    fecha: "Activo",
-    cellId: 23,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "Conecel",
-    estado: "Activo"
-  }, {
-    fecha: "Activo",
-    cellId: 88,
-    estructura: "cerro",
-    provincia: "Azuay",
-    canton: "Cuenca",
-    parroquia: "Cuenca",
-    causas: "Corte de Fibra",
-    operadora: "Otecel",
-    estado: "Activo"
-  }
-];
-
 export default class ListaInt extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      pagina: 0,
-      orden: 0,
-      campos: [0]
-    }
+      pagina: 1,
+      elementosPagina: 3,
+      campOrden: "fecha_inicio",
+      orden: "ASC",
+      puntero: "'2018-05-07'",
+      campos: [
+        "0", "10", "1"
+      ],
+      dataInt: [],
+      totalInt: 0
+    };
+    this.onSelectSimple = this.onSelectSimple.bind(this);
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.ordenarTabla = this.ordenarTabla.bind(this);
   }
 
   async fetchInterrupciones() {
-    let datos = [this.state.pagina, this.state.orden, this.state.campos];
+    let datos = [this.state.pagina, this.state.elementosPagina, this.state.campOrden, this.state.orden, this.state.puntero];
     const response = await fetch('http://192.168.1.15:3000/interrupcion/inter', {
       method: 'POST',
       headers: {
@@ -108,13 +43,41 @@ export default class ListaInt extends React.Component {
     return [total, interrupciones]
   }
 
+  handleFieldChange(campo) {
+    this.setState({campOrden: campo})
+    //console.log(this.state.dataInt)
+  }
+
+  ordenarTabla() {
+    var campo = this.state.campOrden;
+    //console.log(campo)
+    this.state.dataInt.sort(function(a, b) {
+      if(typeof a == 'string'){
+        var nameA = a[campo].toUpperCase(); // ignore upper and lowercase
+        var nameB = b[campo].toUpperCase(); // ignore upper and lowercase
+      }else{
+        var nameA = a[campo]; // ignore upper and lowercase
+        var nameB = b[campo];
+      }
+
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
   //Dropdow simple
   onSelectSimple({key}) {
-    return (key)
+    let pg = parseInt(key)
+    this.setState({elementosPagina: pg})
   }
 
   onVisibleChangesimple(visible) {
-    //console.log(visible);
+    //this.setState({elemetosPagina: key})
   }
 
   //Dropdown saveSelectedMultiple
@@ -123,10 +86,44 @@ export default class ListaInt extends React.Component {
   }
 
   saveSelectedMultiple = ({selectedKeys}) => {
-    let llaves = [0].concat(selectedKeys);
-
-    this.setState({campos: llaves.sort()})
+    let llaves = ["0", "10", "1"].concat(selectedKeys.sort());
+    this.setState({campos: llaves})
   }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (this.state.elementosPagina !== prevState.elementosPagina) {
+      this.fetchInterrupciones().then(res => {
+        this.setState({totalInt: res[0], dataInt: res[1]})
+      })
+    }
+    if(this.state.campOrden !== prevState.campOrden){
+      this.ordenarTabla();
+      let fin = this.state.dataInt
+      let fi = (fin[0])[this.state.campOrden]
+      this.setState({puntero: fi})
+    }
+  }
+
+  componentDidMount() {
+    this.fetchInterrupciones().then(res => {
+      this.setState({totalInt: res[0], dataInt: res[1]})
+    })
+  }
+
+  /*
+if(res[1])
+let final = (res[1])[this.state.elementosPagina - 1]
+let fina = final[this.state.campOrden]
+
+if(this.state.campOrden === "fecha_inicio" || this.state.campOrden === "fecha_fin" || this.state.campOrden === "duracion"){
+  let fin = ("'").concat(fina,"'")
+
+  this.setState({puntero: fin})
+}else{
+    this.setState({puntero: fina})
+}
+*/
 
   render() {
 
@@ -140,24 +137,22 @@ export default class ListaInt extends React.Component {
     const campos = (<Menu style={{
         width: 140
       }} multiple={true} onSelect={this.saveSelectedMultiple} onDeselect={this.saveSelectedMultiple}>
-      <MenuItem key="1">Cell Id</MenuItem>
+      <MenuItem key="2">Fecha Fin</MenuItem>
       <Divider/>
-      <MenuItem key="2">Estructura</MenuItem>
+      <MenuItem key="3">Duracion</MenuItem>
       <Divider/>
-      <MenuItem key="3">Provincia</MenuItem>
+      <MenuItem key="4">Causa</MenuItem>
       <Divider/>
-      <MenuItem key="4">Canton</MenuItem>
+      <MenuItem key="5">Areas afectadas</MenuItem>
       <Divider/>
-      <MenuItem key="5">Parroquia</MenuItem>
+      <MenuItem key="6">Estado</MenuItem>
       <Divider/>
-      <MenuItem key="6">Causas</MenuItem>
+      <MenuItem key="8">Operadora</MenuItem>
       <Divider/>
-      <MenuItem key="7">Operadora</MenuItem>
-      <Divider/>
-      <MenuItem key="8">Estado</MenuItem>
+      <MenuItem key="9">Tipo</MenuItem>
     </Menu>);
 
-    this.fetchInterrupciones().then(esto => console.log( Object.keys((esto[1])[0]) ))
+    //console.log("Cambio de estado", this.state.campOrden)
     let card = <div className="Lista">
       <div>Interrupciones del Servicio Movil Avanzado</div>
       <table>
@@ -179,7 +174,7 @@ export default class ListaInt extends React.Component {
           </tr>
         </tbody>
       </table>
-      <TablaInt data={datosI} campos={this.state.campos}/>
+      <TablaInt data={this.state.dataInt} campos={this.state.campos} fCampos={this.handleFieldChange}/>
     </div>;
     return (card)
   }
