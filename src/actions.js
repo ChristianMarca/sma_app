@@ -8,6 +8,9 @@ import {
   INTERRUPTION_CANTON,
   INTERRUPTION_PARISH,
   INTERRUPTION_SECTOR,
+  INTERRUPTION_SERVICE_ADD,
+  INTERRUPTION_SERVICE_REMOVE,
+  INTERRUPTION_SERVICE_REMOVE_ALL,
   INTERRUPTION_START,
   INTERRUPTION_END,
   INTERRUPTION_TIME,
@@ -19,7 +22,10 @@ import {
   INTERRUPTION_SUBMITED,
   SESSION_INIT,
   SESSION_LOGOUT,
-  DATA_USER
+  DATA_USER,
+  RADIOBASES_SELECTED,
+  RADIOBASES_REMOVE,
+  RADIOBASES_REMOVE_ALL
 } from './constants';
 
 // Elección del tipo de interrupción
@@ -120,9 +126,24 @@ export const interruptionTagsAction=(tags)=>({
   payload: tags
 });
 
+//Services
+export const interruptionServicesAddAction=(service)=>({
+  type: INTERRUPTION_SERVICE_ADD,
+  payload: service
+});
+
+export const interruptionServicesRemoveAction=(service)=>({
+  type: INTERRUPTION_SERVICE_REMOVE,
+  payload: service
+});
+
+export const interruptionServicesRemoveAllActions=()=>({
+  type: INTERRUPTION_SERVICE_REMOVE_ALL
+});
+
 export const requestIDAction =(newValue,typeSearch)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
-  newValue.length >=3 &&axios.get(`http://localhost:3000/radioBases/test?${typeSearch}=${newValue}`)
+  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}`)
     .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
     .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
 }
@@ -146,4 +167,21 @@ export const isSignOutAction=(tags)=>({
 export const receiveDataUserAction=(dataUser)=>({
   type: DATA_USER,
   payload: dataUser
+});
+
+//Agregar Radio Bases
+export const addRadioBaseAction=(id,radioBase)=>({
+  type: RADIOBASES_SELECTED,
+  id,
+  payload: radioBase
+});
+//remove
+export const removeRadioBaseAction=(radioBase)=>({
+  type: RADIOBASES_REMOVE,
+  id: radioBase
+});
+
+//Remove All
+export const removeAllRadioBaseAction=()=>({
+  type: RADIOBASES_REMOVE_ALL,
 });

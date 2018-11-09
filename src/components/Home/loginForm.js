@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 // import axios from 'axios';
 // import { Redirect } from "react-router-dom";
 import { isSignInAction, receiveDataUserAction } from "../../actions";
+import { API_URL } from "../../config";
 import './style.css';
 
 const mapStateToProps=state=>{
@@ -68,7 +69,7 @@ class LoginForm extends React.Component{
             message.style.padding='0';
         }
         event.preventDefault()
-		fetch('http://192.168.1.102:3000/authentication/signin',{
+		fetch(`${API_URL}/authentication/signin`,{
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -78,10 +79,10 @@ class LoginForm extends React.Component{
         })
         .then(respon=>{return respon.json()})
         .then(data=>{
-			// console.log(data)
+			console.log(data)
 			if (data.userId && data.success=== true){
 				this.saveAuthTokenInSession(data.token);
-				fetch(`http://192.168.1.102:3000/authentication/profile/${data.userId}`,{
+				fetch(`${API_URL}/authentication/profile/${data.userId}`,{
 						method: 'GET',
 						headers: {
 								'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ class LoginForm extends React.Component{
 						.then(resp=>resp.json())
 						.then(user=>{
 								if (user && user.email){
-                                        console.log(user, 'continue')
+                                        // console.log(user, 'continue')
                                         this.props.onSigninApproved()
                                         this.props.onReceiveDataUser(user)
 										// this.props.loadUser(user);
@@ -121,7 +122,7 @@ class LoginForm extends React.Component{
                                     <label htmlFor="exampleInputEmail1" className="text-uppercase">Email</label>
                                     <input onChange={this.onEmailChange} onClick={this.onCLickEvent} type="email" name="email-address" id="email-address" className="form-control" placeholder="" required />
                                 </div>
-                                <div     className="form-group">
+                                <div className="form-group">
                                     <label htmlFor="exampleInputPassword1" className="text-uppercase">Contraseña</label>
                                     <input onChange={this.onPasswordChange} onClick={this.onCLickEvent} type="password" name="password" id="password" className="form-control" placeholder="" required />
                                 </div>
@@ -129,10 +130,11 @@ class LoginForm extends React.Component{
                                     <i className="fas fa-exclamation-triangle"></i>Correo o Contraseña incorrectos
                                 </div>
                                 <div className="form-check">
-                                    <label className="form-check-label">
-                                        <input type="checkbox" onClick={this.onRememberChange} className="form-check-input" />
-                                        <small>Remember Me</small>
-                                    </label>
+                                    {/* <label className="form-check-label"> */}
+                                        <input type="checkbox" id="rememberMe" onClick={this.onRememberChange} className="form-check-input" />
+                                        <label className="marca" htmlFor="rememberMe">Remember Me</label>
+                                        {/* <small>Remember Me</small> */}
+                                    {/* </label> */}
                                     <br/>
                                     <button type="submit" onClick={this.onSubmitSignIn} className="btn btn-login float-right">Submit</button>
                                 </div>

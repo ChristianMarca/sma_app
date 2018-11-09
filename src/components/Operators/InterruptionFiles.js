@@ -20,7 +20,7 @@ class InterruptionInput extends React.Component{
   handleUploadImage(ev) {
     ev.preventDefault();
     const data = new FormData();
-    console.log(data)
+    // console.log(data)
     data.append('file', this.uploadInput.files[0]);
     data.append('filename', this.fileName.value);
 

@@ -20,6 +20,10 @@ import { interruptionTypeAction,
   interruptionSubmitedAction,
   isSignInAction,
   receiveDataUserAction,
+  addRadioBaseAction,
+  interruptionIdBsAction,
+  interruptionServicesRemoveAllActions,
+  removeAllRadioBaseAction
 } from '../../../actions';
 import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router-dom';
@@ -30,6 +34,7 @@ import InterruptionAddress from '../../../components/Operators/InterruptionAddre
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
 import InterruptionCauses from '../../../components/Operators/InterruptionCauses';
 import InterruptionFiles from '../../../components/Operators/InterruptionFiles';
+import RadioBase from "../../../components/Operators/radioBase";
 
 import '../Operators.css'
 
@@ -40,6 +45,9 @@ const mapStateToProps=state=>{
     interruptionRB: state.interruptionAddressReducer,
     interruptionDate: state.interruptionDateReducer,
     interruptionCauses: state.interruptionCausesReducer,
+    interruptionServices: state.interruptionServicesReducer.interruptionServices,
+    interruptionRadioBase: state.radioBasesAddReducer,
+    interruptionSector: state.interruptionAddressReducer.interruptionSector
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -48,7 +56,11 @@ const mapDispatchToProps=(dispatch)=>{
     onSubmitInterruptionType: (type)=> dispatch(interruptionTypeAction(type)),
     onSubmitInterruptionComplete: ()=>dispatch(interruptionSubmitedAction()),
     onSignInApproved: ()=> dispatch(isSignInAction(true)),
-    onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
+    onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data)),
+    onReceiveRadioBase: (id,data)=>dispatch(addRadioBaseAction(id,data)),
+    onReceiveRadioBaseIdRemove:(data)=>dispatch(interruptionIdBsAction(data)),
+    onRemoveAllServices: ()=>dispatch(interruptionServicesRemoveAllActions()),
+    onRemoveAllRadioBases: ()=>dispatch(removeAllRadioBaseAction())
 	}
 }
 
@@ -113,22 +125,28 @@ class AddReport extends React.Component{
   }
   handleSubmit=async(event)=> {
     event.preventDefault();
-    const {interruptionType,interruptionRB,interruptionDate,interruptionCauses}=this.props
+    // const {interruptionType,interruptionRB,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices}=this.props
+    const {interruptionType,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices,interruptionSector}=this.props
     var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
     if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
     var keys={
         interruptionType,
-        interruptionRB,
+        interruptionSector,
         interruptionDate,
-        interruptionCauses
+        interruptionCauses,
+        interruptionServices,
+        interruptionRadioBase
     }
     axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{
         console.log(resp.data);
-        this.props.onSubmitInterruptionComplete()
+        this.props.onSubmitInterruptionComplete();
+        this.props.onRemoveAllServices();
+        this.props.onRemoveAllRadioBases();
         this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
       })
-      .catch(err=>alert(err.response.data))
+      .catch(err=>alert(err))
+      // .catch(err=>alert(err.response.data))
     // axios.get(`http://192.168.1.140:3000/radioBases?province=${interruptionRB.interruptionProvince}`)
     //   .then(resp=>{console.log(resp.data)})
     //   .catch(console.log)
@@ -137,9 +155,15 @@ class AddReport extends React.Component{
   cancel=()=>{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
+  handleAddRadioBase=()=>{
+    const {interruptionCode}=this.props.interruptionRB;
+    this.props.onReceiveRadioBase(interruptionCode,this.props.interruptionRB);
+    this.props.onReceiveRadioBaseIdRemove(null)
+  }
 
   render(){
     const {onSubmitInterruptionType}=this.props;
+    const dataRb=this.props.interruptionRadioBase.radioBasesAdd;
     return(
  
       <form className="containeNewInterruption" onSubmit={this.handleSubmit}>
@@ -177,23 +201,35 @@ class AddReport extends React.Component{
           </div>
           <div className="card-body cardComponents">
             <div className="card cardInput">
-              <h6 className="card-header">Radio Base</h6>
+              <h6 className="card-header containerADD"><div>Radio Base</div><a><i onClick={this.handleAddRadioBase} className="addButton fas fa-plus-square"></i></a></h6>
               <InterruptionAddress className="itemContainer card-body" />
             </div>
-            <div className="card cardInput">
-              <h6 className="card-header">Fecha</h6>
-              <InterruptionDate className="itemContainer" />
+            <div className="card cardInput"> 
+              <h6 className="card-header">Resumen</h6>
+              {/* {this.handleMapRadioBases} */}
+              {console.log(this.props.interruptionRadioBase)}
+              {Object.keys(dataRb).map(function(key, index) {
+                return <RadioBase key={key} data={dataRb[key]}/>
+                
+                // return this.props.interruptionRadioBase[key];
+              })}
             </div>
             <div className="card cardInput">
               <h6 className="card-header">Descripción</h6>
               <InterruptionCauses className="itemContainer" />
             </div>
             <div className="card cardInput">
+              <h6 className="card-header">Fecha</h6>
+              <InterruptionDate className="itemContainer" />
+
+              <InterruptionFiles />
+            </div>
+            {/* <div className="card cardInput">
               <h6 className="card-header">Anexos</h6>
               <div className="itemContainer">
                 <InterruptionFiles />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="submitsButtons">
             <button type="submit" id="buttonTypeS" className="buttonSubmits" ><i className="fas fa-save"></i> Save</button>

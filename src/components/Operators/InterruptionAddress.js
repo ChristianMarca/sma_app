@@ -7,7 +7,7 @@ import {interruptionCodeAction,
   interruptionProvinceAction,
   interruptionCantonAction,
   interruptionParishAction,
-  interruptionSectorAction,
+  // interruptionSectorAction,
 } from '../../actions';
 // import SuggestField from './SuggestFields';
 import SuggestionID from './SuggestionID';
@@ -27,7 +27,7 @@ const mapStateToProps=state=>{
     //Parish
     interruptionParish: state.interruptionAddressReducer.interruptionParish,
 
-    interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -43,7 +43,7 @@ const mapDispatchToProps=(dispatch)=>{
     //Parish
     onChangeParish: (event)=> dispatch(interruptionParishAction(event.target.value)),
     //Sector
-    onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
+    // onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
 	}
 }
 
@@ -71,7 +71,7 @@ class InterruptionAddress extends React.Component{
       .catch(console.log)
   }
   render(){
-    const {onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
+    const {onChangeProvince,onChangeCanton,onChangeParish}=this.props;
     const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
     return(
       <div className="addressContainer card-body">
@@ -89,12 +89,12 @@ class InterruptionAddress extends React.Component{
         <input placeholder="Cantón" className="inputField" type="text" value={interruptionCanton} onChange={onChangeCanton}  required></input>
         <h6 className="titleInput">Paroquia</h6>
         <input placeholder="Parroquia" className="inputField" type="text" value={interruptionParish} onChange={onChangeParish}  required></input>
-        <h6 className="titleInput">Lugar Afectado</h6>
+        {/* <h6 className="titleInput">Lugar Afectado</h6> */}
         {/* <input placeholder="Azuay" className="inputField" id="inputResize" type="text" size="1" onChange={onChangeSector} required></input> */}
-        <div className="textarea-container">
+        {/* <div className="textarea-container">
           <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
           <div className="textarea-size"></div>
-        </div>
+        </div> */}
       </div>
     )
   }

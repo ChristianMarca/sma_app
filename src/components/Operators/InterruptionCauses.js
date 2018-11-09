@@ -1,13 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {interruptionCausesAction,interruptionTagsAction} from '../../actions';
+import {interruptionCausesAction,
+  interruptionTagsAction,
+  interruptionSectorAction,
+  interruptionServicesAddAction,
+  interruptionServicesRemoveAction
+} from '../../actions';
 
 import './interruption.css'
 
 const mapStateToProps=state=>{
 	return {
     //Código de Interrupción
-    interruptionCauses: state.interruptionAddressCauses,
+    interruptionCauses: state.interruptionCausesReducer,
+    interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    interruptionServices: state.interruptionServicesReducer.interruptionServices
     // //Código de Estación Base
     // interruptionTags: state.interruptionAddressCauses.interruptionBS,
 
@@ -19,7 +26,11 @@ const mapDispatchToProps=(dispatch)=>{
     onChangeInterruptionCauses: (event)=> dispatch(interruptionCausesAction(event)),
     //Tags de causas
     onChangeInterruptionTags: (event)=> dispatch(interruptionTagsAction(event)),
+    //Sector
+    onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
 
+    onAddService: (service)=>dispatch(interruptionServicesAddAction(service)),
+    onRemoveService: (service)=>dispatch(interruptionServicesRemoveAction(service))
 	}
 }
 
@@ -39,6 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 class InterruptionCauses extends React.Component{
+  constructor(){
+    super();
+    this.selectedCheckboxes = new Set();
+  }
   getMatches=(string, regex, index)=> {
     index || (index = 1); // default to the first capturing group
     var matches = [];
@@ -57,9 +72,48 @@ class InterruptionCauses extends React.Component{
     onChangeInterruptionTags(matches);
     resultado.innerHTML = texto.target.value.replace(regex,reemp);
   }
+  toggleCheckbox = label => {
+    // console.log(label.currentTarget.value,'hello---')
+    if (this.selectedCheckboxes.has(label.currentTarget.value)) {
+      this.selectedCheckboxes.delete(label.currentTarget.value);
+      this.props.onRemoveService(label.currentTarget.value)
+    } else {
+      this.selectedCheckboxes.add(label.currentTarget.value);
+      this.props.onAddService(label.currentTarget.value)
+    }
+  }
   render(){
+    const {onChangeSector}=this.props;
+    console.log('info',this.props.interruptionServices)
     return(
       <div className="addressContainer card-body">
+        <div className="servicesContainer">
+            <h6 className="titleInput">Servicios</h6> 
+            <div className="service">
+                <input className="radioButton" id="conecel" type="checkbox" name="operador" 
+                          value={"VOZ"} 
+                          // checked={this.state.operator === "CONECEL"} 
+                          onChange={this.toggleCheckbox} />
+                <label className="services" htmlFor="conecel">VOZ</label>
+                <input className="radioButton" id="otecel" type="checkbox" name="operador" 
+                          value={"SMS"} 
+                          // checked={this.state.operator === "OTECEL"} 
+                          onChange={this.toggleCheckbox} />
+                <label className="services" htmlFor="otecel">SMS</label>
+                <input className="radioButton" id="cnt" type="checkbox" name="operador" 
+                          value={"DATOS"} 
+                          // checked={this.state.operator === "CNT"} 
+                          onChange={this.toggleCheckbox} />
+                <label className="services" htmlFor="cnt">DATOS</label>
+            </div>
+        </div>
+
+        <h6 className="titleInput">Lugar Afectado</h6>
+        <div className="textarea-container">
+          <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
+          <div className="textarea-size"></div>
+        </div>
+
         <h6 className="titleInput">Causas</h6>
         {/* <div className="card searchContainer"> */}
         <div className="searchContainer">

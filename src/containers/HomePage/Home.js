@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import CarrucelComponent from '../../components/Home/images';
 import LoginForm from "../../components/Home/loginForm";
 import InfoCard from "../../components/Home/infoCard";
+// import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
+import { API_URL } from "../../config";
 // import {ImageInfo} from '../../components/Home/infoImages';
 
 import "./style.css";
@@ -21,6 +24,24 @@ const mapDispatchToProps=(dispatch)=>{
 }
 
 class HomePage extends React.Component{
+    componentDidMount=()=>{
+        // const socket = socketIOClient(`http://localhost:3000/socket/help`);
+        const socket = io.connect(`${API_URL}`,{path:'/socket'});
+        // console.log('this', socket, API_URL)
+        socket.on('connect',function(){
+            console.log('Conectado al Servidor')
+        })
+        socket.on('disconnect',function(){
+            console.log('Perdimos la conexion al server')
+        })
+        socket.on('message',(data)=>{
+            console.log('llego :' , data)
+        })
+        socket.emit('echo','test')
+
+        socket.on('update',data=>{console.log('si leyo ',data)})
+        socket.on("FromAPI", data => this.setState({ response: data }));    
+    }
     _onReady(event) {
         // access to player in all event handlers via event.target
         event.target.pauseVideo();
@@ -33,7 +54,7 @@ class HomePage extends React.Component{
               autoplay: 0
             }
           };
-          console.log(this.props.sessionData.isSessionInit,'dadsd')
+        //   console.log(this.props.sessionData.isSessionInit,'dadsd')
         return(
             <div className="containerHome">
                 <div className="carrucelContainer">

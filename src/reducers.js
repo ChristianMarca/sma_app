@@ -12,6 +12,9 @@ import {
   INTERRUPTION_TIME,
   INTERRUPTION_CAUSES,
   INTERRUPTION_TAGS,
+  INTERRUPTION_SERVICE_ADD,
+  INTERRUPTION_SERVICE_REMOVE,
+  INTERRUPTION_SERVICE_REMOVE_ALL,
   ID_REQUEST_PENDING,
   ID_REQUEST_SUCCESS,
   ID_REQUEST_FAILED,
@@ -26,6 +29,9 @@ import {
   SESSION_INIT,
   SESSION_LOGOUT,
   DATA_USER,
+  RADIOBASES_SELECTED,
+  RADIOBASES_REMOVE,
+  RADIOBASES_REMOVE_ALL
 } from './constants';
 import moment from 'moment';
 // Elección del tipo de interrupción
@@ -105,6 +111,29 @@ export const interruptionCausesReducer =(state=initialStateCauses, action={})=>{
       return Object.assign({},state,{interruptionCauses: action.payload})
     case INTERRUPTION_TAGS:
       return Object.assign({},state,{interruptionTags: action.payload})
+    default:
+      return state;
+  }
+};
+
+const initialStateServices={
+  interruptionServices: [],
+};
+
+export const interruptionServicesReducer =(state=initialStateServices, action={})=>{
+  switch(action.type){
+    case INTERRUPTION_SERVICE_ADD:
+      // return Object.assign({},state,{interruptionServices: action.payload})
+      return {
+        interruptionServices: [ ...state.interruptionServices, action.payload]
+      }
+    case INTERRUPTION_SERVICE_REMOVE:
+      // const { [action.interruptionServices]: deletedValue, ...newState_byHash } = state.byHash;
+      return { 
+         interruptionServices: state.interruptionServices.filter(item => item !== action.payload)      
+      };
+    case INTERRUPTION_SERVICE_REMOVE_ALL:
+      return Object.assign({},state,{interruptionServices: []})
     default:
       return state;
   }
@@ -237,6 +266,40 @@ export const sessionReducer =(state=initialStateSession, action={})=>{
       return Object.assign({},state,{isSessionInit: action.payload})
     case DATA_USER:
       return Object.assign({},state,{dataUser: action.payload})
+    default:
+      return state;
+  }
+};
+
+// Radio Bases Selected
+const initialStateRadioBases={
+  radioBasesAdd: {}
+};
+
+export const radioBasesAddReducer =(state=initialStateRadioBases, action={})=>{
+  switch(action.type){
+    case RADIOBASES_SELECTED:
+      {
+        return {
+          radioBasesAdd: {
+            ...state.radioBasesAdd,
+            [action.id]: action.payload
+          }
+        }
+      }
+    case RADIOBASES_REMOVE:
+      {
+        const { [action.id]: deletedValue, ...newState_byHash } = state.radioBasesAdd;
+        return { 
+          radioBasesAdd: newState_byHash
+        };
+      }
+    case RADIOBASES_REMOVE_ALL:
+      {
+        return { 
+          radioBasesAdd: {}
+        };
+      }
     default:
       return state;
   }
