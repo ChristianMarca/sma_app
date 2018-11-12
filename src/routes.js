@@ -7,10 +7,10 @@ import App from './App';
 import AddReport from './containers/Operators/AddReport/AddReport';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Home from './containers/HomePage/Home';
-// import Maps from './containers/Maps/maps.js';
+import Maps from './containers/Maps/maps.js';
 import Page404 from './containers/Page404';
 
-import AdminPage from "./containers/Admin/AdminPage";
+// import AdminPage from "./containers/Admin/AdminPage";
 
 class AppRoutes extends React.Component{
   render(){
@@ -19,8 +19,8 @@ class AppRoutes extends React.Component{
         <Switch>
           <Route exact path="/" component={Home}/>
           <Route exact path="/newinterruption" component={AddReport} />
-          {/* <Route exact path="/maps" component={Maps} /> */}
-          <Route exact path="/maps" component={AdminPage} />
+          <Route exact path="/maps" component={Maps} />
+          {/* <Route exact path="/maps" component={AdminPage} /> */}
           <Route exact path="/dashboard" component={Dashboard} />
           <Route component={Page404} />
         </Switch>

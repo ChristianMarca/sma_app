@@ -15,6 +15,9 @@ import {
   INTERRUPTION_SERVICE_ADD,
   INTERRUPTION_SERVICE_REMOVE,
   INTERRUPTION_SERVICE_REMOVE_ALL,
+  INTERRUPTION_TECHNOLOGY_ADD,
+  INTERRUPTION_TECHNOLOGY_REMOVE,
+  INTERRUPTION_TECHNOLOGY_REMOVE_ALL,
   ID_REQUEST_PENDING,
   ID_REQUEST_SUCCESS,
   ID_REQUEST_FAILED,
@@ -134,6 +137,27 @@ export const interruptionServicesReducer =(state=initialStateServices, action={}
       };
     case INTERRUPTION_SERVICE_REMOVE_ALL:
       return Object.assign({},state,{interruptionServices: []})
+    default:
+      return state;
+  }
+};
+
+const initialStateTechnologies={
+  interruptionTechnologies: [],
+};
+
+export const interruptionTechnologiesReducer =(state=initialStateTechnologies, action={})=>{
+  switch(action.type){
+    case INTERRUPTION_TECHNOLOGY_ADD:
+      return {
+        interruptionTechnologies: [ ...state.interruptionTechnologies, action.payload]
+      }
+    case INTERRUPTION_TECHNOLOGY_REMOVE:
+      return { 
+         interruptionTechnologies: state.interruptionTechnologies.filter(item => item !== action.payload)      
+      };
+    case INTERRUPTION_TECHNOLOGY_REMOVE_ALL:
+      return Object.assign({},state,{interruptionTechnologies: []})
     default:
       return state;
   }

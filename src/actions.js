@@ -11,6 +11,9 @@ import {
   INTERRUPTION_SERVICE_ADD,
   INTERRUPTION_SERVICE_REMOVE,
   INTERRUPTION_SERVICE_REMOVE_ALL,
+  INTERRUPTION_TECHNOLOGY_ADD,
+  INTERRUPTION_TECHNOLOGY_REMOVE,
+  INTERRUPTION_TECHNOLOGY_REMOVE_ALL,
   INTERRUPTION_START,
   INTERRUPTION_END,
   INTERRUPTION_TIME,
@@ -141,9 +144,24 @@ export const interruptionServicesRemoveAllActions=()=>({
   type: INTERRUPTION_SERVICE_REMOVE_ALL
 });
 
-export const requestIDAction =(newValue,typeSearch)=>(dispatch)=>{
+//Technology
+export const interruptionTechnologyAddAction=(technology)=>({
+  type: INTERRUPTION_TECHNOLOGY_ADD,
+  payload: technology
+});
+
+export const interruptionTechnologyRemoveAction=(technology)=>({
+  type: INTERRUPTION_TECHNOLOGY_REMOVE,
+  payload: technology
+});
+
+export const interruptionTechnologyRemoveAllActions=()=>({
+  type: INTERRUPTION_TECHNOLOGY_REMOVE_ALL
+});
+
+export const requestIDAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
-  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}`)
+  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
     .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
     .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
 }

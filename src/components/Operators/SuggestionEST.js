@@ -18,7 +18,7 @@ import {updateInputValue as updateInputValueID} from './SuggestionID';
 import store from '../../index';
 import './suggestions.css';
 
-const getMatchingLanguages=(value)=> {
+const getMatchingSuggests=(value)=> {
   const IDs=store.getState().requestIDReducer.ID.data;
   const escapedValue = escapeRegexCharacters(value.trim());
   if (escapedValue === '') {
@@ -40,7 +40,7 @@ function escapeRegexCharacters(str) {
 function loadSuggestions(value) {
   return dispatch => {
     dispatch(loadSuggestionsBegin());
-    dispatch(maybeUpdateSuggestions(getMatchingLanguages(value), value));
+    dispatch(maybeUpdateSuggestions(getMatchingSuggests(value), value));
   };
 }
 
@@ -90,15 +90,17 @@ function mapStateToProps(state) {
     searchID: state.requestIDReducer.ID,
     isPendingID: state.requestIDReducer.isPendingID,
     errorID: state.requestIDReducer.errorID,
-    estructuras: state.requestIDReducer.ID.data
+    estructuras: state.requestIDReducer.ID.data,
+    sessionController: state.sessionReducer.dataUser
   };
 }
 
 function mapDispatchToProps(dispatch) {
 
   return {
-    onChange(event, { newValue }) {
-      dispatch(requestIDAction(newValue,"nom_sit"));
+    // onChange(event, { newValue }) {
+    onChangeTest:(newValue,id_usuario)=>{
+      dispatch(requestIDAction(newValue,"nom_sit",id_usuario));
       dispatch(updateInputValue(newValue));
       dispatch(interruptionBSAction(newValue))
     },
@@ -118,6 +120,22 @@ function mapDispatchToProps(dispatch) {
       dispatch(interruptionParishAction(suggestion.parroquia))    
     }
   };
+}
+
+// Merge it all (create final props to be passed)
+const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
+  return {
+    ...mapStateToProps,  // optional
+    ...mapDispatchToProps,  // optional
+    // onChangeWithNeededValue: (newValue) => (
+      // onChange_(event, { newValue }) {
+    onChange:(event, { newValue })=> (
+      mapDispatchToProps.onChangeTest(
+        newValue,
+        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+      )
+    )
+  }
 }
 
 class SuggestionEST extends React.Component {
@@ -147,4 +165,4 @@ class SuggestionEST extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuggestionEST,getMatchingLanguages);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SuggestionEST,getMatchingSuggests);

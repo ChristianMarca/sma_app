@@ -17,7 +17,8 @@ import {
 	requestIDReducer,
 	sessionReducer,
 	radioBasesAddReducer,
-	interruptionServicesReducer
+	interruptionServicesReducer,
+	interruptionTechnologiesReducer
 	} from './reducers';
 
 //Css styles
@@ -44,7 +45,8 @@ const appReducers=combineReducers(
 		requestIDReducer,
 		sessionReducer,
 		radioBasesAddReducer,
-		interruptionServicesReducer
+		interruptionServicesReducer,
+		interruptionTechnologiesReducer
 	})
 
 const rootReducer = (state, action) => {
@@ -57,7 +59,7 @@ const rootReducer = (state, action) => {
 }
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware,looger))
-//const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
+// const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 // const store = createStore(clickButtonReducer, applyMiddleware(thunkMiddleware,looger))
 export default store;
 

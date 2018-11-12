@@ -91,6 +91,7 @@ class LoginForm extends React.Component{
 						})
 						.then(resp=>resp.json())
 						.then(user=>{
+                            console.log('user', user)
 								if (user && user.email){
                                         // console.log(user, 'continue')
                                         this.props.onSigninApproved()

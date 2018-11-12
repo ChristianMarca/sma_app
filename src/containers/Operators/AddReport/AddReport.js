@@ -46,8 +46,10 @@ const mapStateToProps=state=>{
     interruptionDate: state.interruptionDateReducer,
     interruptionCauses: state.interruptionCausesReducer,
     interruptionServices: state.interruptionServicesReducer.interruptionServices,
+    interruptionTechnologies: state.interruptionTechnologiesReducer.interruptionTechnologies,
     interruptionRadioBase: state.radioBasesAddReducer,
-    interruptionSector: state.interruptionAddressReducer.interruptionSector
+    interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    sessionController: state.sessionReducer.dataUser
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -126,7 +128,7 @@ class AddReport extends React.Component{
   handleSubmit=async(event)=> {
     event.preventDefault();
     // const {interruptionType,interruptionRB,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices}=this.props
-    const {interruptionType,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices,interruptionSector}=this.props
+    const {interruptionType,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices,interruptionTechnologies,interruptionSector}=this.props
     var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
     if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
     var keys={
@@ -135,7 +137,9 @@ class AddReport extends React.Component{
         interruptionDate,
         interruptionCauses,
         interruptionServices,
-        interruptionRadioBase
+        interruptionTechnologies,
+        interruptionRadioBase,
+        interruptionIdUser: this.props.sessionController.id_user
     }
     axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{

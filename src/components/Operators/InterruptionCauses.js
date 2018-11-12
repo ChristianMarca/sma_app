@@ -4,8 +4,12 @@ import {interruptionCausesAction,
   interruptionTagsAction,
   interruptionSectorAction,
   interruptionServicesAddAction,
-  interruptionServicesRemoveAction
+  interruptionServicesRemoveAction,
+  interruptionTechnologyAddAction,
+  interruptionTechnologyRemoveAction
 } from '../../actions';
+
+import { similarity } from "../../services/dataValidation";
 
 import './interruption.css'
 
@@ -30,7 +34,9 @@ const mapDispatchToProps=(dispatch)=>{
     onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
 
     onAddService: (service)=>dispatch(interruptionServicesAddAction(service)),
-    onRemoveService: (service)=>dispatch(interruptionServicesRemoveAction(service))
+    onRemoveService: (service)=>dispatch(interruptionServicesRemoveAction(service)),
+    onAddTechnology: (technology)=>dispatch(interruptionTechnologyAddAction(technology)),
+    onRemoveTechonology: (technology)=>dispatch(interruptionTechnologyRemoveAction(technology))
 	}
 }
 
@@ -52,7 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
 class InterruptionCauses extends React.Component{
   constructor(){
     super();
-    this.selectedCheckboxes = new Set();
+    this.selectedCheckboxesServices = new Set();
+    this.selectedCheckboxesTechnologies = new Set();
   }
   getMatches=(string, regex, index)=> {
     index || (index = 1); // default to the first capturing group
@@ -68,18 +75,33 @@ class InterruptionCauses extends React.Component{
     //const regex = /-b([^-<\\]*(?:\\.[^-<\\]*)*)-/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
     const regex = /@([^@<\\]*(?:\\.[^-<\\]*)*)@/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
     var matches = this.getMatches(texto.target.value, regex, 1);
+    matches.map(match=>{
+      console.log('exmaple',match)
+      return console.log(match,similarity('Fallo en el Sistema Electrico',match||''))
+    })    
+
     onChangeInterruptionCauses(texto.target.value.replace(regex,'$1'));
     onChangeInterruptionTags(matches);
     resultado.innerHTML = texto.target.value.replace(regex,reemp);
   }
-  toggleCheckbox = label => {
+  toggleCheckboxServices = label => {
     // console.log(label.currentTarget.value,'hello---')
-    if (this.selectedCheckboxes.has(label.currentTarget.value)) {
-      this.selectedCheckboxes.delete(label.currentTarget.value);
+    if (this.selectedCheckboxesServices.has(label.currentTarget.value)) {
+      this.selectedCheckboxesServices.delete(label.currentTarget.value);
       this.props.onRemoveService(label.currentTarget.value)
     } else {
-      this.selectedCheckboxes.add(label.currentTarget.value);
+      this.selectedCheckboxesServices.add(label.currentTarget.value);
       this.props.onAddService(label.currentTarget.value)
+    }
+  }
+  toggleCheckboxTechnologies = label => {
+    // console.log(label.currentTarget.value,'hello---')
+    if (this.selectedCheckboxesTechnologies.has(label.currentTarget.value)) {
+      this.selectedCheckboxesTechnologies.delete(label.currentTarget.value);
+      this.props.onRemoveTechonology(label.currentTarget.value)
+    } else {
+      this.selectedCheckboxesTechnologies.add(label.currentTarget.value);
+      this.props.onAddTechnology(label.currentTarget.value)
     }
   }
   render(){
@@ -88,23 +110,44 @@ class InterruptionCauses extends React.Component{
     return(
       <div className="addressContainer card-body">
         <div className="servicesContainer">
-            <h6 className="titleInput">Servicios</h6> 
+            <h6 className="titleInput">Servicios Afectados</h6> 
             <div className="service">
-                <input className="radioButton" id="conecel" type="checkbox" name="operador" 
+                <input className="radioButton" id="voz" type="checkbox" name="services" 
                           value={"VOZ"} 
                           // checked={this.state.operator === "CONECEL"} 
-                          onChange={this.toggleCheckbox} />
-                <label className="services" htmlFor="conecel">VOZ</label>
-                <input className="radioButton" id="otecel" type="checkbox" name="operador" 
+                          onChange={this.toggleCheckboxServices} />
+                <label className="services" htmlFor="voz">VOZ</label>
+                <input className="radioButton" id="sms" type="checkbox" name="services" 
                           value={"SMS"} 
                           // checked={this.state.operator === "OTECEL"} 
-                          onChange={this.toggleCheckbox} />
-                <label className="services" htmlFor="otecel">SMS</label>
-                <input className="radioButton" id="cnt" type="checkbox" name="operador" 
+                          onChange={this.toggleCheckboxServices} />
+                <label className="services" htmlFor="sms">SMS</label>
+                <input className="radioButton" id="datos" type="checkbox" name="services" 
                           value={"DATOS"} 
                           // checked={this.state.operator === "CNT"} 
-                          onChange={this.toggleCheckbox} />
-                <label className="services" htmlFor="cnt">DATOS</label>
+                          onChange={this.toggleCheckboxServices} />
+                <label className="services" htmlFor="datos">DATOS</label>
+            </div>
+        </div>
+
+        <div className="servicesContainer">
+            <h6 className="titleInput">Tecnologias Afectadas</h6> 
+            <div className="service">
+                <input className="radioButton" id="gsm" type="checkbox" name="tecnologias" 
+                          value={"GSM"} 
+                          // checked={this.state.operator === "CONECEL"} 
+                          onChange={this.toggleCheckboxTechnologies} />
+                <label className="services" htmlFor="gsm">GSM</label>
+                <input className="radioButton" id="umts" type="checkbox" name="tecnologias" 
+                          value={"UMTS"} 
+                          // checked={this.state.operator === "OTECEL"} 
+                          onChange={this.toggleCheckboxTechnologies} />
+                <label className="services" htmlFor="umts">UMTS</label>
+                <input className="radioButton" id="lte" type="checkbox" name="tecnologias" 
+                          value={"LTE"} 
+                          // checked={this.state.operator === "CNT"} 
+                          onChange={this.toggleCheckboxTechnologies} />
+                <label className="services" htmlFor="lte">LTE</label>
             </div>
         </div>
 

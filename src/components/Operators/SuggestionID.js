@@ -17,8 +17,9 @@ import {updateInputValue as updateInputValueEST} from './SuggestionEST';
 
 import store from '../../index';
 import './suggestions.css';
+// import { merge } from 'd3-array';
 
-const getMatchingLanguages=(value)=> {
+const getMatchingSuggests=(value)=> {
   const IDs=store.getState().requestIDReducer.ID.data;
   const escapedValue = escapeRegexCharacters(value.trim());
   if (escapedValue === '') {
@@ -40,7 +41,7 @@ function escapeRegexCharacters(str) {
 function loadSuggestions(value) {
   return dispatch => {
     dispatch(loadSuggestionsBegin());
-    dispatch(maybeUpdateSuggestions(getMatchingLanguages(value), value));
+    dispatch(maybeUpdateSuggestions(getMatchingSuggests(value), value));
   };
 }
 
@@ -90,14 +91,18 @@ function mapStateToProps(state) {
     searchID: state.requestIDReducer.ID,
     isPendingID: state.requestIDReducer.isPendingID,
     errorID: state.requestIDReducer.errorID,
-    estructuras: state.requestIDReducer.ID.data
+    estructuras: state.requestIDReducer.ID.data,
+    sessionController: state.sessionReducer.dataUser
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChange(event, { newValue }) {
-      dispatch(requestIDAction(newValue,"cell_id"));
+    // onChange_(event, { newValue }) {
+      onChangeTest:(newValue,id_usuario)=> {
+      // console.log('aqui esrta, PEPE ',exmaple.sessionController.id_user, ownProps)
+      // console.log('tesr',id_usuario)
+      dispatch(requestIDAction(newValue,"cell_id",id_usuario));
       dispatch(updateInputValue(newValue));
       dispatch(interruptionCodeAction(String(newValue) ))
     },
@@ -118,6 +123,23 @@ function mapDispatchToProps(dispatch) {
     }
   };
 }
+
+// Merge it all (create final props to be passed)
+const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
+  return {
+    ...mapStateToProps,  // optional
+    ...mapDispatchToProps,  // optional
+    // onChangeWithNeededValue: (newValue) => (
+      // onChange_(event, { newValue }) {
+    onChange:(event, { newValue })=> (
+      mapDispatchToProps.onChangeTest(
+        newValue,
+        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+      )
+    )
+  }
+}
+
 
 class SuggestionID extends React.Component {
   render() {
@@ -146,4 +168,4 @@ class SuggestionID extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuggestionID,getMatchingLanguages);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SuggestionID,getMatchingSuggests);
