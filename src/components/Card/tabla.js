@@ -15,7 +15,7 @@ class TablaInt extends React.Component {
         let seleccion = data.map((elemento, index) => {
           return (<ListaInt key={index} columns={headData} data={elemento}></ListaInt>)
         })
-        let etiquetas = [<ListaInt key="Cabecera" id="Head" columns={headData} data={headData} handleClick={this.props.fCampos}></ListaInt>
+        let etiquetas = [<ListaInt key="Cabecera" id="Head" columns={headData} data={headData} handleClick={this.props.fCampo}></ListaInt>
           ];
         let tabla = etiquetas.concat(seleccion)
         return (tabla)

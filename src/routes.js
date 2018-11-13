@@ -8,7 +8,7 @@ import AddReport from './containers/Operators/AddReport/AddReport';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Maps from './containers/Maps/maps.js';
 import Page404 from './containers/Page404';
-import tablaInt from './containers/Listas/lista.js';
+import ListaInt from './containers/Listas/listas.js';
 
 class AppRoutes extends React.Component{
   render(){
@@ -17,7 +17,7 @@ class AppRoutes extends React.Component{
         <Switch>
           <Route exact path="/newinterruption" component={AddReport} />
           <Route exact path="/maps" component={Maps} />
-          <Route exact path="/lista" component={tablaInt} />
+          <Route exact path="/listas" component={ListaInt} />
           <Route exact path="/" component={Dashboard} />
           <Route component={Page404} />
         </Switch>
