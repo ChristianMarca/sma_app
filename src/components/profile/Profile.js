@@ -1,6 +1,22 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { API_URL } from "../../config";
 import './Profile.css'
+
+const mapStateToProps=state=>{
+	return {
+    //Parish
+    sessionController: state.sessionReducer.dataUser
+
+    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    //Código de Interrupción
+        // onChangeParish: (event)=> dispatch(interruptionParishAction(event.target.value)),
+	}
+}
 
 class Profile extends React.Component{
   
@@ -8,9 +24,17 @@ class Profile extends React.Component{
     super(props);
 
     this.state={
-      name: "Test Name",
-      age: "23",
-      pet: "Walter Test"
+      nombre: this.props.sessionController.nombre,
+      apellido: this.props.sessionController.apellido,
+      username: this.props.sessionController.username,
+      telefono: this.props.sessionController.telefono,
+      password: '',
+      lastPassword: '',
+      repeatNewPassword: '',
+      isValidPasswords:false,
+      classNamePassword:'passwordValid',
+      classNamePasswordInvalid:'passwordValid',
+      someFail: false,
       // name: this.props.user.name,
       // age: this.props.user.age,
       // pet: this.props.user.pet
@@ -21,58 +45,193 @@ class Profile extends React.Component{
   onFormChange=(event)=>{
     switch(event.target.name){
       case 'user-name':
-        this.setState({name: event.target.value});
+        this.setState({nombre: event.target.value});
         break;
-      case 'user-age':
-        this.setState({age: event.target.value});
+      case 'user-last':
+        this.setState({apellido: event.target.value});
         break;
-      case 'user-pet':
-        this.setState({pet: event.target.value});
+      case 'user-username':
+        this.setState({username: event.target.value});
+        break;
+      case 'user-phone':
+        this.setState({telefono: event.target.value});
+        break;
+      case 'user-last-password':
+        this.setState({lastPassword: event.target.value});
+        break;
+      case 'user-new-password':
+        this.setState({password: event.target.value});
+        break;
+      case 'user-repeat-password':
+        this.setState({repeatNewPassword: event.target.value});
         break;
       default:
         return;
     }
-  }
-  onProfileUpadate=(data)=>{
-    fetch(`${API_URL}/authentication/profile/${this.props.user.id}`,{
-      method: 'post',
+  };
+  validateLastPassword=()=>{
+    return fetch(`${API_URL}/authentication/passwordValidate/${this.props.sessionController.id_user}&${this.state.lastPassword}`,{
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'authorization': window.sessionStorage.getItem('token')
       },
-      body: JSON.stringify({formInput: data})
+      // body: JSON.stringify({formInput: data})
     }).then(resp=>{
-      if(resp.status===200 || resp.status===304){
-        this.props.toogleModal();
-        this.props.loadUser({...this.props.user,...data});
+      // if(resp.status===200 || resp.status===304){
+      //   this.props.toogleModal();
+      //   this.props.loadUser({...this.props.user,...data});
+      // }
+      console.log('pepeasa',resp.json(),resp)
+      if(resp.status===400){
+        this.setState({classNamePassword: 'passwordInvalid'});
+        this.setState({someFail: true})    
       }
-    }).catch(console.log)
+      return resp
+    })
+    .catch(error=>{
+      this.setState({classNamePassword: 'passwordInvalid',someFail: true})
+      console.log('sinfunciona el fallo: ', error)
+    }
+    )
+  }
+  validatePasswordEquality=()=>{
+    if(this.state.password.length>0 && this.state.repeatNewPassword.length>0){
+      if(this.state.password===this.state.repeatNewPassword){
+        this.setState({isValidPasswords:true})
+        return true;
+      }else{
+        this.setState({isValidPasswords:false,classNamePasswordInvalid: 'passwordInvalid'})
+        return false;
+      }
+    }
+    // return false
+  }
+  onUpdatePassword=()=>{
+    this.validateLastPassword()
+      .then(data=>{
+        // console.log('dataREvision',data)
+        if(data && this.validatePasswordEquality()){
+          if(data.status && data.ok && this.state.isValidPasswords){
+            return fetch(`${API_URL}/authentication/passwordChange/${this.props.sessionController.id_user}&${this.state.password}`,{
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'authorization': window.sessionStorage.getItem('token')
+              },
+              // body: JSON.stringify({formInput: data})
+            }).then(resp=>{
+              // console.log('datauaudario : ',resp.json())
+              this.setState({someFail: false})
+              return resp
+            })
+            .catch(error=>{
+              this.setState({classNamePassword: 'passwordInvalid',someFail: true})
+              // alert('aqui')
+              return console.log('sinfunciona el fallo: ', error)
+            })
+          }
+          else{
+            return console.log('Fail')
+          }
+        }
+      })
+      .then(()=>{
+        fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
+          // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization': window.sessionStorage.getItem('token')
+            },
+            body: JSON.stringify({formInput: {
+              nombre: this.state.nombre,
+              apellido: this.state.apellido,
+              username: this.state.username,
+              telefono: this.state.telefono
+            }})
+          }).then(resp=>{
+            // console.log(resp,resp.json(),'pepepashvsags')
+            // return resp
+            if(resp.status===200 || resp.status===304){
+              (!this.state.someFail && this.validatePasswordEquality())&&
+              this.props.toogleModal();
+              // this.props.loadUser({...this.props.user,...data});
+            }
+          }).catch(console.log)
+      })
+      .catch((err)=>{
+        this.setState({someFail: true})
+        alert('Fallo Proceso',err)
+      });
+
+    // fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
+    //   // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'authorization': window.sessionStorage.getItem('token')
+    //     },
+    //     body: JSON.stringify({formInput: {
+    //       nombre: this.state.nombre,
+    //       apellido: this.state.apellido,
+    //       username: this.state.username,
+    //       telefono: this.state.telefono
+    //     }})
+    //   }).then(resp=>{
+    //     // console.log(resp,resp.json(),'pepepashvsags')
+    //     // return resp
+    //     if(resp.status===200 || resp.status===304){
+    //       !this.state.someFail&&
+    //       this.props.toogleModal();
+    //       // this.props.loadUser({...this.props.user,...data});
+    //     }
+    //   }).catch(console.log)
+  }
+  removeInvalidClass=()=>{
+    this.setState({classNamePassword: 'passwordValid'});
+    this.setState({classNamePasswordInvalid: 'passwordValid'});
   }
 
   render(){
-    const {toogleModal }=this.props;
-    const user={name:"Christian",age:23,pet:'Tutuco'}
-    const {name, age,pet}= this.state;
+    const {toogleModal}=this.props;
+    // console.log('estado de usuario', this.props.sessionController)
     return (
       <div className="profile-modal">
-        <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white">
+        <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white modalInfoContainer">
           <main className="pa4 black-80 W-80">
-          <img
-               src="http://tachyons.io/img/logo.jpg"
-              className="h3 w3 dib" alt="avatar" />
+          {/* <img
+               src="https://banner2.kisspng.com/20180716/lra/kisspng-logo-person-user-person-icon-5b4d2bd2236ca6.6010202115317841461451.jpg"
+              className="h3 w3 dib" alt="avatar" /> */}
             {/* <h1>{`Name: ${this.state.name}`}</h1>
             <h4>{`Images Submited: ${user.entries}`}</h4>
             <p>{`Member since: ${user.joined}`}</p> */}
   
-            <hr />
-              <label className="mt2 fw6" htmlFor="user-name">Name: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={user.name} type="text" name="user-name"  id="name" />
-              <label className="mt2 fw6" htmlFor="user-age">Age: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={user.age} type="text" name="user-age"  id="age" />
-              <label className="mt2 fw6" htmlFor="user-pet">Pet: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={user.pet} type="text" name="user-pet"  id="pet" />
+            {/* <hr /> */}
+              <label className="mt2 fw6" htmlFor="name">Nombre: </label>
+              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.nombre} type="text" name="user-name"  id="name" />
+
+              <label className="mt2 fw6" htmlFor="last">Apellido: </label>
+              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.apellido} type="text" name="user-last"  id="last" />
+
+              <label className="mt2 fw6" htmlFor="username">Username: </label>
+              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.username} type="text" name="user-username"  id="username" />
+
+              <label className="mt2 fw6" htmlFor="phone">Telefono: </label>
+              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.telefono} type="text" name="user-phone"  id="phone" />
+
+              {/* onBlur={this.validateLastPassword} */}
+              <label className="mt2 fw6" htmlFor="lastPassword">Antigua Contracena: </label>
+              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`pa2 ba w-100 ${this.state.classNamePassword}`} placeholder={'Last Password'} type="password" pattern='.{6,}' minLength={8} name="user-last-password"  id="lastPassword" />
+
+              <label className="mt2 fw6" htmlFor="newPassword"> Nueva Contracena: </label>
+              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`pa2 ba w-100 ${this.state.classNamePasswordInvalid}`} placeholder={'New Password'} type="password" pattern='.{6,}' minLength={8} name="user-new-password"  id="newPassword" />
+
+              <label className="mt2 fw6" htmlFor="repeatNewPassword">Repetir Contracena: </label>
+              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} onBlur={this.validatePasswordEquality} className={`pa2 ba w-100 ${this.state.classNamePasswordInvalid}`} placeholder={'New Password'} type="password" pattern='.{6,}' minLength={8} name="user-repeat-password"  id="repeatNewPassword" />
+
               <div className="mt4" style={{display:'flex',justifyContent: 'space-evenly'} }>
-                <button onClick={()=>this.onProfileUpadate({name,age, pet})} className='b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20'>
+                <button onClick={()=>this.onUpdatePassword()} className='b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20'>
                   Save
                 </button>
                 <button className='b pa2 grow pointer hover-white w-40 bg-light-red b--black-20' onClick={toogleModal}>
@@ -86,4 +245,4 @@ class Profile extends React.Component{
     )
   }
 }
-export default Profile;
+export default connect(mapStateToProps,mapDispatchToProps)(Profile);
