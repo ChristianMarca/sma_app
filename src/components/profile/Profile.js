@@ -198,8 +198,8 @@ class Profile extends React.Component{
     // console.log('estado de usuario', this.props.sessionController)
     return (
       <div className="profile-modal">
-        <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center bg-white modalInfoContainer">
-          <main className="pa4 black-80 W-80">
+        <article className="modalInfoContainer">
+          <main className="mainModalForm">
           {/* <img
                src="https://banner2.kisspng.com/20180716/lra/kisspng-logo-person-user-person-icon-5b4d2bd2236ca6.6010202115317841461451.jpg"
               className="h3 w3 dib" alt="avatar" /> */}
@@ -208,33 +208,33 @@ class Profile extends React.Component{
             <p>{`Member since: ${user.joined}`}</p> */}
   
             {/* <hr /> */}
-              <label className="mt2 fw6" htmlFor="name">Nombre: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.nombre} type="text" name="user-name"  id="name" />
+              <label className="labelForm headerform" htmlFor="name">Nombre: </label>
+              <input onChange={this.onFormChange} className="inputform" placeholder={this.state.nombre} type="text" name="user-name"  id="name" />
 
-              <label className="mt2 fw6" htmlFor="last">Apellido: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.apellido} type="text" name="user-last"  id="last" />
+              <label className="labelForm" htmlFor="last">Apellido: </label>
+              <input onChange={this.onFormChange} className="inputform" placeholder={this.state.apellido} type="text" name="user-last"  id="last" />
 
-              <label className="mt2 fw6" htmlFor="username">Username: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.username} type="text" name="user-username"  id="username" />
+              <label className="labelForm" htmlFor="username">Username: </label>
+              <input onChange={this.onFormChange} className="inputform" placeholder={this.state.username} type="text" name="user-username"  id="username" />
 
-              <label className="mt2 fw6" htmlFor="phone">Telefono: </label>
-              <input onChange={this.onFormChange} className="pa2 ba w-100" placeholder={this.state.telefono} type="text" name="user-phone"  id="phone" />
+              <label className="labelForm" htmlFor="phone">Telefono: </label>
+              <input onChange={this.onFormChange} className="inputform" placeholder={this.state.telefono} type="text" name="user-phone"  id="phone" />
 
               {/* onBlur={this.validateLastPassword} */}
-              <label className="mt2 fw6" htmlFor="lastPassword">Antigua Contracena: </label>
-              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`pa2 ba w-100 ${this.state.classNamePassword}`} placeholder={'Last Password'} type="password" pattern='.{6,}' minLength={8} name="user-last-password"  id="lastPassword" />
+              <label className="labelForm" htmlFor="lastPassword">Antigua Contracena: </label>
+              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`inputform ${this.state.classNamePassword}`} placeholder={'Last Password'} type="password" pattern='.{6,}' minLength={8} name="user-last-password"  id="lastPassword" />
 
-              <label className="mt2 fw6" htmlFor="newPassword"> Nueva Contracena: </label>
-              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`pa2 ba w-100 ${this.state.classNamePasswordInvalid}`} placeholder={'New Password'} type="password" pattern='.{6,}' minLength={8} name="user-new-password"  id="newPassword" />
+              <label className="labelForm" htmlFor="newPassword"> Nueva Contracena: </label>
+              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`inputform ${this.state.classNamePasswordInvalid}`} placeholder={'New Password'} type="password" pattern='.{6,}' minLength={8} name="user-new-password"  id="newPassword" />
 
-              <label className="mt2 fw6" htmlFor="repeatNewPassword">Repetir Contracena: </label>
-              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} onBlur={this.validatePasswordEquality} className={`pa2 ba w-100 ${this.state.classNamePasswordInvalid}`} placeholder={'New Password'} type="password" pattern='.{6,}' minLength={8} name="user-repeat-password"  id="repeatNewPassword" />
+              <label className="labelForm" htmlFor="repeatNewPassword">Repetir Contracena: </label>
+              <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} onBlur={this.validatePasswordEquality} className={`inputform ${this.state.classNamePasswordInvalid}`} placeholder={'New Password'} type="password" pattern='.{6,}' minLength={8} name="user-repeat-password"  id="repeatNewPassword" />
 
-              <div className="mt4" style={{display:'flex',justifyContent: 'space-evenly'} }>
-                <button onClick={()=>this.onUpdatePassword()} className='b pa2 grow pointer hover-white w-40 bg-light-blue b--black-20'>
+              <div className="submitsButtonModal" style={{display:'flex',justifyContent: 'space-evenly'} }>
+                <button onClick={()=>this.onUpdatePassword()} className='buttonSubmitModal'>
                   Save
                 </button>
-                <button className='b pa2 grow pointer hover-white w-40 bg-light-red b--black-20' onClick={toogleModal}>
+                <button className='buttonSubmitModal' onClick={toogleModal}>
                   Cancel
                 </button>
               </div>

@@ -13,6 +13,7 @@ import {interruptionCodeAction,
 import SuggestionID from './SuggestionID';
 import './interruption.css'
 import SuggestionEST from './SuggestionEST';
+import { API_URL } from "../../config";
 
 const mapStateToProps=state=>{
 	return {
@@ -66,7 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
 class InterruptionAddress extends React.Component{
   onChangeTest=(event)=>{
     console.log(event.target.value.length)
-    event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
+    // event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
+    event.target.value.length>=3 && axios.get(`${API_URL}/radioBases?id=${event.target.value}`)
       .then(resp=>{console.log(resp.data)})
       .catch(console.log)
   }

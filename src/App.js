@@ -61,9 +61,9 @@ class App extends Component {
                 })
                 .then(resp=>resp.json())
                 .then(user=>{
-                    console.log('adqui esta',user)
+                    // console.log('adqui esta',user)
                     if (user && user.email){
-                      console.log(user, 'continueWithToken')
+                      // console.log(user, 'continueWithToken')
                       this.props.onSigninApproved()
                       this.props.onReceiveDataUser(user)
                         // this.loadUser(user);
@@ -112,13 +112,13 @@ class App extends Component {
       <ul className="listNav" id="myTopnav">
         <li className="headerItem">SMA</li>
         {this.onRouterAccess()}
-        <li className="headerItemRight">
+        {/* <li className="headerItemRight">
           <a className="searchItem">
             <input placeholder="search" className="search" />
             <i className="fas fa-search searchIcon"></i>
           </a>
-        </li>
-        <li className="itemName"><a className=""> {this.props.sessionController.dataUser.username}</a></li>
+        </li> */}
+        <li className="headerItemRight itemName"><a className=""> {this.props.sessionController.dataUser.username}</a></li>
         <li>
           <ProfileIcon toogleModal={this.toogleModal} />
           {this.state.isProfileOpen &&
@@ -155,7 +155,7 @@ class App extends Component {
         </li>
       </ul>
     )
-    console.log('esto es lo que paso: ',this.props)
+    // console.log('esto es lo que paso: ',this.props)
     return (
       <div className="App">
         {

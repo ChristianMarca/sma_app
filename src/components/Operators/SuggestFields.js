@@ -2,6 +2,8 @@ import Autosuggest from 'react-autosuggest';
 import React from 'react';
 import axios from 'axios';
 
+import { API_URL } from "../../config";
+
 class SuggestFields extends React.Component {
   constructor() {
     super();
@@ -89,7 +91,8 @@ class SuggestFields extends React.Component {
   }
 
   onChangeID = (event, { newValue }) => {
-    newValue.length>=2 && axios.get(`http://192.168.1.102:3000/radioBases?id=${newValue}`)
+    // newValue.length>=2 && axios.get(`http://192.168.1.102:3000/radioBases?id=${newValue}`)
+    newValue.length>=2 && axios.get(`${API_URL}/radioBases?id=${newValue}`)
     .then(resp=>{
       this.setState({languages: resp.data})
     })
@@ -100,7 +103,8 @@ class SuggestFields extends React.Component {
   };
 
   onChangeEst = (event, { newValue }) => {
-    newValue.length>=2 && axios.get(`http://192.168.1.102:3000/radioBases?est=${newValue}`)
+    // newValue.length>=2 && axios.get(`http://192.168.1.102:3000/radioBases?est=${newValue}`)
+    newValue.length>=2 && axios.get(`${API_URL}/radioBases?est=${newValue}`)
     .then(resp=>{
       this.setState({languages: resp.data})
     })

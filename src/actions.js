@@ -31,6 +31,8 @@ import {
   RADIOBASES_REMOVE_ALL
 } from './constants';
 
+import { API_URL } from "./config";  
+
 // Elección del tipo de interrupción
 export const interruptionTypeAction=(type)=>{
   // document.getElementById("buttonTypeR").style.background=type=='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
@@ -161,7 +163,8 @@ export const interruptionTechnologyRemoveAllActions=()=>({
 
 export const requestIDAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
-  newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+  // newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+  newValue.length >=3 &&axios.get(`${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
     .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
     .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
 }

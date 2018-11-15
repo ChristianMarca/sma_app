@@ -82,7 +82,7 @@ label[class="marca"] {
   padding-right: 10px;
   line-height: 36px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 1;
 }
 label[class="marca"]::before {
   content: " ";

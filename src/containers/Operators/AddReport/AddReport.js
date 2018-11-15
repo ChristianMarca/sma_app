@@ -160,9 +160,12 @@ class AddReport extends React.Component{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   handleAddRadioBase=()=>{
-    const {interruptionCode}=this.props.interruptionRB;
+    const {interruptionCode,interruptionIdBs}=this.props.interruptionRB;
+    console.log('hola',this.props.interruptionRB, interruptionIdBs)
+    axios.post(`${API_URL}/radioBases/getRadioBasesCellId`,{interruptionIdBs})
+      .then(data=>{console.log(data)})
     this.props.onReceiveRadioBase(interruptionCode,this.props.interruptionRB);
-    this.props.onReceiveRadioBaseIdRemove(null)
+    // this.props.onReceiveRadioBaseIdRemove(null)
   }
 
   render(){
