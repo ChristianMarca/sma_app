@@ -22,10 +22,5 @@
 // })
 // console.log(prueba)
 
-const url = 'http://192.168.1.102:3000/radioBases'
+const url = 'http://192.168.1.15:3000/radioBases'
 fetch(url).then (data => console.log (data));
-
-
-
-
-

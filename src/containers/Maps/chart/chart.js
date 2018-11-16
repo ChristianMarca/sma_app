@@ -1,4 +1,4 @@
-import { setup } from '../chart-setup';
+import { setup } from './chart-setup';
 import { select,mouse,event } from "d3-selection";
 import { scaleLinear, scaleBand } from "d3-scale";
 import {axisBottom, axisLeft} from 'd3-axis';
