@@ -22,15 +22,7 @@ export default class Filtro extends React.Component {
         <td><DateTimePicker onChange={this.onChangeEnd} value={this.props.valueE}/></td>
       </tr>
       <tr>
-        <td>Parroquia:</td>
-        <td>
-          <input type="text" id="name" onChange={this.onChangeInput}></input>
-        </td>
-        <td>Canton:</td>
-        <td>
-          <input type="text" id="name" onChange={this.onChangeInput}></input>
-        </td>
-        <td>Provincia:</td>
+        <td>Area afectada:</td>
         <td>
           <input type="text" id="name" onChange={this.onChangeInput}></input>
         </td>

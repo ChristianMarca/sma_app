@@ -44,7 +44,7 @@ export default class Lista extends React.Component {
       this.state.filtroFechaFinal.valueOf(),
       this.state.filtroParroquia
     ];
-    const response = await fetch('http://192.168.1.15:3000/interrupcion/inter', {
+    const response = await fetch('http://186.101.219.167:3000/interrupcion/inter', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
