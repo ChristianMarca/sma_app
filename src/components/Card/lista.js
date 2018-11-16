@@ -1,8 +1,8 @@
 import React from "react";
 import "./lista.css";
 import TablaInt from "./tabla.js";
-import NavBar from "./navBar.js";
-import Filter from "./filtros.js";
+import PageBar from "./pgBar.js";
+import Filtro from "./filtros.js";
 
 import Dropdown from 'rc-dropdown';
 import Menu, {Item as MenuItem, Divider} from 'rc-menu';
@@ -15,24 +15,35 @@ export default class Lista extends React.Component {
     this.state = {
       pagina: 1,
       elementosPagina: 5,
-      campOrden: "id_inte",
+      campOrden: "fecha_inicio",
       orden: "DESC",
       campos: [
         "0", "10", "1"
       ],
       dataInt: [],
       totalInt: 0,
-      fetchOffset: 0
+      bandera: true,
+      fetchOffset: 0,
+      filtroFechaInicial: new Date('January 1, 2018 00:00:00'),
+      filtroFechaFinal: new Date(),
+      filtroParroquia: "'%'",
+      filtroCanton: "'%'",
+      filtroProvincia: "'%'"
     };
-    this.onSelectSimple = this.onSelectSimple.bind(this);
-    this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.ordenarTabla = this.ordenarTabla.bind(this);
-    this.handleClickNav = this.handleClickNav.bind(this);
   }
 
   async fetchInterrupciones() {
-    let offset = this.state.elementosPagina*(this.state.pagina-1);
-    let datos = [offset, this.state.elementosPagina, this.state.orden, this.state.campOrden];
+
+    let offset = this.state.elementosPagina * (this.state.pagina - 1);
+    let datos = [
+      offset,
+      this.state.elementosPagina,
+      this.state.orden,
+      this.state.campOrden,
+      this.state.filtroFechaInicial.valueOf(),
+      this.state.filtroFechaFinal.valueOf(),
+      this.state.filtroParroquia
+    ];
     const response = await fetch('http://192.168.1.15:3000/interrupcion/inter', {
       method: 'POST',
       headers: {
@@ -46,11 +57,30 @@ export default class Lista extends React.Component {
     return [total, interrupciones]
   }
 
-  handleClickNav(campo){
-    this.setState({pagina: campo})
+  handleClickNav = (campo) => {
+    let tmp = parseInt(campo, 10);
+    var paginaActual;
+    switch (tmp) {
+      case - 1:
+        this.setState({
+          pagina: 1,
+          bandera: !this.state.bandera
+        })
+        break;
+      case 0:
+        paginaActual = Math.ceil(this.state.totalInt / this.state.elementosPagina);
+        this.setState({
+          pagina: paginaActual,
+          bandera: !this.state.bandera
+        })
+        break;
+      default:
+        this.setState({pagina: tmp});
+        break;
+    }
   }
 
-  handleFieldChange(campo) {
+  handleFieldChange = (campo) => {
     if (campo === this.state.campOrden) {
       if (this.state.orden === "ASC") {
         this.setState({orden: "DESC"})
@@ -58,23 +88,23 @@ export default class Lista extends React.Component {
         this.setState({orden: "ASC"})
       }
     } else {
-      //let temp = campo;
       this.setState({campOrden: campo, orden: 'ASC'})
     }
-
   }
 
   ordenarTabla() {
     var campo = this.state.campOrden;
     var orden = this.state.orden;
     let temp = this.state.dataInt;
+    var valA;
+    var valB;
     temp.sort(function(a, b) {
       if (typeof a === 'string') {
-        var valA = a[campo].toUpperCase();
-        var valB = b[campo].toUpperCase();
+        valA = a[campo].toUpperCase();
+        valB = b[campo].toUpperCase();
       } else {
-        var valA = a[campo];
-        var valB = b[campo];
+        valA = a[campo];
+        valB = b[campo];
       }
       if (orden === "ASC") {
         if (valA < valB) {
@@ -98,8 +128,8 @@ export default class Lista extends React.Component {
   }
 
   //Dropdow simple
-  onSelectSimple({key}) {
-    let pg = parseInt(key);
+  onSelectSimple = ({key}) => {
+    let pg = parseInt(key, 10);
     this.setState({elementosPagina: pg})
   }
 
@@ -119,7 +149,7 @@ export default class Lista extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    if (this.state.elementosPagina !== prevState.elementosPagina || this.state.pagina !== prevState.pagina) {
+    if (this.state.elementosPagina !== prevState.elementosPagina || this.state.pagina !== prevState.pagina || this.state.bandera !== prevState.bandera) {
       this.fetchInterrupciones().then(res => {
         this.setState({totalInt: res[0], dataInt: res[1]})
       })
@@ -134,6 +164,22 @@ export default class Lista extends React.Component {
     this.fetchInterrupciones().then(res => {
       this.setState({totalInt: res[0], dataInt: res[1]})
     })
+  }
+
+  onChangeI = date => {
+    this.setState({filtroFechaInicial: date})
+  }
+  onChangeE = date => {
+    this.setState({filtroFechaFinal: date})
+  }
+  onClickGO = e => {
+    this.setState({
+      bandera: !this.state.bandera
+    })
+  }
+  onChangeInput = txt => {
+    let ftxt = ("'%").concat(txt,"%'");
+    this.setState({filtroParroquia: ftxt})
   }
 
   render() {
@@ -162,12 +208,11 @@ export default class Lista extends React.Component {
       <Divider/>
       <MenuItem key="9">Tipo</MenuItem>
     </Menu>);
-
+    //console.log(this.state.totalInt, this.state.dataInt)
     let card = <div className="Lista">
-      <h1>Interrupciones del Servicio Movil Avanzado</h1>
-
+      <Filtro onChangeI={this.onChangeI} onChangeE={this.onChangeE} onClicGO={this.onClickGO} onChangeInput={this.onChangeInput} valueI={this.state.filtroFechaInicial} valueE={this.state.filtroFechaFinal}/>
       <TablaInt data={this.state.dataInt} campos={this.state.campos} fCampo={this.handleFieldChange}/>
-      <NavBar actual={this.state.pagina} totalInt={this.state.totalInt} elementos={this.state.elementosPagina} page={this.state.pagina} handleClickNav={this.handleClickNav}/>
+      <PageBar actual={this.state.pagina} totalInt={this.state.totalInt} elementos={this.state.elementosPagina} page={this.state.pagina} handleClickNav={this.handleClickNav}/>
       <div>
         <Dropdown trigger={['click']} overlay={cantidad} animation="slide-up" onVisibleChange={this.onVisibleChangesimple}>
           <button>Cantidad</button>

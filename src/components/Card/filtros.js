@@ -1,71 +1,44 @@
 import React from "react";
-//import "./tarjeta.css";
+import DateTimePicker from 'react-datetime-picker';
 
-export default class Filter extends React.Component {
+export default class Filtro extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
+  constructor() {
+    super();
   }
-  handleClick(e) {
-    //console.log('--------------',e.target.getAttribute('data-key'))
-    //console.log('--------------',e.target.value)
-    this.props.handleClickNav(e.target.getAttribute('data-key'));
-  }
-
-  navegador() {
-    let paginas = Math.trunc(this.props.totalInt / this.props.elementos) + 1;
-    let actual = parseInt(this.props.page, 10);
-    let prev = actual - 2;
-    let next = actual + 2;
-    var navNum = [];
-    if (paginas <= 5) {
-      for (let i = 1; i <= paginas; i++) {
-        navNum = navNum.concat([<td key={i}>
-          <button onClick={this.handleClick} data-key={i}>{i}</button>
-        </td>
-          ]);
-        //console.log(navNum)
-      }
-    } else {
-      if (actual > 3) {
-        if (next <= paginas) {
-          for (let i = prev; i <= next; i++) {
-            navNum = navNum.concat([<td key={i}>
-              <button onClick={this.handleClick} data-key={i}>{i}</button>
-            </td>
-              ]);
-          }
-        } else {
-          for (let i = paginas - 4; i <= paginas; i++) {
-            navNum = navNum.concat([<td key={i}>
-              <button onClick={this.handleClick} data-key={i}>{i}</button>
-            </td>
-              ]);
-          }
-        }
-      } else {
-        for (let i = 1; i <= 5; i++) {
-          navNum = navNum.concat([<td key={i}>
-            <button onClick={this.handleClick} data-key={i}>{i}</button>
-          </td>
-            ]);
-        }
-      }
-    }
-    let init = [<td key="init"><button onClick={this.handleClick} data-key={1}>&lt;&lt;</button></td>];
-    let end = [<td key="end"><button onClick={this.handleClick} data-key={paginas}>&gt;&gt;</button></td>];
-    let navControls = (init).concat(navNum,end)
-    return (navControls)
-  }
+  onChangeInit = date => this.props.onChangeI(date);
+  onChangeEnd = date => this.props.onChangeE(date);
+  handleClick = e => this.props.onClicGO(e);
+  onChangeInput = e => this.props.onChangeInput(e.target.value);
 
   render() {
 
-    let card = <table>
-      <tbody className="nav">
-        <tr>{this.navegador()}</tr>
-      </tbody>
+    let filters = <table>
+      <tbody>
+      <tr>
+        <td>Desde:</td>
+        <td><DateTimePicker onChange={this.onChangeInit} value={this.props.valueI}/></td>
+        <td>Hasta:</td>
+        <td><DateTimePicker onChange={this.onChangeEnd} value={this.props.valueE}/></td>
+      </tr>
+      <tr>
+        <td>Parroquia:</td>
+        <td>
+          <input type="text" id="name" onChange={this.onChangeInput}></input>
+        </td>
+        <td>Canton:</td>
+        <td>
+          <input type="text" id="name" onChange={this.onChangeInput}></input>
+        </td>
+        <td>Provincia:</td>
+        <td>
+          <input type="text" id="name" onChange={this.onChangeInput}></input>
+        </td>
+        <td><button onClick={this.handleClick} data-key={0}>Ir</button></td>
+      </tr>
+    </tbody>
     </table>;
-    return (card)
+
+    return (filters)
   }
 }

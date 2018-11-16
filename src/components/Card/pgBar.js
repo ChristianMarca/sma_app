@@ -1,13 +1,13 @@
 import React from "react";
 //import "./tarjeta.css";
 
-export default class NavBar extends React.Component {
+export default class PageBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    //this.handleClick = this.handleClick.bind(this);
   }
-  handleClick(e) {
+  handleClick = e => {
     //console.log('--------------',e.target.getAttribute('data-key'))
     //console.log('--------------',e.target.value)
     this.props.handleClickNav(e.target.getAttribute('data-key'));
@@ -53,8 +53,8 @@ export default class NavBar extends React.Component {
         }
       }
     }
-    let init = [<td key="init"><button onClick={this.handleClick} data-key={1}>&lt;&lt;</button></td>];
-    let end = [<td key="end"><button onClick={this.handleClick} data-key={paginas}>&gt;&gt;</button></td>];
+    let init = [<td key="init"><button onClick={this.handleClick} data-key={-1}>&lt;&lt;</button></td>];
+    let end = [<td key="end"><button onClick={this.handleClick} data-key={0}>&gt;&gt;</button></td>];
     let navControls = (init).concat(navNum,end)
     return (navControls)
   }
