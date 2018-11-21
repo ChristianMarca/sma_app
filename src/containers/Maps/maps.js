@@ -113,6 +113,10 @@ class Maps extends React.Component{
   shouldComponentUpdate=(nextProps,nextState)=>{
     console.log(this.props.sessionController,'info',this.props.sessionController.isSessionInit)
     return this.props.sessionController.isSessionInit?true:false
+//   componentDidMount=()=> {
+//     //if (this.props.dynamic)
+//     this.startDynamicData();
+//     window.addEventListener("resize", this.updateDimensions);
   }
 
   render(){

@@ -161,6 +161,25 @@ class App extends Component {
         {
           this.props.sessionController.isSessionInit?accessToApp:accessDenied
         }
+//           <ul className="listNav" id="myTopnav">
+//            <li className="headerItem active">SMA</li>
+//             <li className="headerItem" onClick={this.changeNav}><Link to="/"><i className="fas fa-chart-line"></i> Activity</Link></li>
+//             <li className="headerItem" onClick={this.changeNav}><Link to="/newinterruption"><i className="fas fa-file-medical-alt"></i> Report</Link></li>
+//             <li className="headerItem" onClick={this.changeNav}><Link to="/listas"><i className="fas fa-chart-bar"></i>Stats</Link></li>
+//             <li className="headerItem" onClick={this.changeNav}><Link to="/maps"><i className="fas fa-map-marked-alt"></i> Maps</Link></li>
+
+//             <li className="headerItemRight">
+//               <a className="searchItem">
+//                 <input placeholder="search" className="search" />
+//                 <i className="fas fa-search searchIcon"></i>
+//               </a>
+//             </li>
+//             <li className="itemName"><a className=""> Name</a></li>
+//             <li className="itemCollapse"><a className=""><img src="http://rocaldent.com.ve/rocaldent/public/images/image-not-found.png" alt="Avatar" className="avatar"/></a></li>
+//             <li className="icon headerItemRight" onClick={this.changeNav}>
+//               <i className="fas fa-bars"></i>
+//             </li>
+//           </ul>
           {/* <Dashboard />
           <AddReport />
           <Maps /> */}
