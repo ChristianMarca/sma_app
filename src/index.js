@@ -17,8 +17,17 @@ import {
 	requestIDReducer,
 	sessionReducer,
 	radioBasesAddReducer,
+	radioBasesIDAddReducer,
 	interruptionServicesReducer,
-	interruptionTechnologiesReducer
+	interruptionTechnologiesReducer,
+	reducerSuggestCodeEst,
+	reducerSuggestProvincia,
+	requestAddressReducer,
+	// requestProvinceReducer,
+	reducerSuggestCanton,
+	// requestCantonReducer,
+	reducerSuggestParish,
+	// requestParishReducer
 	} from './reducers';
 
 //Css styles
@@ -45,8 +54,18 @@ const appReducers=combineReducers(
 		requestIDReducer,
 		sessionReducer,
 		radioBasesAddReducer,
+		radioBasesIDAddReducer,
 		interruptionServicesReducer,
-		interruptionTechnologiesReducer
+		interruptionTechnologiesReducer,
+		reducerSuggestCodeEst,
+		requestAddressReducer,
+
+		reducerSuggestProvincia,
+		// requestProvinceReducer,
+		reducerSuggestCanton,
+		// requestCantonReducer,
+		reducerSuggestParish,
+		// requestParishReducer
 	})
 
 const rootReducer = (state, action) => {

@@ -10,9 +10,9 @@ import {interruptionCodeAction,
   // interruptionSectorAction,
 } from '../../actions';
 // import SuggestField from './SuggestFields';
-import SuggestionID from './SuggestionID';
+import SuggestionID from './suggestions/SuggestionID';
 import './interruption.css'
-import SuggestionEST from './SuggestionEST';
+import SuggestionEST from './suggestions/SuggestionEST';
 import { API_URL } from "../../config";
 
 const mapStateToProps=state=>{

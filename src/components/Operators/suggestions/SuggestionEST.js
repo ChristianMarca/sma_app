@@ -7,17 +7,16 @@ import {requestIDAction,
   interruptionCantonAction,
   interruptionParishAction,
   interruptionCodeAction,
-  interruptionBSAction
+  interruptionBSAction,
 } from '../../actions';
-import {UPDATE_INPUT_VALUE_ID,
-  CLEAR_SUGGESTIONS_ID,
-MAYBE_UPDATE_SUGGESTIONS_ID,
-LOAD_SUGGESTIONS_BEGIN_ID} from '../../constants';
-import {updateInputValue as updateInputValueEST} from './SuggestionEST';
+import {UPDATE_INPUT_VALUE_EST,
+  CLEAR_SUGGESTIONS_EST,
+MAYBE_UPDATE_SUGGESTIONS_EST,
+LOAD_SUGGESTIONS_BEGIN_EST} from '../../constants';
+import {updateInputValue as updateInputValueID} from './SuggestionID';
 
 import store from '../../index';
-import './suggestions.css';
-// import { merge } from 'd3-array';
+import '../suggestions.css';
 
 const getMatchingSuggests=(value)=> {
   const IDs=store.getState().requestIDReducer.ID.data;
@@ -26,7 +25,7 @@ const getMatchingSuggests=(value)=> {
     return [];
   }
   const regex = new RegExp('^' + escapedValue, 'i');
-  return IDs.filter(language => regex.test(language.cell_id));
+  return IDs.filter(language => regex.test(language.nom_sit));
 }
 
 function escapeRegexCharacters(str) {
@@ -47,43 +46,43 @@ function loadSuggestions(value) {
 
 export const updateInputValue=(value)=> {
   return {
-    type: UPDATE_INPUT_VALUE_ID,
+    type: UPDATE_INPUT_VALUE_EST,
     value
   };
 }
 
 function clearSuggestions() {
   return {
-    type: CLEAR_SUGGESTIONS_ID
+    type: CLEAR_SUGGESTIONS_EST
   };
 }
 
 function loadSuggestionsBegin() {
   return {
-    type: LOAD_SUGGESTIONS_BEGIN_ID
+    type: LOAD_SUGGESTIONS_BEGIN_EST
   };
 }
 
 function maybeUpdateSuggestions(suggestions, value) {
   return {
-    type: MAYBE_UPDATE_SUGGESTIONS_ID,
+    type: MAYBE_UPDATE_SUGGESTIONS_EST,
     suggestions,
     value
   };
 }
 
 function getSuggestionValue(suggestion) {
-  return String(suggestion.cell_id);
+  return suggestion.nom_sit;
 }
 
 function renderSuggestion(suggestion) {
   return (
-    <span className="renderBox">{suggestion.cell_id}~{suggestion.nom_sit}~{suggestion.provincia}~{suggestion.canton}</span>
+    <div className="renderBox">{suggestion.nom_sit}~{suggestion.cell_id}~{suggestion.provincia}~{suggestion.canton}</div>
   );
 }
 
 function mapStateToProps(state) {
-  const { value, suggestions, isLoading } = state.reducerSuggestID;
+  const { value, suggestions, isLoading } = state.reducerSuggestEST;
   return {
     value,
     suggestions,
@@ -97,14 +96,13 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
-    // onChange_(event, { newValue }) {
-      onChangeTest:(newValue,id_usuario)=> {
-      // console.log('aqui esrta, PEPE ',exmaple.sessionController.id_user, ownProps)
-      // console.log('tesr',id_usuario)
-      dispatch(requestIDAction(newValue,"cell_id",id_usuario));
+    // onChange(event, { newValue }) {
+    onChangeTest:(newValue,id_usuario)=>{
+      dispatch(requestIDAction(newValue,"nom_sit",id_usuario));
       dispatch(updateInputValue(newValue));
-      dispatch(interruptionCodeAction(String(newValue) ))
+      dispatch(interruptionBSAction(newValue))
     },
     onSuggestionsFetchRequested({ value }) {
       dispatch(loadSuggestions(value));
@@ -113,7 +111,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(clearSuggestions());
     },
     onSelectValue: (event,{suggestion})=> {
-      dispatch(updateInputValueEST(suggestion.nom_sit));
+      dispatch(updateInputValueID(String(suggestion.cell_id) ));
       dispatch(interruptionIdBsAction(suggestion.id_bs));
       dispatch(interruptionCodeAction(String(suggestion.cell_id) ))
       dispatch(interruptionBSAction(suggestion.nom_sit))
@@ -140,12 +138,11 @@ const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
   }
 }
 
-
-class SuggestionID extends React.Component {
+class SuggestionEST extends React.Component {
   render() {
     const { value, suggestions, onChange, onSuggestionsFetchRequested, onSuggestionsClearRequested } = this.props;
     const inputProps = {
-      placeholder: "Cell ID",
+      placeholder: "Nombre de la Estructura",
       value,
       onChange
     };
@@ -159,8 +156,8 @@ class SuggestionID extends React.Component {
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={onSuggestionsClearRequested}
-          getSuggestionValue={getSuggestionValue}
           onSuggestionSelected={this.props.onSelectValue}
+          getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={inputProps} />
       </div>
@@ -168,4 +165,4 @@ class SuggestionID extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SuggestionID,getMatchingSuggests);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SuggestionEST,getMatchingSuggests);

@@ -21,16 +21,20 @@ import { interruptionTypeAction,
   isSignInAction,
   receiveDataUserAction,
   addRadioBaseAction,
+  addRadioBaseIDAction,
   interruptionIdBsAction,
   interruptionServicesRemoveAllActions,
-  removeAllRadioBaseAction
+  interruptionTechnologyRemoveAllActions,
+  removeAllRadioBaseAction,
+  // removeAllRadioBaseIDAction
 } from '../../../actions';
 import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from "../../../config";
 
-import InterruptionAddress from '../../../components/Operators/InterruptionAddress';
+// import InterruptionAddress from '../../../components/Operators/InterruptionAddress';
+import InterruptionRadioBases from '../../../components/Operators/InterruptionRadioBases';
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
 import InterruptionCauses from '../../../components/Operators/InterruptionCauses';
 import InterruptionFiles from '../../../components/Operators/InterruptionFiles';
@@ -46,9 +50,13 @@ const mapStateToProps=state=>{
     interruptionDate: state.interruptionDateReducer,
     interruptionCauses: state.interruptionCausesReducer,
     interruptionServices: state.interruptionServicesReducer.interruptionServices,
+    interruptionLevel: state.interruptionAddressReducer.interruptionLevel,
     interruptionTechnologies: state.interruptionTechnologiesReducer.interruptionTechnologies,
     interruptionRadioBase: state.radioBasesAddReducer,
     interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    interruptionProvince: state.reducerSuggestProvincia.value,
+    interruptionCanton: state.reducerSuggestCanton.value,
+    interruptionParish: state.reducerSuggestParish.value,
     sessionController: state.sessionReducer.dataUser
 	}
 }
@@ -60,9 +68,13 @@ const mapDispatchToProps=(dispatch)=>{
     onSignInApproved: ()=> dispatch(isSignInAction(true)),
     onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data)),
     onReceiveRadioBase: (id,data)=>dispatch(addRadioBaseAction(id,data)),
+    onReceiveRadioBaseID: (id,data)=>dispatch(addRadioBaseIDAction(id,data)),
     onReceiveRadioBaseIdRemove:(data)=>dispatch(interruptionIdBsAction(data)),
     onRemoveAllServices: ()=>dispatch(interruptionServicesRemoveAllActions()),
-    onRemoveAllRadioBases: ()=>dispatch(removeAllRadioBaseAction())
+    onRemoveAllTechnologies: ()=>dispatch(interruptionTechnologyRemoveAllActions()),
+    onRemoveAllRadioBases: ()=>dispatch(removeAllRadioBaseAction()),
+    // onRemoveAllRadioBasesID: ()=>dispatch(removeAllRadioBaseIDAction())
+    
 	}
 }
 
@@ -125,7 +137,50 @@ class AddReport extends React.Component{
     document.getElementById("buttonTypeS").style.background=nextProps.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';
     document.getElementById("buttonTypeS").style.color=nextProps.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
   }
-  handleSubmit=async(event)=> {
+  handleSubmit=async(event)=>{
+    event.preventDefault();
+    const {
+      interruptionType,
+      interruptionDate,
+      interruptionCauses,
+      interruptionRadioBase,
+      interruptionServices,
+      interruptionTechnologies,
+      interruptionSector,
+      interruptionLevel,
+      interruptionProvince,
+      interruptionCanton,
+      interruptionParish
+    }=this.props
+    var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
+    if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
+    if(interruptionLevel.length===0) return alert('Seleccione al menos una tecnologia afectada')
+    var keys={
+        interruptionType,
+        interruptionSector,
+        interruptionDate,
+        interruptionCauses,
+        interruptionServices,
+        interruptionTechnologies,
+        interruptionRadioBase,
+        interruptionLevel,
+        interruptionProvince,
+        interruptionCanton,
+        interruptionParish,
+        interruptionIdUser: this.props.sessionController.id_user
+    }
+    axios.post(`${API_URL}/radioBases/newInterruption`,keys)
+      .then(resp=>{
+        console.log(resp.data);
+        this.props.onSubmitInterruptionComplete();
+        this.props.onRemoveAllServices();
+        this.props.onRemoveAllRadioBases();
+        this.props.onRemoveAllTechnologies();
+        this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
+      })
+      .catch(err=>alert(err))
+  }
+  handleSubmitTest=async(event)=> {
     event.preventDefault();
     // const {interruptionType,interruptionRB,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices}=this.props
     const {interruptionType,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices,interruptionTechnologies,interruptionSector}=this.props
@@ -160,12 +215,39 @@ class AddReport extends React.Component{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   handleAddRadioBase=()=>{
-    const {interruptionCode,interruptionIdBs}=this.props.interruptionRB;
-    console.log('hola',this.props.interruptionRB, interruptionIdBs)
-    axios.post(`${API_URL}/radioBases/getRadioBasesCellId`,{interruptionIdBs})
-      .then(data=>{console.log(data)})
-    this.props.onReceiveRadioBase(interruptionCode,this.props.interruptionRB);
+    //Version 1
+    // const {interruptionCode,interruptionIdBs}=this.props.interruptionRB;
+    // console.log('hola',this.props.interruptionRB, interruptionIdBs)
+    // axios.post(`${API_URL}/radioBases/getRadioBasesCellId`,{interruptionIdBs})
+    //   .then(data=>{console.log(data)})
+    // this.props.onReceiveRadioBase(interruptionCode,this.props.interruptionRB);
+    //Version 1
     // this.props.onReceiveRadioBaseIdRemove(null)
+    //Version 1
+    if(this.props.interruptionTechnologies.length){
+      const { interruptionProvince,interruptionCanton,interruptionParish}=this.props;
+      const id_usuario=this.props.sessionController.id_user;
+      const nivel_interrupcion=this.props.interruptionLevel;
+      const location={provincia:interruptionProvince,canton:interruptionCanton,parroquia: interruptionParish};
+      axios.post(`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,{
+        nivel_interrupcion:nivel_interrupcion,
+        location:location,
+        tecnologias_afectadas:this.props.interruptionTechnologies
+      }
+      )
+      .then(data=>{
+        console.log(data.data,'fjhk??')
+        data.data.codigo_estacion.map((estacion=>{
+          return this.props.onReceiveRadioBase(estacion.cod_est,estacion)
+        }));
+        // data.data.cell_ids.map((estacion=>{
+        //   this.props.onReceiveRadioBaseID(estacion.cod_est+estacion.id_bs,estacion)
+        // }))
+      })
+      .catch(error=>{console.log(error)})
+    }else{
+      alert('Seleccion una RB')
+    }
   }
 
   render(){
@@ -209,17 +291,21 @@ class AddReport extends React.Component{
           <div className="card-body cardComponents">
             <div className="card cardInput">
               <h6 className="card-header containerADD"><div>Radio Base</div><a><i onClick={this.handleAddRadioBase} className="addButton fas fa-plus-square"></i></a></h6>
-              <InterruptionAddress className="itemContainer card-body" />
+              {/* <InterruptionAddress className="itemContainer card-body" /> */}
+              <InterruptionRadioBases className="itemContainer card-body" />
             </div>
             <div className="card cardInput"> 
               <h6 className="card-header">Resumen</h6>
               {/* {this.handleMapRadioBases} */}
-              {console.log(this.props.interruptionRadioBase)}
-              {Object.keys(dataRb).map(function(key, index) {
-                return <RadioBase key={key} data={dataRb[key]}/>
-                
-                // return this.props.interruptionRadioBase[key];
-              })}
+              <div className='card-body'>
+                {console.log(this.props.interruptionRadioBase)}
+                {Object.keys(dataRb).map(function(key, index) {
+
+                  return <RadioBase key={key} data={dataRb[key]}/>
+                  
+                  // return this.props.interruptionRadioBase[key];
+                })}
+              </div>
             </div>
             <div className="card cardInput">
               <h6 className="card-header">Descripción</h6>

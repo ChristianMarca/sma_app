@@ -14,24 +14,49 @@ import {
   INTERRUPTION_TECHNOLOGY_ADD,
   INTERRUPTION_TECHNOLOGY_REMOVE,
   INTERRUPTION_TECHNOLOGY_REMOVE_ALL,
+  INTERRUPTION_LEVEL_SELECTED,
   INTERRUPTION_START,
   INTERRUPTION_END,
   INTERRUPTION_TIME,
   INTERRUPTION_CAUSES,
   INTERRUPTION_TAGS,
+
+  
   ID_REQUEST_PENDING,
   ID_REQUEST_SUCCESS,
   ID_REQUEST_FAILED,
+
+  PROVINCE_REQUEST_PENDING,
+  PROVINCE_REQUEST_SUCCESS,
+  PROVINCE_REQUEST_FAILED,
+
+  CANTON_REQUEST_PENDING,
+  CANTON_REQUEST_SUCCESS,
+  CANTON_REQUEST_FAILED,
+
+  PARISH_REQUEST_PENDING,
+  PARISH_REQUEST_SUCCESS,
+  PARISH_REQUEST_FAILED,
+
   INTERRUPTION_SUBMITED,
   SESSION_INIT,
   SESSION_LOGOUT,
   DATA_USER,
   RADIOBASES_SELECTED,
   RADIOBASES_REMOVE,
-  RADIOBASES_REMOVE_ALL
+  RADIOBASES_REMOVE_ALL,
+
+  RADIOBASES_ID_SELECTED,
+  RADIOBASES_ID_REMOVE,
+  RADIOBASES_ID_REMOVE_ALL,
+
+  INTERRUPTION_CODE_EST,
+  ADDRESS_REQUEST_PENDING,
+  ADDRESS_REQUEST_SUCCESS,
+  ADDRESS_REQUEST_FAILED
 } from './constants';
 
-import { API_URL } from "./config";  
+import { API_URL } from "./config";
 
 // Elección del tipo de interrupción
 export const interruptionTypeAction=(type)=>{
@@ -75,6 +100,18 @@ export const interruptionCodeAction=(code)=>({
 export const interruptionBSAction=(bs)=>({
   type: INTERRUPTION_BS,
   payload: bs
+});
+
+//Código de Estructura
+export const interruptionCodeEstAction=(code_est)=>({
+  type: INTERRUPTION_CODE_EST,
+  payload: code_est
+});
+
+//Level
+export const interruptionLevelSelectedAction=(Level)=>({
+  type: INTERRUPTION_LEVEL_SELECTED,
+  payload: Level
 });
 
 //Province
@@ -164,9 +201,47 @@ export const interruptionTechnologyRemoveAllActions=()=>({
 export const requestIDAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
   // newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
-  newValue.length >=3 &&axios.get(`${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
-    .then(data=>dispatch({type: ID_REQUEST_SUCCESS, payload: data}))
-    .catch(error=>dispatch({type: ID_REQUEST_FAILED, payload: error}))
+  return new Promise((resolve,reject)=>{
+    newValue.length >=3 &&axios.get(`${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+      .then(data=>{resolve(dispatch({type: ID_REQUEST_SUCCESS, payload: data}))})
+      .catch(error=>reject(dispatch({type: ID_REQUEST_FAILED, payload: error})))
+  })
+}
+
+export const requestAddressAction =(newValue,typeSearch,nivel_interrupcion,tecnologias,id_usuario)=>(dispatch)=>{
+  dispatch({type: ADDRESS_REQUEST_PENDING});
+  return new Promise((resolve,reject)=>{
+    return axios.get(`${API_URL}/radioBases/addressInterruption?${typeSearch}=${newValue}&id_user=${id_usuario}&nivel_interrupcion=${nivel_interrupcion}&tecnologias_afectadas=${tecnologias}`)
+      .then(data=>{resolve(dispatch({type: ADDRESS_REQUEST_SUCCESS, payload: data}))})
+      .catch(error=>reject(dispatch({type: ADDRESS_REQUEST_FAILED, payload: error})))
+  })
+}
+
+export const requestProvinceAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
+  dispatch({type: PROVINCE_REQUEST_PENDING});
+  return new Promise((resolve,reject)=>{
+    return axios.get(`${API_URL}/radioBases/address?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+      .then(data=>{resolve(dispatch({type: PROVINCE_REQUEST_SUCCESS, payload: data}))})
+      .catch(error=>reject(dispatch({type: PROVINCE_REQUEST_FAILED, payload: error})))
+  })
+}
+
+export const requestCantonAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
+  dispatch({type: CANTON_REQUEST_PENDING});
+  return new Promise((resolve,reject)=>{
+    return axios.get(`${API_URL}/radioBases/address1?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+      .then(data=>{resolve(dispatch({type: CANTON_REQUEST_SUCCESS, payload: data}))})
+      .catch(error=>reject(dispatch({type: CANTON_REQUEST_FAILED, payload: error})))
+  })
+}
+
+export const requestParishAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
+  dispatch({type: PARISH_REQUEST_PENDING});
+  return new Promise((resolve,reject)=>{
+    return axios.get(`${API_URL}/radioBases/address2?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+      .then(data=>{resolve(dispatch({type: PARISH_REQUEST_SUCCESS, payload: data}))})
+      .catch(error=>reject(dispatch({type: PARISH_REQUEST_FAILED, payload: error})))
+  })
 }
 
 export const interruptionSubmitedAction=()=>({
@@ -205,4 +280,21 @@ export const removeRadioBaseAction=(radioBase)=>({
 //Remove All
 export const removeAllRadioBaseAction=()=>({
   type: RADIOBASES_REMOVE_ALL,
+});
+
+//Agregar Radio Bases for ID
+export const addRadioBaseIDAction=(id,radioBase)=>({
+  type: RADIOBASES_ID_SELECTED,
+  id,
+  payload: radioBase
+});
+//remove
+export const removeRadioBaseIDAction=(radioBase)=>({
+  type: RADIOBASES_ID_REMOVE,
+  id: radioBase
+});
+
+//Remove All
+export const removeAllRadioBaseIDAction=()=>({
+  type: RADIOBASES_ID_REMOVE_ALL,
 });
