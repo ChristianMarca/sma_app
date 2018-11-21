@@ -108,6 +108,7 @@ class Profile extends React.Component{
     // return false
   }
   onUpdatePassword=()=>{
+    this.state.password?
     this.validateLastPassword()
       .then(data=>{
         // console.log('dataREvision',data)
@@ -163,7 +164,30 @@ class Profile extends React.Component{
       .catch((err)=>{
         this.setState({someFail: true})
         alert('Fallo Proceso',err)
-      });
+      })
+      :
+      fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
+        // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': window.sessionStorage.getItem('token')
+          },
+          body: JSON.stringify({formInput: {
+            nombre: this.state.nombre,
+            apellido: this.state.apellido,
+            username: this.state.username,
+            telefono: this.state.telefono
+          }})
+        }).then(resp=>{
+          // console.log(resp,resp.json(),'pepepashvsags')
+          // return resp
+          if(resp.status===200 || resp.status===304){
+            this.props.toogleModal();
+            this.forceUpdate()
+            // this.props.loadUser({...this.props.user,...data});
+          }
+        }).catch(console.log)
 
     // fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
     //   // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{

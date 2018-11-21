@@ -212,7 +212,7 @@ textarea {
   flex-direction: row;
   /* max-width: 90%; */
   height: auto;
-  padding-right: 20%;
+  padding-right: 10%!important;
 }
 .closeButton{
   /* padding-right: 5px; */
