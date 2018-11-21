@@ -14,9 +14,51 @@
   margin: 1px;
   border-radius: 5px;
   border: 1px solid #2E2E2E;
+  height: 100vh;
+  /* text-align: center; */
+  /* height: 100vw; */
+  /* background-color: rebeccapurple; */
   /* align-content: center;
   align-items: center; */
 
+}
+.card{
+  /* background-color: aquamarine; */
+  /* border: 1px solid #212121; */
+  /* border-radius: 5px; */
+  /* margin: 5px 0 5px 0; */
+  width: calc((100vw - 5*10px)/4.1);
+  margin: 0 2px 0 2px;
+  /* border: 0 1px 1px 1px solid #212121; */
+  /* position: relative; */
+
+  /* height: auto; */
+}
+.card-header{
+  width: 100%;
+  padding: 5px 5px 5px 5px;
+  margin: 5px 0 0 0;
+  /* height: auto; */
+  /* background-color: red; */
+  border: 1px solid #212121;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #2e2e2e;
+  color: #f6f5f3;
+}
+.card-body{
+  position: relative;
+  max-width: 100%;
+  /* max-height: 100%; */
+  height: auto;
+  margin-bottom: 5px;
+  background-color: #f9f8fd;
+  /* background-color: beige; */
+  border: 1px solid #212121;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-box-shadow: 0px 10px 13px -11px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+    box-shadow: 0px 10px 18px -11px #000000, 5px 5px 20px 5px rgba(0,0,0,0);
 }
 .newHeader{
   display: flex;
@@ -56,10 +98,11 @@
   justify-content: space-between;
 }
 .cardInput{
-  width: calc((100vw - 5*10px)/4.1);
-  height: auto;
-  margin-top: -15px;
-  margin-bottom: -15px;
+  /* width: calc((100vw - 5*10px)/4.1); */
+  /* padding-top: 0; */
+  /* height: auto; */
+  /* margin-top: -15px;
+  margin-bottom: -15px; */
 }
 .datesComponents{
   /* width: calc(100%-); */
@@ -68,18 +111,26 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  background-color: whitesmoke;
+  height: auto;
+  margin-top: 0;
+  border-radius: 5px;
 }
 .buttonSubmits{
   width: 15vw;
+  height: auto;
   cursor: pointer;
   padding: 7px;
   margin-right: 10px;
   margin-left: 10px;
   margin-bottom: 5px;
+  margin-top: 5px;
   border-radius: 10px;
   color:rgba(255,255,255,0.5);
   background-color: #2E2E2E;
   border: 2px solid #2E2E2E;
+  -webkit-box-shadow: 0px 10px 13px -11px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
+    box-shadow: 0px 10px 18px -11px #000000, 5px 5px 20px 5px rgba(0,0,0,0);
 }
 .buttonSubmits:hover{
   background-color:rgba(255,255,255,0.5);
@@ -130,6 +181,12 @@
     -webkit-flex-flow: column wrap;
     flex-flow: column wrap;
     align-items: center;
+  }
+  .card{
+    width: calc((100vw - 30px)/2.2);
+    height: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 }
 

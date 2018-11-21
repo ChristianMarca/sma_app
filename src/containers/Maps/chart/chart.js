@@ -251,34 +251,43 @@ export const CreateChartAPI = () => {
     .data(['Operador'])
     .enter()
     .append("text")
-  .attr("x", width - width*0.24)
+  .attr("x", width - width*0.22)
     .attr("y", function(d, i){ return i+9;})
-  .text(function(d) {
+    .text(function(d) {
       var text = "CONECEL";
       return text;
-    });
+    })
+    .style('fill','none')
+    .style('stroke-width','0.5px')
+    .style('stroke','white')
 
   legend1.selectAll('text')
     .data(['Operador'])
     .enter()
     .append("text")
-  .attr("x", width+width*0.01)
+  .attr("x", width+width*0.025)
     .attr("y", function(d, i){ return i+9;})
   .text(function(d) {
       var text = "CNT";
       return text;
-    });
+    })
+    .style('fill','none')
+    .style('stroke-width','0.5px')
+    .style('stroke','white');
 
     legend2.selectAll('text')
     .data(['Operador'])
     .enter()
     .append("text")
-  .attr("x", width +width*0.26)
+  .attr("x", width +width*0.28)
     .attr("y", function(d, i){ return i+9;})
   .text(function(d) {
       var text = "OTECEL";
       return text;
-    });
+    })
+    .style('fill','none')
+    .style('stroke-width','0.5px')
+    .style('stroke','white');
 
   }
 

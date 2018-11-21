@@ -3,6 +3,10 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+/* Demo purposes only */
+body {
+  background-color: #212121;
+}
 html, body {
   height: 100%;
   margin: 0;

@@ -20,7 +20,7 @@ class InterruptionInput extends React.Component{
   handleUploadImage(ev) {
     ev.preventDefault();
     const data = new FormData();
-    console.log(data)
+    // console.log(data)
     data.append('file', this.uploadInput.files[0]);
     data.append('filename', this.fileName.value);
 
@@ -69,7 +69,7 @@ class InterruptionInput extends React.Component{
   render() {
   /* Omitted for brevity */
   return(
-    <Dropzone onDrop={(files) => this.onDrop(files)}>
+    <Dropzone onDrop={(files) => this.onDrop(files)} className="card-body">
       <div>Try dropping some files here, or click to select files to upload.</div>
     </Dropzone>
   )

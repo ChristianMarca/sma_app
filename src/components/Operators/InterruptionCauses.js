@@ -1,13 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {interruptionCausesAction,interruptionTagsAction} from '../../actions';
+import {interruptionCausesAction,
+  interruptionTagsAction,
+  interruptionSectorAction,
+  interruptionServicesAddAction,
+  interruptionServicesRemoveAction,
+  interruptionTechnologyAddAction,
+  interruptionTechnologyRemoveAction
+} from '../../actions';
+
+import { similarity } from "../../services/dataValidation";
 
 import './interruption.css'
 
 const mapStateToProps=state=>{
 	return {
     //Código de Interrupción
-    interruptionCauses: state.interruptionAddressCauses,
+    interruptionCauses: state.interruptionCausesReducer,
+    interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    interruptionServices: state.interruptionServicesReducer.interruptionServices
     // //Código de Estación Base
     // interruptionTags: state.interruptionAddressCauses.interruptionBS,
 
@@ -19,7 +30,13 @@ const mapDispatchToProps=(dispatch)=>{
     onChangeInterruptionCauses: (event)=> dispatch(interruptionCausesAction(event)),
     //Tags de causas
     onChangeInterruptionTags: (event)=> dispatch(interruptionTagsAction(event)),
+    //Sector
+    onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
 
+    onAddService: (service)=>dispatch(interruptionServicesAddAction(service)),
+    onRemoveService: (service)=>dispatch(interruptionServicesRemoveAction(service)),
+    onAddTechnology: (technology)=>dispatch(interruptionTechnologyAddAction(technology)),
+    onRemoveTechonology: (technology)=>dispatch(interruptionTechnologyRemoveAction(technology))
 	}
 }
 
@@ -39,6 +56,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 class InterruptionCauses extends React.Component{
+  constructor(){
+    super();
+    this.selectedCheckboxesServices = new Set();
+    this.selectedCheckboxesTechnologies = new Set();
+  }
   getMatches=(string, regex, index)=> {
     index || (index = 1); // default to the first capturing group
     var matches = [];
@@ -53,20 +75,98 @@ class InterruptionCauses extends React.Component{
     //const regex = /-b([^-<\\]*(?:\\.[^-<\\]*)*)-/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
     const regex = /@([^@<\\]*(?:\\.[^-<\\]*)*)@/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
     var matches = this.getMatches(texto.target.value, regex, 1);
+    matches.map(match=>{
+      console.log('exmaple',match)
+      return console.log(match,similarity('Fallo en el Sistema Electrico',match||''))
+    })    
+
     onChangeInterruptionCauses(texto.target.value.replace(regex,'$1'));
     onChangeInterruptionTags(matches);
     resultado.innerHTML = texto.target.value.replace(regex,reemp);
   }
+  toggleCheckboxServices = label => {
+    // console.log(label.currentTarget.value,'hello---')
+    if (this.selectedCheckboxesServices.has(label.currentTarget.value)) {
+      this.selectedCheckboxesServices.delete(label.currentTarget.value);
+      this.props.onRemoveService(label.currentTarget.value)
+    } else {
+      this.selectedCheckboxesServices.add(label.currentTarget.value);
+      this.props.onAddService(label.currentTarget.value)
+    }
+  }
+  toggleCheckboxTechnologies = label => {
+    // console.log(label.currentTarget.value,'hello---')
+    if (this.selectedCheckboxesTechnologies.has(label.currentTarget.value)) {
+      this.selectedCheckboxesTechnologies.delete(label.currentTarget.value);
+      this.props.onRemoveTechonology(label.currentTarget.value)
+    } else {
+      this.selectedCheckboxesTechnologies.add(label.currentTarget.value);
+      this.props.onAddTechnology(label.currentTarget.value)
+    }
+  }
   render(){
+    const {onChangeSector}=this.props;
+    console.log('info',this.props.interruptionServices)
     return(
-      <div className="addressContainer">
+      <div className="addressContainer card-body">
+        <div className="servicesContainer">
+            <h6 className="titleInput">Servicios Afectados</h6> 
+            <div className="service">
+                <input className="radioButton" id="voz" type="checkbox" name="services" 
+                          value={"VOZ"} 
+                          // checked={this.state.operator === "CONECEL"} 
+                          onChange={this.toggleCheckboxServices} />
+                <label className="services" htmlFor="voz">VOZ</label>
+                <input className="radioButton" id="sms" type="checkbox" name="services" 
+                          value={"SMS"} 
+                          // checked={this.state.operator === "OTECEL"} 
+                          onChange={this.toggleCheckboxServices} />
+                <label className="services" htmlFor="sms">SMS</label>
+                <input className="radioButton" id="datos" type="checkbox" name="services" 
+                          value={"DATOS"} 
+                          // checked={this.state.operator === "CNT"} 
+                          onChange={this.toggleCheckboxServices} />
+                <label className="services" htmlFor="datos">DATOS</label>
+            </div>
+        </div>
+
+        <div className="servicesContainer">
+            <h6 className="titleInput">Tecnologias Afectadas</h6> 
+            <div className="service">
+                <input className="radioButton" id="gsm" type="checkbox" name="tecnologias" 
+                          value={"GSM"} 
+                          // checked={this.state.operator === "CONECEL"} 
+                          onChange={this.toggleCheckboxTechnologies} />
+                <label className="services" htmlFor="gsm">GSM</label>
+                <input className="radioButton" id="umts" type="checkbox" name="tecnologias" 
+                          value={"UMTS"} 
+                          // checked={this.state.operator === "OTECEL"} 
+                          onChange={this.toggleCheckboxTechnologies} />
+                <label className="services" htmlFor="umts">UMTS</label>
+                <input className="radioButton" id="lte" type="checkbox" name="tecnologias" 
+                          value={"LTE"} 
+                          // checked={this.state.operator === "CNT"} 
+                          onChange={this.toggleCheckboxTechnologies} />
+                <label className="services" htmlFor="lte">LTE</label>
+            </div>
+        </div>
+
+        <h6 className="titleInput">Lugar Afectado</h6>
+        <div className="textarea-container">
+          <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
+          <div className="textarea-size"></div>
+        </div>
+
         <h6 className="titleInput">Causas</h6>
-        <div className="card searchContainer">
+        {/* <div className="card searchContainer"> */}
+        <div className="searchContainer">
           <div className="textarea-containerCauses">
-            <textarea placeholder="Azuay" id="inputCauses" className="card-header" type="text" size="1" onChange={this.regexA}  required></textarea>
+            <textarea placeholder="Azuay" id="inputCauses"
+              //  className="card-header" 
+               type="text" size="1" onChange={this.regexA}  required></textarea>
             <div className="textarea-size"></div>
           </div>
-          <p className="textField card-body" id="resultado"></p>
+          <p className="textField" id="resultado"></p>
         </div>
       </div>
     )

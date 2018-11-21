@@ -14,7 +14,20 @@ import {
 	interruptionCausesReducer,
 	reducerSuggestID,
 	reducerSuggestEST,
-	requestIDReducer
+	requestIDReducer,
+	sessionReducer,
+	radioBasesAddReducer,
+	radioBasesIDAddReducer,
+	interruptionServicesReducer,
+	interruptionTechnologiesReducer,
+	reducerSuggestCodeEst,
+	reducerSuggestProvincia,
+	requestAddressReducer,
+	// requestProvinceReducer,
+	reducerSuggestCanton,
+	// requestCantonReducer,
+	reducerSuggestParish,
+	// requestParishReducer
 	} from './reducers';
 
 //Css styles
@@ -39,10 +52,25 @@ const appReducers=combineReducers(
 		reducerSuggestID,
 		reducerSuggestEST,
 		requestIDReducer,
+		sessionReducer,
+		radioBasesAddReducer,
+		radioBasesIDAddReducer,
+		interruptionServicesReducer,
+		interruptionTechnologiesReducer,
+		reducerSuggestCodeEst,
+		requestAddressReducer,
+
+		reducerSuggestProvincia,
+		// requestProvinceReducer,
+		reducerSuggestCanton,
+		// requestCantonReducer,
+		reducerSuggestParish,
+		// requestParishReducer
 	})
 
 const rootReducer = (state, action) => {
-	if (action.type === 'INTERRUPTION_SUBMITED') {
+	// if ((action.type === 'INTERRUPTION_SUBMITED') || (action.type === 'SESSION_LOGOUT')) {
+	if (action.type === 'SESSION_LOGOUT') {
 		state = undefined
 	}
 
@@ -50,7 +78,7 @@ const rootReducer = (state, action) => {
 }
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware,looger))
-//const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
+// const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 // const store = createStore(clickButtonReducer, applyMiddleware(thunkMiddleware,looger))
 export default store;
 

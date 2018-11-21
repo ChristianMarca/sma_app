@@ -7,12 +7,13 @@ import {interruptionCodeAction,
   interruptionProvinceAction,
   interruptionCantonAction,
   interruptionParishAction,
-  interruptionSectorAction,
+  // interruptionSectorAction,
 } from '../../actions';
 // import SuggestField from './SuggestFields';
-import SuggestionID from './SuggestionID';
+import SuggestionID from './suggestions/SuggestionID';
 import './interruption.css'
-import SuggestionEST from './SuggestionEST';
+import SuggestionEST from './suggestions/SuggestionEST';
+import { API_URL } from "../../config";
 
 const mapStateToProps=state=>{
 	return {
@@ -27,7 +28,7 @@ const mapStateToProps=state=>{
     //Parish
     interruptionParish: state.interruptionAddressReducer.interruptionParish,
 
-    interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -43,7 +44,7 @@ const mapDispatchToProps=(dispatch)=>{
     //Parish
     onChangeParish: (event)=> dispatch(interruptionParishAction(event.target.value)),
     //Sector
-    onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
+    // onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
 	}
 }
 
@@ -66,15 +67,16 @@ document.addEventListener('DOMContentLoaded', function() {
 class InterruptionAddress extends React.Component{
   onChangeTest=(event)=>{
     console.log(event.target.value.length)
-    event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
+    // event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
+    event.target.value.length>=3 && axios.get(`${API_URL}/radioBases?id=${event.target.value}`)
       .then(resp=>{console.log(resp.data)})
       .catch(console.log)
   }
   render(){
-    const {onChangeProvince,onChangeCanton,onChangeParish,onChangeSector}=this.props;
+    const {onChangeProvince,onChangeCanton,onChangeParish}=this.props;
     const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
     return(
-      <div className="addressContainer">
+      <div className="addressContainer card-body">
         {/* <SuggestField /> */}
         <h6 className="titleInput">Código</h6>
         <SuggestionID  />
@@ -89,12 +91,12 @@ class InterruptionAddress extends React.Component{
         <input placeholder="Cantón" className="inputField" type="text" value={interruptionCanton} onChange={onChangeCanton}  required></input>
         <h6 className="titleInput">Paroquia</h6>
         <input placeholder="Parroquia" className="inputField" type="text" value={interruptionParish} onChange={onChangeParish}  required></input>
-        <h6 className="titleInput">Lugar Afectado</h6>
+        {/* <h6 className="titleInput">Lugar Afectado</h6> */}
         {/* <input placeholder="Azuay" className="inputField" id="inputResize" type="text" size="1" onChange={onChangeSector} required></input> */}
-        <div className="textarea-container">
+        {/* <div className="textarea-container">
           <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
           <div className="textarea-size"></div>
-        </div>
+        </div> */}
       </div>
     )
   }
