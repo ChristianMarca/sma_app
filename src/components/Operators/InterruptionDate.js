@@ -54,7 +54,7 @@ class InterruptionDate extends React.Component{
           value={this.props.interruptionEnd}
           required={true}
           minDate={new Date()}
-          disableClock={false}
+          disableClock={true}
           clearIcon={<i className="fas fa-eraser"></i>}
           calendarIcon={<i className="far fa-calendar-alt"></i>}
         />
@@ -86,7 +86,7 @@ class InterruptionDate extends React.Component{
             value={this.props.interruptionStart}
             required={true}
             // minDate={new Date()}
-            disableClock={false}
+            disableClock={true}
             clearIcon={<i className="fas fa-eraser"></i>}
             calendarIcon={<i className="far fa-calendar-alt"></i>}
           />

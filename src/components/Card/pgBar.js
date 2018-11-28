@@ -1,5 +1,5 @@
 import React from "react";
-//import "./tarjeta.css";
+import "./style.css";
 
 export default class PageBar extends React.Component {
 
@@ -8,8 +8,8 @@ export default class PageBar extends React.Component {
     //this.handleClick = this.handleClick.bind(this);
   }
   handleClick = e => {
-    //console.log('--------------',e.target.getAttribute('data-key'))
-    //console.log('--------------',e.target.value)
+    // console.log('--------------1',e.target.getAttribute('data-key'))
+    // console.log('--------------2',e.target.value)
     this.props.handleClickNav(e.target.getAttribute('data-key'));
   }
 
@@ -21,9 +21,10 @@ export default class PageBar extends React.Component {
     var navNum = [];
     if (paginas <= 5) {
       for (let i = 1; i <= paginas; i++) {
-        navNum = navNum.concat([<td key={i}>
-          <button onClick={this.handleClick} data-key={i}>{i}</button>
-        </td>
+        navNum = navNum.concat([
+        // <div key={i}>
+          <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
+        // </div>
           ]);
         //console.log(navNum)
       }
@@ -31,41 +32,44 @@ export default class PageBar extends React.Component {
       if (actual > 3) {
         if (next < paginas) {
           for (let i = prev; i <= next; i++) {
-            navNum = navNum.concat([<td key={i}>
-              <button onClick={this.handleClick} data-key={i}>{i}</button>
-            </td>
+            navNum = navNum.concat([
+            // <div key={i}>
+              <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
+            // {/* </div> */}
               ]);
           }
         } else {
           for (let i = paginas - 4; i <= paginas; i++) {
-            navNum = navNum.concat([<td key={i}>
-              <button onClick={this.handleClick} data-key={i}>{i}</button>
-            </td>
+            navNum = navNum.concat([
+            // <div key={i}>
+              <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
+            // </div>
               ]);
           }
         }
       } else {
         for (let i = 1; i <= 5; i++) {
-          navNum = navNum.concat([<td key={i}>
-            <button onClick={this.handleClick} data-key={i}>{i}</button>
-          </td>
+          navNum = navNum.concat([
+          // <div key={i}>
+            <button className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
+          // {/* </div> */}
             ]);
         }
       }
     }
-    let init = [<td key="init"><button onClick={this.handleClick} data-key={-1}>&lt;&lt;</button></td>];
-    let end = [<td key="end"><button onClick={this.handleClick} data-key={0}>&gt;&gt;</button></td>];
+    let init = [<div key="init"><button className="pagButton pagButtonLeft" onClick={this.handleClick} data-key={-1}>START</button></div>];
+    let end = [<div key="end"><button className="pagButton pagButtonRight" onClick={this.handleClick} data-key={0}>END</button></div>];
     let navControls = (init).concat(navNum,end)
     return (navControls)
   }
 
   render() {
 
-    let card = <table>
-      <tbody className="nav">
-        <tr>{this.navegador()}</tr>
-      </tbody>
-    </table>;
+    let card = <div className="paginacionContainer">
+        <div className="paginacion">
+          {this.navegador()}
+        </div>
+    </div>;
     return (card)
   }
 }

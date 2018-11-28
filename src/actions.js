@@ -53,7 +53,13 @@ import {
   INTERRUPTION_CODE_EST,
   ADDRESS_REQUEST_PENDING,
   ADDRESS_REQUEST_SUCCESS,
-  ADDRESS_REQUEST_FAILED
+  ADDRESS_REQUEST_FAILED,
+
+  INTERRUPTION_SELECTED_VIEW,
+
+  INTERRUPTION_SELECTED_REQUEST_PENDING,
+  INTERRUPTION_SELECTED_REQUEST_SUCCESS,
+  INTERRUPTION_SELECTED_REQUEST_FAILED
 } from './constants';
 
 import { API_URL } from "./config";
@@ -298,3 +304,20 @@ export const removeRadioBaseIDAction=(radioBase)=>({
 export const removeAllRadioBaseIDAction=()=>({
   type: RADIOBASES_ID_REMOVE_ALL,
 });
+
+// ID View interrupción
+export const interruptionViewIdAction=(id)=>({
+  type: INTERRUPTION_SELECTED_VIEW,
+  payload: id
+});
+
+//Fetch Interruption
+export const requestInterruptionFetchAction =(id_interruption,id_usuario)=>(dispatch)=>{
+  dispatch({type: INTERRUPTION_SELECTED_REQUEST_PENDING});
+  // newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+  return new Promise((resolve,reject)=>{
+    axios.get(`${API_URL}/radioBases/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`)
+      .then(data=>{resolve(dispatch({type: INTERRUPTION_SELECTED_REQUEST_SUCCESS, payload: data}))})
+      .catch(error=>reject(dispatch({type: INTERRUPTION_SELECTED_REQUEST_FAILED, payload: error})))
+  })
+}

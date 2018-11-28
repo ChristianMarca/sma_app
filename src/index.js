@@ -27,6 +27,8 @@ import {
 	reducerSuggestCanton,
 	// requestCantonReducer,
 	reducerSuggestParish,
+	interruptionViewReducer,
+	requestInterruptionDataReducer
 	// requestParishReducer
 	} from './reducers';
 
@@ -65,6 +67,8 @@ const appReducers=combineReducers(
 		reducerSuggestCanton,
 		// requestCantonReducer,
 		reducerSuggestParish,
+		interruptionViewReducer
+		,requestInterruptionDataReducer
 		// requestParishReducer
 	})
 
