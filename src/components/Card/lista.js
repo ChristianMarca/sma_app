@@ -4,7 +4,7 @@ import TablaInt from "./tabla.js";
 import PageBar from "./pgBar.js";
 import Filtro from "./filtros.js";
 import {connect} from 'react-redux';
-import {Redirect, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import Dropdown from 'rc-dropdown';
 import Menu, {Item as MenuItem, Divider} from 'rc-menu';
 import { isSignInAction,receiveDataUserAction } from "../../actions";
@@ -32,7 +32,7 @@ class Lista extends React.Component {
     super(props);
     this.state = {
       pagina: 1,
-      elementosPagina: 5,
+      elementosPagina: 10,
       campOrden: "fecha_inicio",
       orden: "DESC",
       campos: [
@@ -249,11 +249,11 @@ class Lista extends React.Component {
   render() {
 
     const cantidad = (<Menu onSelect={this.onSelectSimple}>
-      <MenuItem key="3">3</MenuItem>
-      <Divider/>
-      <MenuItem key="5">5</MenuItem>
-      <Divider/>
       <MenuItem key="10">10</MenuItem>
+      <Divider/>
+      <MenuItem key="15">15</MenuItem>
+      <Divider/>
+      <MenuItem key="20">20</MenuItem>
     </Menu>);
     const campos = (<Menu style={{
         width: 140

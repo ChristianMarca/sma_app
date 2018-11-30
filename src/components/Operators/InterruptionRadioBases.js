@@ -114,8 +114,8 @@ class InterruptionAddress extends React.Component{
     this.props.onReceiveRadioBase(interruptionCodEstNew,{cod_est:interruptionCodEstNew})
   }
   render(){
-    const {onChangeProvince,onChangeCanton,onChangeParish}=this.props;
-    const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
+    // const {onChangeProvince,onChangeCanton,onChangeParish}=this.props;
+    // const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
     // const parroquia=<h6 className="titleInput">Paroquia</h6>
     // {/* <input placeholder="Parroquia" className="inputField" type="text" value={interruptionParish} onChange={onChangeParish}  required></input> */}
     // <SuggestionParish />

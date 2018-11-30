@@ -26,33 +26,47 @@ import axios from 'axios';
 
 import { API_URL } from "../../../config";
 
-var markerConecel = L.markerClusterGroup({
-  spiderfyOnMaxZoom: true,
-  showCoverageOnHover: true,
-  zoomToBoundsOnClick: true,
-  removeOutsideVisibleBounds: true,
-  iconCreateFunction: function(cluster) {
-    return new L.DivIcon({
-      html: '<div><span>' + cluster.getChildCount() + '</span></div>',
-      className: 'clusterConecel',
-      iconSize: L.point(40, 40)
-    });
-  }
-});
-var markerOtecel = L.markerClusterGroup({
-  spiderfyOnMaxZoom: true,
-  showCoverageOnHover: true,
-  zoomToBoundsOnClick: true,
-  removeOutsideVisibleBounds: true,
-  iconCreateFunction: function(cluster) {
-    return new L.DivIcon({
-      html: '<div><span>' + cluster.getChildCount() + '</span></div>',
-      className: 'clusterOtecel',
-      iconSize: L.point(40, 40)
-    });
-  }
-});
-var markerCNT = L.markerClusterGroup({
+// var markerConecel = L.markerClusterGroup({
+//   spiderfyOnMaxZoom: true,
+//   showCoverageOnHover: true,
+//   zoomToBoundsOnClick: true,
+//   removeOutsideVisibleBounds: true,
+//   iconCreateFunction: function(cluster) {
+//     return new L.DivIcon({
+//       html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+//       className: 'clusterConecel',
+//       iconSize: L.point(40, 40)
+//     });
+//   }
+// });
+// var markerOtecel = L.markerClusterGroup({
+//   spiderfyOnMaxZoom: true,
+//   showCoverageOnHover: true,
+//   zoomToBoundsOnClick: true,
+//   removeOutsideVisibleBounds: true,
+//   iconCreateFunction: function(cluster) {
+//     return new L.DivIcon({
+//       html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+//       className: 'clusterOtecel',
+//       iconSize: L.point(40, 40)
+//     });
+//   }
+// });
+// var markerCNT = L.markerClusterGroup({
+//   spiderfyOnMaxZoom: true,
+//   showCoverageOnHover: true,
+//   zoomToBoundsOnClick: true,
+//   removeOutsideVisibleBounds: true,
+//   iconCreateFunction: function(cluster) {
+//     return new L.DivIcon({
+//       html: '<div><span>' + cluster.getChildCount() + '</span></div>',
+//       className: 'clusterCNT',
+//       iconSize: L.point(40, 40)
+//     });
+//   }
+// });
+
+var marker = L.markerClusterGroup({
   spiderfyOnMaxZoom: true,
   showCoverageOnHover: true,
   zoomToBoundsOnClick: true,
@@ -121,7 +135,8 @@ class Map extends React.Component {
     return (L.geoJson(data, {
       onEachFeature: async function(feature, layer) {
         await layer.on('mouseover', () => {
-          layer.bindPopup('Cell ID: ' + feature.properties.cell_id).openPopup();
+          // layer.bindPopup('Cell ID: ' + feature.properties.cell_id).openPopup();
+          layer.bindPopup('Codido de Estacion: ' + feature.properties.cod_est).openPopup();
         })
         await layer.on('mouseout', () => {
           layer.closePopup();
@@ -161,7 +176,7 @@ class Map extends React.Component {
         index: 0,
         callback: this.showCoordinates
       }, {
-        text: 'Centrar mapa aqui',
+        text: 'Centrar',
         icon: 'https://cdn2.iconfinder.com/data/icons/map-location-set/512/632504-compass-512.png',
         callback: this.centerMap
       },
@@ -198,7 +213,9 @@ class Map extends React.Component {
 
     sidebar = this.generate_sidebar('sidebar', 'right', false);
 
-    this._asyncRequest= this.dataRequest().then(()=>this._asyncRequest=null);
+    this._asyncRequest= this.dataRequest().then(()=>{
+      this._asyncRequest=null
+    });
 
   }
   componentWillUnmount=()=>{
@@ -209,8 +226,8 @@ class Map extends React.Component {
 
   dataRequest= async()=>{
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
-    this.props.isDashboardComponent!==true?(()=>{
-      axios(`${API_URL}/mapa/data_radiobase`, {
+    this.props.isDashboardComponent!==false?(()=>{
+      axios(`${API_URL}/mapa/data_radiobase_interruption`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -218,27 +235,35 @@ class Map extends React.Component {
       }
     })//.then(response => response.json()).then(datosnuev => datosnuev.jsonData).then(myData => {
       .then(datosnuev => datosnuev.data.jsonData).then(myData => {
-      var rbTodo = {
-        features:(myData.conecel.features.concat(myData.otecel.features, myData.cnt.features)),
-        type: "FeatureCollection"
-      }
+        var rbTodo = {
+          // features:(myData.conecel.features.concat(myData.otecel.features, myData.cnt.features)),
+          features:(myData.radiobases.features),
+          type: "FeatureCollection"
+        }
+        console.log('siii',rbTodo)
       this.getData(rbTodo).then(datos => {
         this.setState({dataToSearch: datos})
         //handleData(datos)
         return datos
       });
 
-      return [this.clusterFunction(myData.conecel),this.clusterFunction(myData.otecel), this.clusterFunction(myData.cnt)]
+      // return [this.clusterFunction(myData.conecel),this.clusterFunction(myData.otecel), this.clusterFunction(myData.cnt)]
+      // return this.clusterFunction(myData.radiobases)
+      return this.clusterFunction(myData.radiobases)
 
     }).then((barLayer) => {
-      markerConecel.addLayer(barLayer[0]);
-      this.map.addLayer(markerConecel);
+      // marker.addLayer(barLayer);
+      // this.map.addLayer(marker);
+      marker.addLayer(barLayer);
+      this.map.addLayer(marker);
+      // markerConecel.addLayer(barLayer[0]);
+      // this.map.addLayer(markerConecel);
 
-      markerOtecel.addLayer(barLayer[1]);
-      this.map.addLayer(markerOtecel);
+      // markerOtecel.addLayer(barLayer[1]);
+      // this.map.addLayer(markerOtecel);
 
-      markerCNT.addLayer(barLayer[2]);
-      this.map.addLayer(markerCNT);
+      // markerCNT.addLayer(barLayer[2]);
+      // this.map.addLayer(markerCNT);
 
       document.getElementById("spinner").style.visibility = "hidden";
     }).catch(err => console.log(err))

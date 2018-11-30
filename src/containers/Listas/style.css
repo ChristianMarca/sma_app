@@ -1,0 +1,6 @@
+.containerListSuper{
+  height: calc(100vh - 5vh - 15vh);
+  text-align: center;
+  align-content: center;
+  align-items: center;
+}

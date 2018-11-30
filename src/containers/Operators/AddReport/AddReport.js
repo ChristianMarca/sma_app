@@ -297,7 +297,7 @@ class AddReport extends React.Component{
             <div className="card cardInput"> 
               <h6 className="card-header">Resumen</h6>
               {/* {this.handleMapRadioBases} */}
-              <div className='card-body'>
+              <div className='card-body miniCards'>
                 {console.log(this.props.interruptionRadioBase)}
                 {Object.keys(dataRb).map(function(key, index) {
 

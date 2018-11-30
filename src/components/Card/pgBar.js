@@ -3,10 +3,10 @@ import "./style.css";
 
 export default class PageBar extends React.Component {
 
-  constructor(props) {
-    super(props);
-    //this.handleClick = this.handleClick.bind(this);
-  }
+  // constructor(props) {
+  //   super(props);
+  //   //this.handleClick = this.handleClick.bind(this);
+  // }
   handleClick = e => {
     // console.log('--------------1',e.target.getAttribute('data-key'))
     // console.log('--------------2',e.target.value)
@@ -51,7 +51,7 @@ export default class PageBar extends React.Component {
         for (let i = 1; i <= 5; i++) {
           navNum = navNum.concat([
           // <div key={i}>
-            <button className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
+            <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
           // {/* </div> */}
             ]);
         }
