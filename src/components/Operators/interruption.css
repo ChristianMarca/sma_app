@@ -181,7 +181,22 @@ textarea {
   width: 80%;
   height: 100%;
 } */
+.react-datetime-picker__calendar, .react-datetime-picker__clock{
+  /* position: relative!important; */
 
+  /* display: block!important;
+  flex-direction: column!important;
+  align-content: center!important;
+  align-items: center!important;
+  align-self: center!important;
+  text-align: center!important
+  left: auto!important; */
+  margin-left: -90px;
+}
+.react-datetime-picker, .react-datetime-picker *, .react-datetime-picker *:before, .react-datetime-picker *:after{
+  z-index: 10000!important;
+  visibility: visible!important;
+}
 .rbCard{
   position: relative;
   /* width: 80%; */
@@ -212,7 +227,7 @@ textarea {
   flex-direction: row;
   /* max-width: 90%; */
   height: auto;
-  padding-right: 20%;
+  padding-right: 10%!important;
 }
 .closeButton{
   /* padding-right: 5px; */
@@ -411,7 +426,7 @@ input[type="radio"]:checked + label[class="interruptionLevel"]::before {
   background-color: #2E2E2E;
 }
 @media all and (max-width: 768px){
-  .buttonSubmitAddForCodEst{
-    /* width: 35vw; */
+  .react-datetime-picker__button, .dateFilterPag{
+    width: 100%!important;
   }
 }

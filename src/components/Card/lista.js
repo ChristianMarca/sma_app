@@ -1,24 +1,42 @@
 import React from "react";
-import "./lista.css";
+import "./style.css";
 import TablaInt from "./tabla.js";
 import PageBar from "./pgBar.js";
 import Filtro from "./filtros.js";
-
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 import Dropdown from 'rc-dropdown';
 import Menu, {Item as MenuItem, Divider} from 'rc-menu';
+import { isSignInAction,receiveDataUserAction } from "../../actions";
+
 import 'rc-dropdown/assets/index.css';
 
-export default class Lista extends React.Component {
+import { API_URL } from "../../config";
+
+const mapStateToProps=state=>{
+	return {
+    // Elección del tipo de interrupción
+    
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    // Elección del tipo de interrupción
+    onSignInApproved: ()=> dispatch(isSignInAction(true)),
+    onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
+	}
+}
+class Lista extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       pagina: 1,
-      elementosPagina: 5,
+      elementosPagina: 10,
       campOrden: "fecha_inicio",
       orden: "DESC",
       campos: [
-        "0", "10", "1"
+        "0", "9", "1"
       ],
       dataInt: [],
       totalInt: 0,
@@ -44,7 +62,7 @@ export default class Lista extends React.Component {
       this.state.filtroFechaFinal.valueOf(),
       this.state.filtroParroquia
     ];
-    const response = await fetch('http://186.101.219.167:3000/interrupcion/inter', {
+    const response = await fetch(`${API_URL}/interrupcion/inter`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -143,7 +161,8 @@ export default class Lista extends React.Component {
   }
 
   saveSelectedMultiple = ({selectedKeys}) => {
-    let llaves = ["0", "10", "1"].concat(selectedKeys.sort());
+    let llaves = ["0", "9", "1"].concat(selectedKeys.sort());
+    console.log('EL ingreso',llaves)
     this.setState({campos: llaves})
   }
 
@@ -151,20 +170,65 @@ export default class Lista extends React.Component {
 
     if (this.state.elementosPagina !== prevState.elementosPagina || this.state.pagina !== prevState.pagina || this.state.bandera !== prevState.bandera) {
       this.fetchInterrupciones().then(res => {
-        this.setState({totalInt: res[0], dataInt: res[1]})
+        res[1]?this.setState({totalInt: res[0], dataInt: res[1]}):this.setState({totalInt: res[0], dataInt: []})
       })
+      .catch(error=>console.log('io Error',error))
     }
-
+    
     if (this.state.campOrden !== prevState.campOrden || this.state.orden !== prevState.orden) {
       this.ordenarTabla();
     }
   }
+  componentDidMount(){
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    if(token){
+      fetch(`${API_URL}/authentication/signin`,{
+          method: 'post',
+          headers: {
+              'Content-Type': 'application/json',
+              'authorization': token
+          },
+      })
+      .then(resp=>resp.json())
+      .then(data=>{
+          if( data && data.id_user){
+              fetch(`${API_URL}/authentication/profile/${data.id_user}`,{
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'authorization': token
+              },
+              })
+              .then(resp=>resp.json())
+              .then(user=>{
+                  console.log('adqui esta',user)
+                  if (user && user.email){
+                    console.log(user, 'continueWithToken')
+                    this.props.onSignInApproved();
+                    this.props.onReceiveDataUser(user);
 
-  componentDidMount() {
-    this.fetchInterrupciones().then(res => {
-      this.setState({totalInt: res[0], dataInt: res[1]})
-    })
+                      // this.loadUser(user);
+                      // this.onRouteChange('Home')
+                    this.fetchInterrupciones().then(res => {
+                      this.setState({totalInt: res[0], dataInt: res[1]})
+                    })
+                  }
+              })
+          }
+      })
+      .catch(err=>{
+        // this.props.history.push('/');
+        console.log('Aqui un error', err)
+      })
+    }else{
+      this.props.history.push('/');
+    }
   }
+  // componentDidMount() {
+  //   this.fetchInterrupciones().then(res => {
+  //     this.setState({totalInt: res[0], dataInt: res[1]})
+  //   })
+  // }
 
   onChangeI = date => {
     this.setState({filtroFechaInicial: date})
@@ -185,11 +249,11 @@ export default class Lista extends React.Component {
   render() {
 
     const cantidad = (<Menu onSelect={this.onSelectSimple}>
-      <MenuItem key="3">3</MenuItem>
-      <Divider/>
-      <MenuItem key="5">5</MenuItem>
-      <Divider/>
       <MenuItem key="10">10</MenuItem>
+      <Divider/>
+      <MenuItem key="15">15</MenuItem>
+      <Divider/>
+      <MenuItem key="20">20</MenuItem>
     </Menu>);
     const campos = (<Menu style={{
         width: 140
@@ -205,24 +269,43 @@ export default class Lista extends React.Component {
       <MenuItem key="6">Estado</MenuItem>
       <Divider/>
       <MenuItem key="8">Operadora</MenuItem>
-      <Divider/>
-      <MenuItem key="9">Tipo</MenuItem>
+      {/* <Divider/>
+      <MenuItem key="9">Tipo</MenuItem> */}
     </Menu>);
     //console.log(this.state.totalInt, this.state.dataInt)
-    let card = <div className="Lista">
-      <Filtro onChangeI={this.onChangeI} onChangeE={this.onChangeE} onClicGO={this.onClickGO} onChangeInput={this.onChangeInput} valueI={this.state.filtroFechaInicial} valueE={this.state.filtroFechaFinal}/>
-      <TablaInt data={this.state.dataInt} campos={this.state.campos} fCampo={this.handleFieldChange}/>
-      <PageBar actual={this.state.pagina} totalInt={this.state.totalInt} elementos={this.state.elementosPagina} page={this.state.pagina} handleClickNav={this.handleClickNav}/>
-      <div>
-        <Dropdown trigger={['click']} overlay={cantidad} animation="slide-up" onVisibleChange={this.onVisibleChangesimple}>
-          <button>Cantidad</button>
-        </Dropdown>
-        <Dropdown trigger={['click']} onVisibleChange={this.onVisibleChangeMultiple} visible={this.state.visible} closeOnSelect={false} overlay={campos} animation="slide-up">
-          <button>Campos</button>
-        </Dropdown>
+    let card = <div className="interruptionListContainer">
+      <div className="configContainer">
+        <div className="dropButtons">
+          <Dropdown trigger={['click']} overlay={cantidad} animation="slide-up" onVisibleChange={this.onVisibleChangesimple}>
+            <button className='searchButtonleft searchButton'>Cantidad<i className="down"></i></button>
+          </Dropdown>
+          <Dropdown trigger={['click']} onVisibleChange={this.onVisibleChangeMultiple} visible={this.state.visible} closeOnSelect={false} overlay={campos} animation="slide-up">
+            <button className='searchButtonRight searchButton'>Campos<i className="down"></i></button>
+          </Dropdown>
+        </div>
+        <Filtro 
+          onChangeI={this.onChangeI} 
+          onChangeE={this.onChangeE} 
+          onClicGO={this.onClickGO} 
+          onChangeInput={this.onChangeInput} 
+          valueI={this.state.filtroFechaInicial} 
+          valueE={this.state.filtroFechaFinal}/>
+
       </div>
+      <TablaInt 
+        data={this.state.dataInt} 
+        campos={this.state.campos} 
+        fCampo={this.handleFieldChange}/>
+      <PageBar 
+        actual={this.state.pagina} 
+        totalInt={this.state.totalInt} 
+        elementos={this.state.elementosPagina} 
+        page={this.state.pagina} 
+        handleClickNav={this.handleClickNav}/>
 
     </div>;
     return (card)
   }
 }
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Lista));

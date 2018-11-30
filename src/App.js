@@ -97,6 +97,7 @@ class App extends Component {
     if(!this.props.sessionController.dataUser.issysadmin){
       return([
           <li key='dashboard' className="headerItem" onClick={this.changeNav}><Link to="/dashboard"><i className="fas fa-chart-line"></i> Activity</Link></li>,
+          <li key='listado' className="headerItem" onClick={this.changeNav}><Link to="/listas"><i className="fas fa-chart-bar"></i>Stats</Link></li>,
           <li key='newINterruption' className="headerItem" onClick={this.changeNav}><Link to="/newinterruption"><i className="fas fa-file-medical-alt"></i> Report</Link></li>,
           <li key='home' className="headerItem" onClick={this.changeNav}><Link to="/"><i className="fas fa-home"></i> Home</Link></li>,
           <li key='maps' className="headerItem" onClick={this.changeNav}><Link to="/maps"><i className="fas fa-map-marked-alt"></i> Maps</Link></li>
@@ -161,7 +162,7 @@ class App extends Component {
         {
           this.props.sessionController.isSessionInit?accessToApp:accessDenied
         }
-//           <ul className="listNav" id="myTopnav">
+{/* //           <ul className="listNav" id="myTopnav">
 //            <li className="headerItem active">SMA</li>
 //             <li className="headerItem" onClick={this.changeNav}><Link to="/"><i className="fas fa-chart-line"></i> Activity</Link></li>
 //             <li className="headerItem" onClick={this.changeNav}><Link to="/newinterruption"><i className="fas fa-file-medical-alt"></i> Report</Link></li>
@@ -179,7 +180,7 @@ class App extends Component {
 //             <li className="icon headerItemRight" onClick={this.changeNav}>
 //               <i className="fas fa-bars"></i>
 //             </li>
-//           </ul>
+//           </ul> */}
           {/* <Dashboard />
           <AddReport />
           <Maps /> */}

@@ -72,7 +72,13 @@ import {
   MAYBE_UPDATE_SUGGESTIONS_PARISH, 
   PARISH_REQUEST_PENDING,
   PARISH_REQUEST_FAILED,
-  PARISH_REQUEST_SUCCESS
+  PARISH_REQUEST_SUCCESS,
+
+  INTERRUPTION_SELECTED_VIEW,
+
+  INTERRUPTION_SELECTED_REQUEST_PENDING,
+  INTERRUPTION_SELECTED_REQUEST_SUCCESS,
+  INTERRUPTION_SELECTED_REQUEST_FAILED
 } from './constants';
 import moment from 'moment';
 // Elección del tipo de interrupción
@@ -674,3 +680,37 @@ export const radioBasesIDAddReducer =(state=initialStateRadioBasesID, action={})
       return state;
   }
 };
+
+// Elección Interruption View
+const initialStateInterruptionView={
+  interruptionView: undefined
+};
+
+export const interruptionViewReducer =(state=initialStateInterruptionView, action={})=>{
+  switch(action.type){
+    case INTERRUPTION_SELECTED_VIEW:
+      return Object.assign({},state,{interruptionView: action.payload})
+    default:
+      return state;
+  }
+};
+
+//Fetch Interruption
+const initialStateInterruptionData={
+  isPendingID: false,
+  ID: {data:[]},
+  errorID:''
+}
+
+export const requestInterruptionDataReducer=(state=initialStateInterruptionData, action={})=>{
+  switch(action.type){
+    case INTERRUPTION_SELECTED_REQUEST_PENDING:
+     return Object.assign({},state,{isPendingID: true})
+    case INTERRUPTION_SELECTED_REQUEST_SUCCESS:
+      return Object.assign({},state,{ID: action.payload, isPendingID: false})
+    case INTERRUPTION_SELECTED_REQUEST_FAILED:
+      return Object.assign({},state,{errorID: action.payload, isPendingID: false})
+    default:
+      return state
+  }
+}

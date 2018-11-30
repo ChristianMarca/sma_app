@@ -1,0 +1,66 @@
+.containerInterruption{
+  color: #fff;
+  height: calc(100vh - 6vh - 2*5px);
+  display: flex;
+  flex-direction: row;
+}
+.cardInfoInterruption{
+  height: 100%;
+  width: 100%;
+  margin: 3px;
+  /* background-color: red; */
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+.cardInfoDetails{
+  display: flex;
+  flex-direction: column;
+}
+.containerInfoInterruption{
+  width: 98%;
+  border: 1px solid whitesmoke;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: #fff;
+}
+.cardInfoDetails{
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  overflow: scroll;
+}
+.titleInterruption{
+  width: 100%;
+  background-color: #fff;
+  /* color: #2e2e2e; */
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-top: 0!important;
+}
+.titleInfo{
+  width: 100%;
+  font-size: 12pt;
+  /* border: 1px solid #fff; */
+  /* margin-top: 5px; */
+  padding: 3px;
+  background-color: #3E3E3E;
+  border-bottom: 1px solid #3E3E3E;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.body-info{
+  width: 100%;
+  color: #3E3E3E;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-self: center;
+}
+.mapItems{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-right: 5px;
+  padding-left: 5px;
+}
