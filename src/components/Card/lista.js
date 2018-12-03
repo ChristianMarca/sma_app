@@ -16,7 +16,7 @@ import { API_URL } from "../../config";
 const mapStateToProps=state=>{
 	return {
     // Elección del tipo de interrupción
-    
+    sessionController: state.sessionReducer.dataUser
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -53,6 +53,8 @@ class Lista extends React.Component {
   async fetchInterrupciones() {
 
     let offset = this.state.elementosPagina * (this.state.pagina - 1);
+    console.log(this.props.sessionController,'info Session')
+    const {id_rol,id_user}= this.props.sessionController;
     let datos = [
       offset,
       this.state.elementosPagina,
@@ -60,7 +62,9 @@ class Lista extends React.Component {
       this.state.campOrden,
       this.state.filtroFechaInicial.valueOf(),
       this.state.filtroFechaFinal.valueOf(),
-      this.state.filtroParroquia
+      this.state.filtroParroquia,
+      id_rol,
+      id_user
     ];
     const response = await fetch(`${API_URL}/interrupcion/inter`, {
       method: 'POST',
@@ -70,6 +74,7 @@ class Lista extends React.Component {
       body: JSON.stringify(datos)
     })
     let resultado = await response.json();
+    console.log('testeiadn', resultado)
     let {total} = await resultado;
     let {interrupciones} = await resultado;
     return [total, interrupciones]

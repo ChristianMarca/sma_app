@@ -1,6 +1,7 @@
 import React from 'react';
 // import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import {withRouter} from 'react-router-dom';
 // import axios from "axios";
 import { isSignInAction, receiveDataUserAction } from "../../actions";
 import { BridgeComponent } from "./chart/interruptionChart";
@@ -86,6 +87,8 @@ class Maps extends React.Component{
   // }
 
   async fetchInterrupciones() {
+    const {id_rol,id_user}= this.props.sessionController.dataUser;
+    console.log('tercera',this.props.sessionController.dataUser)
     let offset = this.state.elementosPagina * (this.state.pagina - 1);
     let datos = [
       offset,
@@ -94,7 +97,9 @@ class Maps extends React.Component{
       this.state.campOrden,
       this.state.filtroFechaInicial.valueOf(),
       this.state.filtroFechaFinal.valueOf(),
-      this.state.filtroParroquia
+      this.state.filtroParroquia,
+      id_rol,
+      id_user
     ];
     const response = await fetch(`${API_URL}/interrupcion/inter`, {
       method: 'POST',
@@ -253,16 +258,17 @@ class Maps extends React.Component{
                     
                     this._isMounted=true;
 
-
-                    this._isMounted&&this.fetchInterrupciones().then(res => {
-                      this.setState({totalInt: res[0], dataInt: res[1]})
-                    })
+                    // if(this.props.sessionController.dataUser.id_rol===3){
+                      this._isMounted&&this.fetchInterrupciones().then(res => {
+                        this.setState({totalInt: res[0], dataInt: res[1]})
+                      })
+                    // }
 
                       // this.loadUser(user);
                       // this.onRouteChange('Home')
                       // alert('entro')
-                      this.startDynamicData();
-                      window.addEventListener("resize", this.updateDimensions);
+                      // this.startDynamicData();
+                      // window.addEventListener("resize", this.updateDimensions);
                   }
               })
           }
@@ -276,7 +282,7 @@ class Maps extends React.Component{
     }
   }
   shouldComponentUpdate=(nextProps,nextState)=>{
-    console.log(this.props.sessionController,'info',this.props.sessionController.isSessionInit)
+    // console.log(this.props.sessionController,'info',this.props.sessionController.isSessionInit)
     return this.props.sessionController.isSessionInit?true:false
 //   componentDidMount=()=> {
 //     //if (this.props.dynamic)
@@ -284,48 +290,60 @@ class Maps extends React.Component{
 //     window.addEventListener("resize", this.updateDimensions);
   }
 
-  render(){
-    const loginRender=<div>
-      <div className='containersa'>
-          <div className="minimap">
-            <TablaInt 
-              data={this.state.dataInt} 
-              campos={this.state.campos} 
-              fCampo={this.handleFieldChange}/>
-            <PageBar 
-              actual={this.state.pagina} 
-              totalInt={this.state.totalInt} 
-              elementos={this.state.elementosPagina} 
-              page={this.state.pagina} 
-              handleClickNav={this.handleClickNav}/>
-            {/* <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-              <div className="tc">
-                <img src="http://tachyons.io/img/avatar_1.jpg" className="br-100 h3 w3 dib" title="Photo of a kitty staring at you" alt="testImage" />
-                <h1 className="f4">Mimi Whitehouse</h1>
-                <hr className="mw3 bb bw1 b--black-10"/>
+  getContentFromPage=()=>{
+    console.log('testasd',this.props.sessionController)
+    // if(!this.props.sessionController.dataUser.id_rol) return <Redirect to="/" push={true} />;
+    if(!this.props.sessionController.dataUser.id_rol) return <div>Wait or Redirect</div>;
+    if(this.props.sessionController.dataUser.id_rol!==3){
+      const loginRender=
+        <div>
+          <div className='containersa'>
+              <div className="minimap">
+                <TablaInt 
+                  data={this.state.dataInt} 
+                  campos={this.state.campos} 
+                  fCampo={this.handleFieldChange}/>
+                <PageBar 
+                  actual={this.state.pagina} 
+                  totalInt={this.state.totalInt} 
+                  elementos={this.state.elementosPagina} 
+                  page={this.state.pagina} 
+                  handleClickNav={this.handleClickNav}/>
+                {/* <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
+                  <div className="tc">
+                    <img src="http://tachyons.io/img/avatar_1.jpg" className="br-100 h3 w3 dib" title="Photo of a kitty staring at you" alt="testImage" />
+                    <h1 className="f4">Mimi Whitehouse</h1>
+                    <hr className="mw3 bb bw1 b--black-10"/>
+                  </div>
+                  <p className="lh-copy measure center f6 black-70">
+                    Quite affectionate and outgoing.
+                    She loves to get chin scratches and will
+                    roll around on the floor waiting for you give her more of them.
+                  </p>
+                </article> */}
               </div>
-              <p className="lh-copy measure center f6 black-70">
-                Quite affectionate and outgoing.
-                She loves to get chin scratches and will
-                roll around on the floor waiting for you give her more of them.
-              </p>
-            </article> */}
-          </div>
-            <div className="minimap">
-              <Map isDashboardComponent={true}/>
+                <div className="minimap">
+                  <Map isDashboardComponent={true}/>
+                </div>
             </div>
+              <BridgeComponent data={this.state.data} data1={this.state.data1} data2={this.state.data2} />
         </div>
-          <BridgeComponent data={this.state.data} data1={this.state.data1} data2={this.state.data2} />
-    </div>
-    console.log('info', this.props.sessionController)
+      return(
+        <div id="containerChart" className='svg-containerChart'>
+          {this.props.sessionController.isSessionInit?loginRender:<div></div>} 
+        </div>
+      )
+    }
+  }
+
+  render(){
+    // console.log('info', this.props.sessionController)
     return(
       // <div>Maps Here!</div>
-      <div id="containerChart" className='svg-containerChart'>
-        {this.props.sessionController.isSessionInit?loginRender:<div></div>} 
-      </div>
+      this.getContentFromPage()
     )
   }
 }
 
 // export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Maps));
-export default connect(mapStateToProps,mapDispatchToProps)(Maps);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Maps));

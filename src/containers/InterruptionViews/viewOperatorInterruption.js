@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import io from "socket.io-client";
 import {withRouter} from 'react-router-dom';
-import  moment from 'moment';
+// import  moment from 'moment';
 import { 
   requestInterruptionFetchAction,
   isSignInAction,
@@ -10,6 +10,8 @@ import {
  } from "../../actions";
 
 import { API_URL } from "../../config";
+
+import InterruptionView from "../../components/viewInterruptions/viewOperatorInterruption";
 
 import './style.css';
 
@@ -271,113 +273,10 @@ class InterruptionOperatorView extends React.Component{
   }
 
   getInfoInterruption=()=>{
-    const {data}= this.props.interruptionData.ID;
+    // const {data}= this.props.interruptionData.ID;
     if(this.props.interruptionData.ID.data.data){
       return <div className="containerInterruption">
-        <div className="cardInfoInterruption cardInfoDetails">
-          <div className="titleInterruption titleInfo">
-            Informacion de la Interrupcion
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Tiempo:
-            </div>
-            <div className="body-info">
-              {this.state.time}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Tipo:
-            </div>
-            <div className="body-info">
-              {data.data.tipo}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Fecha Inicio:
-            </div >
-            <div className="body-info">
-              {moment(data.data.fecha_inicio).format('MM-DD-YYYY / HH:mm:ss')}
-            </div>
-          </div>
-          {data.data.id_tipo===1&&
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Fecha Finalizacion:
-            </div >
-            <div className="body-info">
-              {moment(data.data.fecha_fin).format('MM-DD-YYYY / HH:mm:ss')}
-            </div>
-          </div>}
-          {data.data.id_tipo===1&&
-            <div className="containerInfoInterruption">
-              <div className="titleInfo">
-                Duracion:
-              </div >
-              <div className="body-info">
-                {data.data.duracion.split(':').map((item,index)=>{
-                    switch (index){
-                      case 0:
-                        return `${item} h `
-                      case 1:
-                        return `${item} min `
-                      default:
-                        return `${item} seg`
-                    }
-                  })}
-              </div>
-            </div>}
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Area:
-            </div>
-            <div className="body-info">
-              {data.data.area}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Causa:
-            </div>
-            <div className="body-info">
-              {data.data.causa}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Tecnologias Afectadas:
-            </div >
-            <div className="body-info">
-              {data.technologies.map((technology,index)=>{
-                return <div className="mapItems" key={index}>
-                  {technology.tecnologia}
-                </div>
-              })}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Servicios Afectados:
-            </div>
-            <div className="body-info">
-              {data.services.map((service,index)=>{
-                return <div className="mapItems" key={index}>
-                  {service.servicio}
-                </div>
-              })}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Estado:
-            </div>
-            <div className="body-info">
-              {data.data.estado_int}
-            </div>
-          </div>
-        </div>
+        <InterruptionView />
         <div className="cardInfoInterruption">
           mundo 
         </div>
@@ -532,9 +431,9 @@ class InterruptionOperatorView extends React.Component{
   }
   render(){
     // console.log('77hhh',this.props.interruptionData)
-    const {data}= this.props.interruptionData.ID;
-    const infoInt=data.data;
-    console.log(data,'h/?',data.data,'?j',infoInt,this.state.isReceiveDataOfInterruption)
+    // const {data}= this.props.interruptionData.ID;
+    // const infoInt=data.data;
+    // console.log(data,'h/?',data.data,'?j',infoInt,this.state.isReceiveDataOfInterruption)
     return(
       this.getInfoInterruption()
     )
