@@ -46,7 +46,7 @@ class RadioBase extends React.Component{
             <div className="itemCardRB">{data.interruptionBS}</div>
             <div className="itemCardRB">{data.interruptionParish}</div>  */}
           </div>
-          <a><i onClick={this.handleClose} className="closeButton fas fa-times"></i></a>
+          <a href="#"><i href="#" onClick={this.handleClose} className="closeButton fas fa-times"></i></a>
         </div>
       // </div>
     )

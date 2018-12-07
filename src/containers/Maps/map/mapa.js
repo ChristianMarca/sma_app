@@ -256,7 +256,6 @@ class Map extends React.Component {
           features:(myData.radiobases.features),
           type: "FeatureCollection"
         }
-        console.log('siii',rbTodo)
       this.getData(rbTodo).then(datos => {
         this.setState({dataToSearch: datos})
         //handleData(datos)

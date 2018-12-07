@@ -88,7 +88,6 @@ class Maps extends React.Component{
 
   async fetchInterrupciones() {
     const {id_rol,id_user}= this.props.sessionController.dataUser;
-    console.log('tercera',this.props.sessionController.dataUser)
     let offset = this.state.elementosPagina * (this.state.pagina - 1);
     let datos = [
       offset,
@@ -203,7 +202,6 @@ class Maps extends React.Component{
 
   saveSelectedMultiple = ({selectedKeys}) => {
     let llaves = ["0", "9", "1"].concat(selectedKeys.sort());
-    console.log('EL ingreso',llaves)
     this.setState({campos: llaves})
   }
 
@@ -250,12 +248,10 @@ class Maps extends React.Component{
               })
               .then(resp=>resp.json())
               .then(user=>{
-                  console.log('adqui esta',user)
                   if (user && user.email){
-                    console.log(user, 'continueWithToken')
+                    // console.log(user, 'continueWithToken')
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
-                    
                     this._isMounted=true;
 
                     // if(this.props.sessionController.dataUser.id_rol===3){
@@ -278,11 +274,9 @@ class Maps extends React.Component{
       })
     }else{
       this.props.history.push('/');
-      // console.log('pero si entro aca')
     }
   }
   shouldComponentUpdate=(nextProps,nextState)=>{
-    // console.log(this.props.sessionController,'info',this.props.sessionController.isSessionInit)
     return this.props.sessionController.isSessionInit?true:false
 //   componentDidMount=()=> {
 //     //if (this.props.dynamic)
@@ -291,7 +285,6 @@ class Maps extends React.Component{
   }
 
   getContentFromPage=()=>{
-    console.log('testasd',this.props.sessionController)
     // if(!this.props.sessionController.dataUser.id_rol) return <Redirect to="/" push={true} />;
     if(!this.props.sessionController.dataUser.id_rol) return <div>Wait or Redirect</div>;
     if(this.props.sessionController.dataUser.id_rol!==3){
@@ -337,7 +330,6 @@ class Maps extends React.Component{
   }
 
   render(){
-    // console.log('info', this.props.sessionController)
     return(
       // <div>Maps Here!</div>
       this.getContentFromPage()

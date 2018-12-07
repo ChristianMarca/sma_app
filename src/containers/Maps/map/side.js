@@ -44,7 +44,7 @@ class Side extends React.Component {
   imageData(props) {
 
     // if(props.existe){
-    alert('entro')
+    // alert('entro')
     return (<li className="tc pa4">
       <img src="http://tachyons.io/img/logo.jpg" className="br-100 pa1 ba b--black-10 h3 w3" alt="avatar"/>
     </li>)
@@ -95,27 +95,27 @@ class Side extends React.Component {
       return '';
     }
   }
-  getCellID = () => {
-    try {
-      return this.state.BaseStations.properties.cell_id;
-    } catch (e) {
-      return '';
-    }
-  }
-  getTecnologia = () => {
-    try {
-      return this.state.BaseStations.properties.tecnologia;
-    } catch (e) {
-      return '';
-    }
-  }
-  getDensidad = () => {
-    try {
-      return this.state.BaseStations.properties.densidad;
-    } catch (e) {
-      return '';
-    }
-  }
+  // getCellID = () => {
+  //   try {
+  //     return this.state.BaseStations.properties.cell_id;
+  //   } catch (e) {
+  //     return '';
+  //   }
+  // }
+  // getTecnologia = () => {
+  //   try {
+  //     return this.state.BaseStations.properties.tecnologia;
+  //   } catch (e) {
+  //     return '';
+  //   }
+  // }
+  // getDensidad = () => {
+  //   try {
+  //     return this.state.BaseStations.properties.densidad;
+  //   } catch (e) {
+  //     return '';
+  //   }
+  // }
   getOperadora = () => {
     try {
       return this.state.BaseStations.properties.operadora;
@@ -175,13 +175,13 @@ class Side extends React.Component {
             {/* <h4 className="white mv0 pv2 ph3 titleCardComponent">Radio Base</h4> */}
             {elemento}
             <div className="pa3 bt">
-              <ListComponent title={'Cell ID'} content={this.getCellID()}/>
+              {/* <ListComponent title={'Cell ID'} content={this.getCellID()}/> */}
               <ListComponent title={'Provincia'} content={this.getProvincia()}/>
               <ListComponent title={'Canton'} content={this.getCanton()}/>
               <ListComponent title={'Parrroquia'} content={this.getParroquia()}/>
               <ListComponent title={'Dirección'} content={this.getDireccion()}/>
-              <ListComponent title={'Tecnología'} content={this.getTecnologia()}/>
-              <ListComponent title={'Densidad'} content={this.getDensidad()}/>
+              {/* <ListComponent title={'Tecnología'} content={this.getTecnologia()}/> */}
+              {/* <ListComponent title={'Densidad'} content={this.getDensidad()}/> */}
               <ListComponent title={'Operador'} content={this.getOperadora()}/>
               <ListComponent title={'Status'} content={this.getStatus()}/>
               <ListComponent title={'Coordenadas'} content={this.getCoodenadas()}/>

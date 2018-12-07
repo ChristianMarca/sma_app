@@ -1,21 +1,50 @@
 .containerInterruption{
   color: #fff;
-  height: calc(100vh - 6vh - 2*5px);
+  height: calc(100vh - 6vh - 3*5px);
+  width: 100vw;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 }
-.cardInfoInterruption{
-  height: 100%;
+/* .viewReport>.demo-editor,.rdw-editor-main{
+  position: relative;
   width: 100%;
-  margin: 3px;
-  /* background-color: red; */
-  border: 2px solid #fff;
-  border-radius: 10px;
-}
+  height: 87%!important;
+  overflow: auto!important;
+  padding: 0px 1% 1% 3%;
+} */
 .cardInfoDetails{
   display: flex;
   flex-direction: column;
 }
+.viewInformation{
+  width: 100%;
+}
+
+.viewReport{
+  color: #3E3E3E;
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.textAreaCode{
+  height: 99.35%;
+  width: 99.35%;
+  border-radius: 10px;
+  /* overflow: scroll; */
+  outline: none;
+}
+
+.viewSummary{
+  color: #3E3E3E;
+}
+
 .containerInfoInterruption{
   width: 98%;
   border: 1px solid whitesmoke;
@@ -64,3 +93,338 @@
   padding-right: 5px;
   padding-left: 5px;
 }
+
+/* INPUTS REPORT */
+.cardInfoInterruption{
+  height: 100%;
+  max-height: 100%;
+  /* background-color: red; */
+  /* width: 100%; */
+  width: 100%;
+  /* overflow: scroll; */
+  margin: 3px;
+  /* background-color: red; */
+  border: 2px solid #fff;
+  border-radius: 10px;
+  display: flex;
+  /* flex-direction: column; */
+  /* overflow: scroll; */
+}
+
+.editableReport{
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  /* position: relative!important; */
+  cursor: text;
+  color: #3E3E3E!important;
+  /* padding: 10px; */
+  /* margin: 0; */
+  border-radius: 10px;
+  outline: none;
+  /* z-index: 1000; */
+
+  /* margin: 0; */
+  /* overflow-x: hidden; */
+  font-family: sans-serif;
+  /* border: 1px dashed #aaa; */
+  /* padding: 5px; */
+  /* position: relative; */
+  /* text-align: justify; */
+  -ms-text-justify: distribute-all-lines;
+  text-justify: distribute-all-lines;
+  /* overflow-x: visible;
+  overflow-y: scroll; */
+}
+.editableContainer{
+  height: 98%;
+  width: 94%;
+  margin: 1%;
+  align-content: center;
+  align-items: center;
+  /* text-align: center; */
+  color: #3E3E3E;
+  overflow-y: scroll;
+  outline: none;
+}
+.editableReportContainer{
+  width: 100%;
+  height: auto;
+  overflow:scroll;
+}
+
+.subjectContainer{
+  width: 100%;
+  height: 75px;
+  overflow: scroll;
+}
+
+.containerInputsHeader{
+
+}
+
+
+.containerHeaderFields{
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  /* display: flex;
+  flex-direction: row; */
+}
+.subjectContainer>label{
+  width: 100%;
+  height: 100px;
+}
+.field>textarea {
+  left: 0;
+  width: 100%;
+  height: 100%;
+  resize: both;
+  -moz-border-bottom-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  /* background: none repeat scroll 0 0 rgba(0, 0, 0, 0.07); */
+  background: transparent;
+  border-color: -moz-use-text-color #FFFFFF #FFFFFF -moz-use-text-color;
+  border-image: none;
+  border-radius: 6px 6px 6px 6px;
+  border-style: none solid solid none;
+  border-width: medium 1px 1px medium;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
+  color: #555555;
+  /* font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; */
+  font-size: 0.75em;
+  line-height: 1.4em;
+  transition: background-color 0.2s ease 0s;
+  overflow-y: scroll;
+}
+
+  /* .field>textarea:focus {
+      background: none repeat scroll 0 0 #FFFFFF;
+      outline-width: 0;
+  } */
+
+  .field{
+    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
+  }
+  
+  .field__input{ 
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+    width: 100px;
+    height: auto;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  
+    font-family: inherit;
+    font-size: 1em;
+  }
+
+  .field__input{ 
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+  
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  
+    font-family: inherit;
+    font-size: 1em;
+  }
+  
+  .field__input:focus::-webkit-input-placeholder{
+    color: var(--uiFieldPlaceholderColor);
+  }
+  
+  .field__input:focus::-moz-placeholder{
+    color: var(--uiFieldPlaceholderColor);
+    opacity: 1;
+  }
+  
+  /*
+  =====
+  LEVEL 2. CORE STYLES
+  =====
+  */
+  
+  .a-field{
+    display: inline-block;
+  }
+  
+  .a-field__input{ 
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  
+  .a-field__input:focus{
+    outline: none;
+  }
+  
+  /*
+  =====
+  LEVEL 3. PRESENTATION STYLES
+  =====
+  */
+  
+  /* a-field */
+  
+  .a-field{
+    --uiFieldHeight: var(--fieldHeight, 40px);  
+    --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+    --uiFieldBorderColor: var(--fieldBorderColor);
+  
+    --uiFieldFontSize: var(--fieldFontSize, 1em);
+    --uiFieldHintFontSize: var(--fieldHintFontSize, 1em);
+  
+    --uiFieldPaddingRight: var(--fieldPaddingRight, 15px);
+    --uiFieldPaddingBottom: var(--fieldPaddingBottom, 15px);
+    --uiFieldPaddingLeft: var(--fieldPaddingLeft, 15px);   
+  
+    position: relative;
+    box-sizing: border-box;
+    font-size: var(--uiFieldFontSize);
+    padding-top: 1em;  
+  }
+  
+  .a-field .a-field__input{
+    height: var(--uiFieldHeight);
+    padding: 0 var(--uiFieldPaddingRight) 0 var(--uiFieldPaddingLeft);
+    border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColor);  
+  }
+  
+  .a-field .a-field__input::-webkit-input-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+  }
+  
+  .a-field .a-field__input::-moz-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+  }
+  
+  .a-field .a-field__input:not(:placeholder-shown) ~ .a-field__label-wrap .a-field__label{
+    opacity: 0;
+    bottom: var(--uiFieldPaddingBottom);
+  }
+  
+  .a-field .a-field__input:focus::-webkit-input-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+  }
+  
+  .a-field .a-field__input:focus::-moz-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+  }
+  
+  .a-field .a-field__label-wrap{
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--uiFieldHeight);	
+  
+    pointer-events: none;
+    cursor: text;
+  
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  
+  .a-field .a-field__label{
+    position: absolute;
+    left: var(--uiFieldPaddingLeft);
+    bottom: calc(50% - .5em);
+  
+    line-height: 1;
+    font-size: var(--uiFieldHintFontSize);
+  
+    pointer-events: none;
+    transition: bottom .2s cubic-bezier(0.9,-0.15, 0.1, 1.15), opacity .2s ease-out;
+    will-change: bottom, opacity;
+  }
+  
+  .a-field .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    opacity: 1;
+    bottom: var(--uiFieldHeight);
+  }
+  
+  /* a-field_a1 */
+  
+  .a-field_a1 .a-field__input{
+    transition: border-color .2s ease-out;
+    will-change: border-color;
+  }
+  
+  .a-field_a1 .a-field__input:focus{
+    border-color: var(--fieldBorderColorActive);
+  }
+  
+  /* a-field_a2 */
+  
+  .a-field_a2 .a-field__label-wrap:after{
+    content: "";
+    box-sizing: border-box;
+    width: 0;
+    height: var(--uiFieldBorderWidth);
+    background-color: var(--fieldBorderColorActive);
+  
+    position: absolute;
+    bottom: 0;
+    left: 0;  
+  
+    will-change: width;
+    transition: width .285s ease-out;
+  }
+  
+  .a-field_a2 .a-field__input:focus ~ .a-field__label-wrap:after{
+    width: 100%;
+  }
+  
+  /* a-field_a3 */
+  
+  .a-field_a3{
+    padding-top: 1.5em;
+  }
+  
+  .a-field_a3 .a-field__label-wrap:after{
+    content: "";
+    box-sizing: border-box;
+    width: 100%;
+    height: 0;
+  
+    opacity: 0;
+    border: var(--uiFieldBorderWidth) solid var(--fieldBorderColorActive);
+  
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  
+    will-change: opacity, height;
+    transition: height .2s ease-out, opacity .2s ease-out;
+  }
+  
+  .a-field_a3 .a-field__input:focus ~ .a-field__label-wrap:after{
+    height: 100%;
+    opacity: 1;
+  }
+  
+  .a-field_a3 .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    bottom: calc(var(--uiFieldHeight) + .5em);
+  }
+  
+  /*
+  =====
+  LEVEL 4. SETTINGS
+  =====
+  */
+  
+  .field{
+    --fieldBorderColor: #D1C4E9;
+    --fieldBorderColorActive: #673AB7;
+  }
+  
