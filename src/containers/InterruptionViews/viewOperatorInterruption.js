@@ -275,7 +275,7 @@ class InterruptionOperatorView extends React.Component{
     if (event.ctrlKey) {
       this.setState({isSortable: true});
     } else {
-      // this.setState({isSortable: false});
+      this.setState({isSortable: false});
     }
   }
 
@@ -326,8 +326,8 @@ class InterruptionOperatorView extends React.Component{
     // const {data}= this.props.interruptionData.ID;
     console.log('es re render')
     if(this.props.interruptionData.ID.data.data){
-      // return <div onMouseOver={this.initDrag} onMouseDown={this.initDrag} onMouseOut={this.endDrag} className="containerInterruption">
-      return <div onMouseOver={this.initDrag} onMouseDown={this.initDrag} onMouseOut={this.endDrag} className="containerInterruption">
+      return <div onDoubleClick={this.initDrag} className="containerInterruption">
+      {/* return <div onMouseOver={this.initDrag} onMouseDown={this.initDrag} onMouseOut={this.endDrag} className="containerInterruption"> */}
       {/* // return <div className="containerInterruption"> */}
         <SortablePane className="viewInformation" direction="horizontal" margin={5} isSortable={this.state.isSortable}>
           <Pane key="interruptionView" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
