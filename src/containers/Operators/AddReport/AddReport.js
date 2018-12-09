@@ -53,7 +53,7 @@ const mapStateToProps=state=>{
     interruptionLevel: state.interruptionAddressReducer.interruptionLevel,
     interruptionTechnologies: state.interruptionTechnologiesReducer.interruptionTechnologies,
     interruptionRadioBase: state.radioBasesAddReducer,
-    interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
     interruptionProvince: state.reducerSuggestProvincia.value,
     interruptionCanton: state.reducerSuggestCanton.value,
     interruptionParish: state.reducerSuggestParish.value,
@@ -150,28 +150,30 @@ class AddReport extends React.Component{
       interruptionRadioBase,
       interruptionServices,
       interruptionTechnologies,
-      interruptionSector,
-      interruptionLevel,
+      // interruptionSector,
+      // interruptionLevel,
       interruptionProvince,
       interruptionCanton,
-      interruptionParish
+      interruptionParish,
+      interruptionRB
     }=this.props
     var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
     if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
-    if(interruptionLevel.length===0) return alert('Seleccione al menos una tecnologia afectada')
+    if(interruptionRB.interruptionLevel.length===0) return alert('Seleccione al menos una tecnologia afectada')
     var keys={
         interruptionType,
-        interruptionSector,
+        // interruptionSector,
         interruptionDate,
         interruptionCauses,
         interruptionServices,
         interruptionTechnologies,
         interruptionRadioBase,
-        interruptionLevel,
+        // interruptionLevel,
         interruptionProvince,
         interruptionCanton,
         interruptionParish,
-        interruptionIdUser: this.props.sessionController.id_user
+        interruptionIdUser: this.props.sessionController.id_user,
+        interruptionRB
     }
     axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{
