@@ -42,6 +42,9 @@ class InterruptionOperatorView extends React.Component{
       showExternalHTML: false,
       isSortable:false,
       html: `<div class="lds-ripple"><div></div><div></div></div>`,
+      asunto: ``,
+      coordinacionZonal:``,
+      codigoReport:``,
       editable: true
     }
   }
@@ -83,7 +86,13 @@ class InterruptionOperatorView extends React.Component{
                             })
                           .then(resp=>resp.json())
                           .then(report=>{
-                            this.setState({html: report})
+                            // this.setState({html: report})
+                            this.setState({
+                              html: report.html,
+                              asunto: report.asunto,
+                              coordinacionZonal: report.coordinacionZonal,
+                              codigoReporte:report.codigoReport
+                            })
                           })
                           .catch(e=>this.setState({html:<h1>Something Fail</h1>}))
                         })
@@ -166,7 +175,14 @@ class InterruptionOperatorView extends React.Component{
   //   }
   // }
   saveReportChanges=()=>{
-    var jsonStringify=JSON.stringify({contentHtml:this.state.html});
+    var jsonStringify=JSON.stringify({
+      contentHtml:this.state.html,
+      contentHeader:{
+        asunto:this.state.asunto,
+        codigoReport: this.state.codigoReport,
+        coordinacionZonal: this.state.coordinacionZonal
+      }
+    });
     // console.log(this.state.html,jsonStringify)
     // var sendHtml=jsonStringify.replace(/\\n/g, "")
     //               .replace(/\\'/g, "'")
@@ -195,6 +211,11 @@ class InterruptionOperatorView extends React.Component{
     .catch(e=>{console.log(e);alert('Something Fail')})
   }
 
+  updateHeaders=(stateName,event)=>{
+    console.log('hjeress',stateName,event.target.value)
+    this.setState({[stateName]: event.target.value});
+  }
+
   getInfoInterruption=()=>{
     // const {data}= this.props.interruptionData.ID;
     console.log('es re render')
@@ -213,13 +234,13 @@ class InterruptionOperatorView extends React.Component{
             <div className="containerHeaderFields">
               <div className="containerInputsHeader">
                 <label className="field a-field a-field_a1 page__field">
-                  <input className="field__input a-field__input" placeholder="Coordinación Zonal X" />
+                  <input className="field__input a-field__input" placeholder="Coordinación Zonal X" value={this.state.coordinacionZonal} onChange={this.updateHeaders.bind(this,'coordinacionZonal')}/>
                   <span className="a-field__label-wrap">
                     <span className="a-field__label">Coordinación Zonal</span>
                   </span>
                 </label>
                 <label className="field a-field a-field_a1 page__field">
-                  <input className="field__input a-field__input" placeholder="No. IT-CZXX-X-XXXX-XXXX" />
+                  <input className="field__input a-field__input" placeholder="No. IT-CZXX-X-XXXX-XXXX" value={this.state.codigoReporte} onChange={this.updateHeaders.bind(this,'codigoReporte')}/>
                   <span className="a-field__label-wrap">
                     <span className="a-field__label">Código de Informe</span>
                   </span>
@@ -230,7 +251,7 @@ class InterruptionOperatorView extends React.Component{
                   {/* <span className="a-field__label-wrap"> */}
                     <span className="a-field__label__textarea">Asunto</span>
                   {/* </span> */}
-                  <textarea className="field__input a-field__input" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum." />
+                  <textarea className="field__input a-field__input" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum." value={this.state.asunto} onChange={this.updateHeaders.bind(this,'asunto')}/>
                 </label>
               </div>
             </div>

@@ -118,7 +118,7 @@ class App extends Component {
             <i className="fas fa-search searchIcon"></i>
           </a>
         </li> */}
-        <li className="headerItemRight itemName"><a className=""> {this.props.sessionController.dataUser.username}</a></li>
+        <li className="headerItemRight itemName"><a href="#" className=""> {this.props.sessionController.dataUser.username}</a></li>
         <li>
           <ProfileIcon toogleModal={this.toogleModal} />
           {this.state.isProfileOpen &&
@@ -147,9 +147,9 @@ class App extends Component {
             <i className="fas fa-search searchIcon"></i>
           </a>
         </li> */}
-        <li className="itemName headerItemRight"><a className=""> Not Authorized</a></li>
+        <li className="itemName headerItemRight"><a href="#" className=""> Not Authorized</a></li>
         {/* <li className="itemCollapse"><a className=""><img src="http://rocaldent.com.ve/rocaldent/public/images/image-not-found.png" alt="Avatar" className="avatar"/></a></li> */}
-        <li className="itemCollapse"><a className="">About</a></li>
+        <li className="itemCollapse"><a href="#" className="">About</a></li>
         <li className="icon headerItemRight" onClick={this.changeNav}>
           <i className="fas fa-bars"></i>
         </li>

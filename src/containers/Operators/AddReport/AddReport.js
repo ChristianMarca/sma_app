@@ -177,7 +177,7 @@ class AddReport extends React.Component{
     }
     axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{
-        console.log(resp.data);
+        console.log(resp.data,'realizando test');
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
         this.props.onRemoveAllRadioBases();
