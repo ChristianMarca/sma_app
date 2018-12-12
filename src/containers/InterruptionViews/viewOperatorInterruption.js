@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from "react-redux";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import {withRouter} from 'react-router-dom';
-import  moment from 'moment';
+import { SortablePane, Pane } from 'react-sortable-pane';
+import ContentEditable from "react-contenteditable";
+import sanitizeHtml from "sanitize-html";
 import { 
   requestInterruptionFetchAction,
   isSignInAction,
   receiveDataUserAction
- } from "../../actions";
+} from "../../actions";
 
 import { API_URL } from "../../config";
+
+import InterruptionView from "../../components/viewInterruptions/viewOperatorInterruption";
 
 import './style.css';
 
@@ -31,46 +35,18 @@ const mapDispatchToProps=(dispatch)=>{
 class InterruptionOperatorView extends React.Component{
   constructor(){
     super();
+    this.editorRef = React.createRef();
     this.state={
       isReceiveDataOfInterruption: false,
       time:"",
-      showExternalHTML: false
+      showExternalHTML: false,
+      isSortable:false,
+      html: `<div class="lds-ripple"><div></div><div></div></div>`,
+      asunto: ``,
+      coordinacionZonal:``,
+      codigoReport:``,
+      editable: true
     }
-  }
-
-  socketConnectionEnable=()=>{
-    const socket = io.connect(`${API_URL}`,{path:'/socket'});
-    // const socket = io.connect(`${API_URL}/socket`);
-    // console.log('this', socket, API_URL)
-    socket.on('connect',function(){
-        console.log('Conectado al Servidor')
-    })
-    socket.on('disconnect',function(){
-        console.log('Perdimos la conexion al server')
-    })
-    socket.on('message',(data)=>{
-        console.log('llego :' , data)
-    })
-    socket.emit('echo','Es el Socket')
-    socket.emit('temir',"testk")
-    socket.emit('interruptionSelected',{interruption:this.props.interruptionViewSelected})
-    socket.on('timer',(time)=>{
-      var time_=time.countdown.split(':').map((item,index)=>{
-        switch (index){
-          case 0:
-            return `${item} h `
-          case 1:
-            return `${item} min `
-          default:
-            return `${item} seg`
-        }
-      })
-      this.setState({time: time_})
-      // console.log(time,'pepejj')
-    })
-
-    socket.on('update',data=>{console.log('si leyo ',data)})
-    socket.on("FromAPI", data => this.setState({ response: data }));    
   }
 
   componentDidMount=async()=>{
@@ -101,21 +77,25 @@ class InterruptionOperatorView extends React.Component{
                       console.log(user, 'continueWithToken')
                       this.props.onSignInApproved();
                       this.props.onReceiveDataUser(user);
-  
-                        // this.loadUser(user);
-                        // this.onRouteChange('Home')
-                      // console.log(user,this.props.interruptionData,this.props.interruptionViewSelected,'.../.a/')
                       this.props.onRequestDataInterruption(this.props.interruptionViewSelected,user.id_user)
-                      this.setState({isReceiveDataOfInterruption:true})
-                      this.socketConnectionEnable()
-                      // try{
-                      //   var testd=
-                      //   document.getElementById("infoContainerI")
-                      //   console.log(testd)
-                      //   testd.innerHTML(this.getHtml())
-                      // }catch(e){
-                      //   alert('g')
-                      // }
+                        .then(data=>{
+                          this.setState({isReceiveDataOfInterruption:true})
+                          console.log(this.props.interruptionData.ID.data,'data',this.props.interruptionData.ID.data.data.id_inte)
+                          fetch(`${API_URL}/interrupcion/getReport?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
+                            method: 'GET',
+                            })
+                          .then(resp=>resp.json())
+                          .then(report=>{
+                            // this.setState({html: report})
+                            this.setState({
+                              html: report.html,
+                              asunto: report.asunto,
+                              coordinacionZonal: report.coordinacionZonal,
+                              codigoReporte:report.codigoReport
+                            })
+                          })
+                          .catch(e=>this.setState({html:<h1>Something Fail</h1>}))
+                        })
                     }
                     else{
                       this.props.history.push('/listas');
@@ -135,406 +115,189 @@ class InterruptionOperatorView extends React.Component{
       this.props.history.push('/');
     }
   }
-  getHtml=()=>{
-    var a=document.getElementById('infoContainerI')
-    a.innerHTML(
-      `
-    <style type="text/css">
-    * { box-sizing: border-box; }
-  body {
-  }
-  .container{
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-  p{
-    font-size: 11pt;
-  }
-  .info{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    align-content: center;
-    align-items: center;
-  }
-  .info table,.info td,.info td {
-      border: 1px solid black;
-      border-collapse: collapse;
+
+  paneStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    // border: 'solid 1px #ddd',
+    // backgroundColor: '#f0f0f0',
+  };
+
+  initDrag=(event)=>{
+    if (event.ctrlKey) {
+      this.setState({isSortable: true});
+    } else {
+      this.setState({isSortable: false});
     }
-    
-  </style>
-  
-  <html>
-    <body>
-      <p>
-        <strong>
-          INFORME SOBRE LA INTERRUPCIÓN PROGRAMADA DEL SERVICIO MÓVIL AVANZADO DE LA OPERADORA CONECEL, OCURRIDA EL DÍA , EN LAS POBLACIONES CHORDELEG, GUALACEO, SIGSIG, DE LA PROVINCIA AZUAY.
-        </strong>
-      </p>
-  
-      <ol>
-        <li>
-          <strong>DATOS GENERALES</strong>
-          <table style="width:80%; font-size:12px;">
-            <tr>
-              <td><strong>OPERADORA:</strong></td>
-              <td>OTECEL S.A.</td>
-            </tr>
-            <tr>
-              <td><strong>RUC:</strong></td>
-              <td>1791256115001</td>
-            </tr>
-            <tr>
-              <td><strong>REPRESENTANTE LEGAL:</strong></td>
-              <td>DONOSO ECHANIQUE ANDRES FRANCISCO</td>
-            </tr>
-            <tr>
-              <td><strong>DIRECCION:</strong></td>
-              <td>Vía a Nayón, complejo ECOPARK, Torre 3.</td>
-            </tr>
-            <tr>
-              <td><strong>CIUDAD:</strong></td>
-              <td>Quito</td>
-            </tr>
-            <tr>
-              <td><strong>TELEFONO:</strong></td>
-              <td>(02) 2227700</td>
-            </tr>
-            <tr>
-              <td><strong>TIPO DE SERVICIO:</strong></td>
-              <td>Servicios de telecomunicaciones: SMA</td>
-            </tr>
-            <tr>
-              <td><strong>FECHA DE AUTORIZACION</strong></td>
-              <td>20 de noviembre de 2008.</td>
-            </tr>
-          </table>
-        </li>
-        <br/>
-        <li>
-          <strong>ANTECEDENTES</strong>
-          <p align="justify">
-            Mediante correo electrónico el día 12 MAYO DE 2018 a las 18:00 remitido a las direcciones dcsintsma@arcotel.gob.ec, y cz6intsma@arcotel.gob.ec, la operadora de servicio móvil avanzado CONECEL. notificó a la Agencia de Regulación y Control de las Telecomunicaciones, que el día  a partir de las 14:00 aproximadamente, debido a causas aún no establecidas, tienen “afectación” del servicio brindado por CONECEL. en las poblaciones CHORDELEG, GUALACEO, SIGSIG, de la provincia AZUAY.
-            <br/>
-            <br/>
-            Con correo electrónico, el día 13 MAYO DE 2018 a las 13:00, CONECEL. reportó que el servicio se restableció a la normalidad aproximadamente a las 13 MAYO DE 2018, (duración de la interrupción 18 minutos) y que se hará llegar el informe con los detalles y sustentos técnicos en los próximos días. 
-            <br/>
-            <br/>
-            Con oficio "Nro. GR-1332-2018" de 20 MAYO DE 2018, ingresado a la Agencia de Regulación y Control de las Telecomunicaciones el día 20 MAYO DE 2018 con número de trámite ARCOTEL-DEDA-2018-013888-E, CONECEL S.A. presentó el informe técnico sobre el evento ocurrido el día  indicando que el mismo fue ocasionado "por problemas de atenuación del enlace de fibra óptica ZAMORACEN – YANTZAZACEN, debido a fallas en el patch cord del enlace desde el lado de ZAMORACEN. En el oficio GR- 1332-2018 se presenta además una cronología del evento ocurrido, la descripción de las acciones tomadas para su solución, el diagrama esquemático de conexión de la ruta afectada."
-          </p>
-        </li>
-        <br />
-        <li>
-          <strong>OBJETIVO</strong>
-          <p>
-            Establecer si la interrupción programada del servicio móvil avanzado de 	OTECEL S.A., se efectuó acorde a lo comunicado a la ARCOTEL y bajo el procedimiento establecido en el numeral 34.5 de la cláusula 34 del contrato de concesión de servicio.
-          </p>
-        </li>
-        <br />
-        <li>
-          Conclusiones
-        </li>
-        <br/>
-        <li>
-          Recomendaciones
-        </li>
-      </ol>
-      <strong>Informe realizado por:</strong>
-      <div class="info">
-        <div style="padding-top:60px;">Ing. Esteban Andrade Guerrero</div>
-        <strong>PROFESIONAL TECNICO 1</strong>
-        <br/>
-        <table style="width:70%; font-size:12px; align-self:center; align='center'">
-          <tr>
-            <td>Informe supervizado por:</td>
-            <td>APROBADO POR:</td>
-          </tr>
-          <tr>
-            <td>
-              <div style="padding-top:50px;">Ing. Wilson Penafiel Palacios</div>
-              <strong>PROFESIONAL TECNICO 3</strong>
-            </td>
-            <td>
-              <div style="padding-top:50px;">Ing. Edgar Ochoa FIgueroa</div>
-              <strong>DIRECTOR TECNICO ZONAL 6</strong>
-            </td>
-          </tr>
-          
-        </table>
-      </div>
-    </body>
-  </html>
-    `
-    )
+  }
+
+  endDrag=()=>{
+    this.setState({isSortable: false});
+  }
+
+  initial = JSON.parse(sessionStorage.getItem("draftail:content"))
+
+  // onSave = (content) => {
+  //   console.log("saving", content)
+  //   sessionStorage.setItem("draftail:content", JSON.stringify(content))
+  // }
+
+  // fromHTML = (html) => {const a=convertToRaw(convertFromHTML(this.importerConfig)(html));
+  //   console.log(a); return a;
+  // }
+
+  handleChange = evt => {
+    this.setState({ html: evt.target.value });
+  };
+
+  sanitizeConf = {
+    allowedTags: ["b", "i", "em", "strong", "a", "p", "h1","html","body","ol","li","table","tr","td","br","hr","div"],
+    allowedAttributes: { a: ["href"],i:["style", "class"],em:["style", "class"],strong:["style", "class"],
+      p:["style", "class"],h1:["style", "class"],html:["style", "class"],body:["style", "class"],ol:["style", "class"],
+      li:["style", "class"],table:["style", "class"],tr:["style", "class"],td:["style", "class"]
+      ,br:["style", "class"],hr:["style", "class"],div:["style", "class"] }
+  };
+
+  sanitize = () => {
+    this.setState({ html: sanitizeHtml(this.state.html, this.sanitizeConf) });
+  };
+
+  toggleEditable = () => {
+    this.setState({ editable: !this.state.editable });
+  };
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if (this.state.html === nextState.html || !this.props.interruptionData.ID.data.data) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+  saveReportChanges=()=>{
+    var jsonStringify=JSON.stringify({
+      contentHtml:this.state.html,
+      contentHeader:{
+        asunto:this.state.asunto,
+        codigoReport: this.state.codigoReport,
+        coordinacionZonal: this.state.coordinacionZonal
+      }
+    });
+    // console.log(this.state.html,jsonStringify)
+    // var sendHtml=jsonStringify.replace(/\\n/g, "")
+    //               .replace(/\\'/g, "'")
+    //               .replace(/\\"/g, '"')
+    //               .replace(/\\&/g, "")
+    //               .replace(/\\r/g, "")
+    //               .replace(/\\t/g, "")
+    //               .replace(/\\b/g, "")
+    //               .replace(/\\f/g, "");
+    // console.log(sendHtml)
+    // console.log(jsonStringify)
+    fetch(`${API_URL}/interrupcion/updateReport?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
+      method: 'PUT',
+      // body: JSON.stringify({contentHtml:sendHtml}),
+      body: jsonStringify,
+      // body: JSON.stringify({contentHtml:this.state.html}),
+      headers:{
+        'Content-Type': 'application/json',
+        // 'Accept': 'application/json, text/plain, */*',
+      }
+      })
+    .then(resp=>resp.json())
+    .then(report=>{
+      alert(report)
+    })
+    .catch(e=>{console.log(e);alert('Something Fail')})
+  }
+
+  updateHeaders=(stateName,event)=>{
+    console.log('hjeress',stateName,event.target.value)
+    this.setState({[stateName]: event.target.value});
   }
 
   getInfoInterruption=()=>{
-    const {data}= this.props.interruptionData.ID;
+    // const {data}= this.props.interruptionData.ID;
+    console.log('es re render')
     if(this.props.interruptionData.ID.data.data){
-      return <div className="containerInterruption">
-        <div className="cardInfoInterruption cardInfoDetails">
-          <div className="titleInterruption titleInfo">
-            Informacion de la Interrupcion
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Tiempo:
+      return <div onDoubleClick={this.initDrag} className="containerInterruption">
+      {/* return <div onMouseOver={this.initDrag} onMouseDown={this.initDrag} onMouseOut={this.endDrag} className="containerInterruption"> */}
+      {/* // return <div className="containerInterruption"> */}
+        <SortablePane className="viewInformation" direction="horizontal" margin={5} isSortable={this.state.isSortable}>
+          <Pane key="interruptionView" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
+            <div className="cardInfoInterruption viewInformation">
+                <InterruptionView />
             </div>
-            <div className="body-info">
-              {this.state.time}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Tipo:
-            </div>
-            <div className="body-info">
-              {data.data.tipo}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Fecha Inicio:
-            </div >
-            <div className="body-info">
-              {moment(data.data.fecha_inicio).format('MM-DD-YYYY / HH:mm:ss')}
-            </div>
-          </div>
-          {data.data.id_tipo===1&&
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Fecha Finalizacion:
-            </div >
-            <div className="body-info">
-              {moment(data.data.fecha_fin).format('MM-DD-YYYY / HH:mm:ss')}
-            </div>
-          </div>}
-          {data.data.id_tipo===1&&
-            <div className="containerInfoInterruption">
-              <div className="titleInfo">
-                Duracion:
-              </div >
-              <div className="body-info">
-                {data.data.duracion.split(':').map((item,index)=>{
-                    switch (index){
-                      case 0:
-                        return `${item} h `
-                      case 1:
-                        return `${item} min `
-                      default:
-                        return `${item} seg`
-                    }
-                  })}
+          </Pane>
+        <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
+          <div className="cardInfoInterruption viewReport">
+            <div className="containerHeaderFields">
+              <div className="containerInputsHeader">
+                <label className="field a-field a-field_a1 page__field">
+                  <input className="field__input a-field__input" placeholder="Coordinación Zonal X" value={this.state.coordinacionZonal} onChange={this.updateHeaders.bind(this,'coordinacionZonal')}/>
+                  <span className="a-field__label-wrap">
+                    <span className="a-field__label">Coordinación Zonal</span>
+                  </span>
+                </label>
+                <label className="field a-field a-field_a1 page__field">
+                  <input className="field__input a-field__input" placeholder="No. IT-CZXX-X-XXXX-XXXX" value={this.state.codigoReporte} onChange={this.updateHeaders.bind(this,'codigoReporte')}/>
+                  <span className="a-field__label-wrap">
+                    <span className="a-field__label">Código de Informe</span>
+                  </span>
+                </label>
               </div>
-            </div>}
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Area:
+              <div className="subjectContainer">
+                <label className="field a-field a-field_a1 page__field">
+                  {/* <span className="a-field__label-wrap"> */}
+                    <span className="a-field__label__textarea">Asunto</span>
+                  {/* </span> */}
+                  <textarea className="field__input a-field__input" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum." value={this.state.asunto} onChange={this.updateHeaders.bind(this,'asunto')}/>
+                </label>
+              </div>
             </div>
-            <div className="body-info">
-              {data.data.area}
+            <div className="editableReportContainer">
+              <ContentEditable
+                className="editableReport"
+                innerRef={this.editorRef}
+                tagName="pre"
+                html={this.state.html} // innerHTML of the editable div
+                disabled={!this.state.editable} // use true to disable edition
+                onChange={this.handleChange} // handle innerHTML change
+                onBlur={this.sanitize}
+                style={{width:"100%"}}
+              />
             </div>
+          {/* <DraftailEditor
+              rawContentState={this.initial || null}
+              onSave={this.onSave}
+              blockTypes={[
+                { type: BLOCK_TYPE.HEADER_THREE },
+                { type: BLOCK_TYPE.UNORDERED_LIST_ITEM },
+              ]}
+              inlineStyles={[{ type: INLINE_STYLE.BOLD }, { type: INLINE_STYLE.ITALIC }]}
+            /> */}
           </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Causa:
+        </Pane>
+        <Pane key="interruptionCode" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
+          <div className="cardInfoInterruption viewCode">
+            <div className="SaveButtonContainer">
+              <button onClick={this.saveReportChanges} className="reportButtons">Save Changes</button>
+              <button className="reportButtons">Rebuild Report</button>
             </div>
-            <div className="body-info">
-              {data.data.causa}
-            </div>
+            <textarea className="editableContainer" value={this.state.html} onChange={this.handleChange} />
           </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Tecnologias Afectadas:
-            </div >
-            <div className="body-info">
-              {data.technologies.map((technology,index)=>{
-                return <div className="mapItems" key={index}>
-                  {technology.tecnologia}
-                </div>
-              })}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Servicios Afectados:
-            </div>
-            <div className="body-info">
-              {data.services.map((service,index)=>{
-                return <div className="mapItems" key={index}>
-                  {service.servicio}
-                </div>
-              })}
-            </div>
-          </div>
-          <div className="containerInfoInterruption">
-            <div className="titleInfo">
-              Estado:
-            </div>
-            <div className="body-info">
-              {data.data.estado_int}
-            </div>
-          </div>
-        </div>
-        <div className="cardInfoInterruption">
-          mundo 
-        </div>
-        <div className="cardInfoInterruption">
-          Javascript
-        </div>
+        </Pane>
+        </SortablePane>
       </div>
     }else{
-      return <div>
-        <h1>
-          Sorry Somethin Fail
-        </h1>
-      </div>
+      return <div >Please Wait or Edit Report for Enable HTML Code</div>
     }
   }
   toggleExternalHTML=()=>{
     this.setState({showExternalHTML: !this.state.showExternalHTML});
   }
   
-  createMarkup=()=> { 
-    return {__html: 
-      `<style type="text/css">
-      * { box-sizing: border-box; }
-    body {
-      
-    }
-    .container{
-      display: block;
-      margin: 0;
-      padding: 0;
-    }
-    p{
-      font-size: 11pt;
-    }
-    .info{
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      text-align: center;
-      align-content: center;
-      align-items: center;
-    }
-    .info table,.info td,.info td {
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-      
-    </style>
-    
-    <html>
-      <body>
-        <p>
-          <strong>
-            INFORME SOBRE LA INTERRUPCIÓN PROGRAMADA DEL SERVICIO MÓVIL AVANZADO DE LA OPERADORA CONECEL, OCURRIDA EL DÍA , EN LAS POBLACIONES CHORDELEG, GUALACEO, SIGSIG, DE LA PROVINCIA AZUAY.
-          </strong>
-        </p>
-    
-        <ol>
-          <li>
-            <strong>DATOS GENERALES</strong>
-            <table style="width:80%; font-size:12px;">
-              <tr>
-                <td><strong>OPERADORA:</strong></td>
-                <td>OTECEL S.A.</td>
-              </tr>
-              <tr>
-                <td><strong>RUC:</strong></td>
-                <td>1791256115001</td>
-              </tr>
-              <tr>
-                <td><strong>REPRESENTANTE LEGAL:</strong></td>
-                <td>DONOSO ECHANIQUE ANDRES FRANCISCO</td>
-              </tr>
-              <tr>
-                <td><strong>DIRECCION:</strong></td>
-                <td>Vía a Nayón, complejo ECOPARK, Torre 3.</td>
-              </tr>
-              <tr>
-                <td><strong>CIUDAD:</strong></td>
-                <td>Quito</td>
-              </tr>
-              <tr>
-                <td><strong>TELEFONO:</strong></td>
-                <td>(02) 2227700</td>
-              </tr>
-              <tr>
-                <td><strong>TIPO DE SERVICIO:</strong></td>
-                <td>Servicios de telecomunicaciones: SMA</td>
-              </tr>
-              <tr>
-                <td><strong>FECHA DE AUTORIZACION</strong></td>
-                <td>20 de noviembre de 2008.</td>
-              </tr>
-            </table>
-          </li>
-          <br/>
-          <li>
-            <strong>ANTECEDENTES</strong>
-            <p align="justify">
-              Mediante correo electrónico el día 12 MAYO DE 2018 a las 18:00 remitido a las direcciones dcsintsma@arcotel.gob.ec, y cz6intsma@arcotel.gob.ec, la operadora de servicio móvil avanzado CONECEL. notificó a la Agencia de Regulación y Control de las Telecomunicaciones, que el día  a partir de las 14:00 aproximadamente, debido a causas aún no establecidas, tienen “afectación” del servicio brindado por CONECEL. en las poblaciones CHORDELEG, GUALACEO, SIGSIG, de la provincia AZUAY.
-              <br/>
-              <br/>
-              Con correo electrónico, el día 13 MAYO DE 2018 a las 13:00, CONECEL. reportó que el servicio se restableció a la normalidad aproximadamente a las 13 MAYO DE 2018, (duración de la interrupción 18 minutos) y que se hará llegar el informe con los detalles y sustentos técnicos en los próximos días. 
-              <br/>
-              <br/>
-              Con oficio "Nro. GR-1332-2018" de 20 MAYO DE 2018, ingresado a la Agencia de Regulación y Control de las Telecomunicaciones el día 20 MAYO DE 2018 con número de trámite ARCOTEL-DEDA-2018-013888-E, CONECEL S.A. presentó el informe técnico sobre el evento ocurrido el día  indicando que el mismo fue ocasionado "por problemas de atenuación del enlace de fibra óptica ZAMORACEN – YANTZAZACEN, debido a fallas en el patch cord del enlace desde el lado de ZAMORACEN. En el oficio GR- 1332-2018 se presenta además una cronología del evento ocurrido, la descripción de las acciones tomadas para su solución, el diagrama esquemático de conexión de la ruta afectada."
-            </p>
-          </li>
-          <br />
-          <li>
-            <strong>OBJETIVO</strong>
-            <p>
-              Establecer si la interrupción programada del servicio móvil avanzado de 	OTECEL S.A., se efectuó acorde a lo comunicado a la ARCOTEL y bajo el procedimiento establecido en el numeral 34.5 de la cláusula 34 del contrato de concesión de servicio.
-            </p>
-          </li>
-          <br />
-          <li>
-            Conclusiones
-          </li>
-          <br/>
-          <li>
-            Recomendaciones
-          </li>
-        </ol>
-        <strong>Informe realizado por:</strong>
-        <div class="info">
-          <div style="padding-top:60px;">Ing. Esteban Andrade Guerrero</div>
-          <strong>PROFESIONAL TECNICO 1</strong>
-          <br/>
-          <table style="width:70%; font-size:12px; align-self:center; align='center'">
-            <tr>
-              <td>Informe supervizado por:</td>
-              <td>APROBADO POR:</td>
-            </tr>
-            <tr>
-              <td>
-                <div style="padding-top:50px;">Ing. Wilson Penafiel Palacios</div>
-                <strong>PROFESIONAL TECNICO 3</strong>
-              </td>
-              <td>
-                <div style="padding-top:50px;">Ing. Edgar Ochoa FIgueroa</div>
-                <strong>DIRECTOR TECNICO ZONAL 6</strong>
-              </td>
-            </tr>
-            
-          </table>
-        </div>
-      </body>
-    </html>
-      `
-    };
-  }
   render(){
-    // console.log('77hhh',this.props.interruptionData)
-    const {data}= this.props.interruptionData.ID;
-    const infoInt=data.data;
-    console.log(data,'h/?',data.data,'?j',infoInt,this.state.isReceiveDataOfInterruption)
     return(
       this.getInfoInterruption()
     )
@@ -542,31 +305,3 @@ class InterruptionOperatorView extends React.Component{
 }
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(InterruptionOperatorView))
-
-//save
-// {/* <div className="containerTitle">
-//   {<h1>{data.data.tipo}</h1>}
-// </div>
-// <div>
-//   <h1>
-//     Informacion de la interrupcion
-//   </h1>
-//     Fecha inicio: {data.data.fecha_inicio}
-//     Fecha FIn: {data.data.fecha_fin}
-//   <h1>
-//     Causas
-//   </h1>
-//   <h2>
-//     {data.data.causa}
-//   </h2>
-//   <h3>
-//     {this.state.time}
-//   </h3>
-//   </div>
-//   {/* <button onClick={this.getHtml}>Test</button> */}
-//   <div>
-//   <button onClick={this.toggleExternalHTML}>Toggle Html</button>
-//   {this.state.showExternalHTML ? <div>
-//       <div dangerouslySetInnerHTML={this.createMarkup()} ></div>
-//     </div> : null}
-//   </div> */}

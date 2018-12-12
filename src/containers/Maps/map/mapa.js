@@ -23,6 +23,7 @@ import 'leaflet-slidemenu/src/L.Control.SlideMenu.js';
 import 'leaflet-slidemenu/src/L.Control.SlideMenu.css';
 
 import axios from 'axios';
+import { connect } from "react-redux";
 
 import { API_URL } from "../../../config";
 
@@ -65,6 +66,19 @@ import { API_URL } from "../../../config";
 //     });
 //   }
 // });
+
+const mapStateToProps=state=>{
+	return {
+    sessionController: state.sessionReducer.dataUser,
+	}
+}
+const mapDispatchToProps=(dispatch)=>{
+	return{
+    // Elección del tipo de interrupción
+    // onSignInApproved: ()=> dispatch(isSignInAction(true)),
+    // onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
+	}
+}
 
 var marker = L.markerClusterGroup({
   spiderfyOnMaxZoom: true,
@@ -226,8 +240,10 @@ class Map extends React.Component {
 
   dataRequest= async()=>{
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    console.log(this.props.sessionController,'jsahas  sjs')
+    const {id_rol,id_user}= this.props.sessionController;
     this.props.isDashboardComponent!==false?(()=>{
-      axios(`${API_URL}/mapa/data_radiobase_interruption`, {
+      axios(`${API_URL}/mapa/data_radiobase_interruption?id_rol=${id_rol}&id_user=${id_user}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -240,7 +256,6 @@ class Map extends React.Component {
           features:(myData.radiobases.features),
           type: "FeatureCollection"
         }
-        console.log('siii',rbTodo)
       this.getData(rbTodo).then(datos => {
         this.setState({dataToSearch: datos})
         //handleData(datos)
@@ -375,4 +390,4 @@ class Map extends React.Component {
 
 }
 
-export default Map;
+export default connect(mapStateToProps,mapDispatchToProps)(Map);

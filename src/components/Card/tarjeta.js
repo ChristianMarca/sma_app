@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import {Redirect, withRouter} from 'react-router-dom';
 import { interruptionViewIdAction } from "../../actions";
 import {API_URL} from '../../config';
-
+import moment from 'moment'
 import "./table.css";
 
 const mapStateToProps=state=>{
@@ -100,7 +100,7 @@ class ListaInt extends React.Component {
             let ele = elemento.replace('_',' ')
             let elem = ele.charAt(0).toUpperCase() + ele.slice(1);
             return (
-                <td key={elemento} data-key={elemento} onClick={this.handleClick}>{elem}</td>
+                <td key={elemento+moment()} data-key={elemento} onClick={this.handleClick}>{elem}</td>
               )
           })
           seleccion = Array.prototype.concat(selec, [<td key="RevC">Revision</td>
@@ -110,7 +110,7 @@ class ListaInt extends React.Component {
           let selec = columns.map((elemento, index) => {
             // keyButton=data
             return (
-              <td key={index}>
+              <td key={index+moment()}>
                 {data[elemento]}
                 {/* <button className="goInterruptionButton" >Inspeccionar</button> */}
               </td>)
@@ -150,7 +150,7 @@ class ListaInt extends React.Component {
             {/* <button key={data.id_inte} onClick={()=>this.handleClickSelectInterruption(data.id_inte)} className="goInterruptionButton" >Inspeccionar</button> */}
             {/* <button key={data.id_inte} onClick={()=>this.handleClickSelectInterruption(data.id_inte)} className="arrow-6" >Inspeccionar</button> */}
 
-            <div key={data.id_inte} onClick={()=>this.handleClickSelectInterruption(data.id_inte)} className="mouse_scroll">
+            <div key={data.id_inte+moment()} onClick={()=>this.handleClickSelectInterruption(data.id_inte)} className="mouse_scroll">
             <div className="mouse inicio">
               <div className="wheel">Ir</div>
             </div>
@@ -188,7 +188,7 @@ class ListaInt extends React.Component {
 
   render() {
     // let card = <tr className="tableSubContainer rowTarget">{this.columnas()}</tr>;
-    let card = <tr className="rowTarget nfl">
+    let card = <tr key={moment()} className="rowTarget nfl">
       {this.columnas()}</tr>;
     return (card)
   }
