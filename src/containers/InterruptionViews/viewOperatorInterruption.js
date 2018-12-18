@@ -11,6 +11,12 @@ import {
   receiveDataUserAction
 } from "../../actions";
 
+import Map from "../Maps/map/mapa";
+import '../Maps/chart.style.css';
+import '../../components/viewInterruptions/style.chat.css'
+
+import {Chat_} from '../../components/viewInterruptions/chat';
+
 import { API_URL } from "../../config";
 
 import InterruptionView from "../../components/viewInterruptions/viewOperatorInterruption";
@@ -42,12 +48,39 @@ class InterruptionOperatorView extends React.Component{
       showExternalHTML: false,
       isSortable:false,
       html: `<div class="lds-ripple"><div></div><div></div></div>`,
+      comments:``,
       asunto: ``,
       coordinacionZonal:``,
       codigoReport:``,
-      editable: true
+      editable: true,
+      messageToSend:''
     }
   }
+
+  // socketConnectionEnable=()=>{
+  //   this.socket = io.connect(`${API_URL}`,{path:'/socket'});
+  //   let {username}=this.props.sessionController;
+  //   let interruptionView=this.props.interruptionViewSelected;
+  //   this.socket.on('connect', ()=> {
+  //       console.log('Conectado al servidor',this.socket.id);
+  //       var usuario={
+  //           nombre: username,
+  //           sala: String(interruptionView)                
+  //       }
+  //       this.socket.emit('entrarChat', usuario, function(resp) {
+  //           console.log('Usuarios conectados', resp);
+  //           // renderizarUsuarios(resp);
+  //       });
+    
+  //   });
+    
+  //   // escuchar
+  //   this.socket.on('disconnect', function() {
+    
+  //       console.log('Perdimos conexión con el servidor');
+    
+  //   });
+  // }
 
   componentDidMount=async()=>{
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
@@ -72,7 +105,7 @@ class InterruptionOperatorView extends React.Component{
                 })
                 .then(resp=>resp.json())
                 .then(user=>{
-                    console.log('adqui esta',user)
+                    // console.log('adqui esta',user)
                     if (user && user.email){
                       console.log(user, 'continueWithToken')
                       this.props.onSignInApproved();
@@ -80,7 +113,7 @@ class InterruptionOperatorView extends React.Component{
                       this.props.onRequestDataInterruption(this.props.interruptionViewSelected,user.id_user)
                         .then(data=>{
                           this.setState({isReceiveDataOfInterruption:true})
-                          console.log(this.props.interruptionData.ID.data,'data',this.props.interruptionData.ID.data.data.id_inte)
+                          // console.log(this.props.interruptionData.ID.data,'data',this.props.interruptionData.ID.data.data.id_inte)
                           fetch(`${API_URL}/interrupcion/getReport?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
                             method: 'GET',
                             })
@@ -147,9 +180,32 @@ class InterruptionOperatorView extends React.Component{
   //   console.log(a); return a;
   // }
 
-  handleChange = evt => {
-    this.setState({ html: evt.target.value });
+  handleChange = (stateName,event) => {
+    // this.setState({ html: evt.target.value });
+    this.setState({[stateName]: event.target.value});
   };
+
+  handleSendComment=(event)=>{
+    // console.log("test",this.state.comments)
+    if(event.key==='Enter'){
+      this.setState({messageToSend:this.state.comments})
+      this.setState({comments:``})
+    }
+
+    // event.key==='Enter' && fetch(`${API_URL}/interrupcion/addComment?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}&id_user=${this.props.sessionController.id_user}`,{
+    //   method: 'PUT',
+    //   body: JSON.stringify({comment:this.state.comments}),
+    //   headers:{
+    //     'Content-Type': 'application/json'
+    //   }
+    //   })
+    // .then(resp=>resp.json())
+    // .then(report=>{
+    //   // alert(report)
+    //   this.setState({comments:``})
+    // })
+    // .catch(e=>{console.log(e);alert('Something Fail')})
+  }
 
   sanitizeConf = {
     allowedTags: ["b", "i", "em", "strong", "a", "p", "h1","html","body","ol","li","table","tr","td","br","hr","div"],
@@ -212,13 +268,12 @@ class InterruptionOperatorView extends React.Component{
   }
 
   updateHeaders=(stateName,event)=>{
-    console.log('hjeress',stateName,event.target.value)
     this.setState({[stateName]: event.target.value});
   }
 
   getInfoInterruption=()=>{
     // const {data}= this.props.interruptionData.ID;
-    console.log('es re render')
+    // console.log('es re render')
     if(this.props.interruptionData.ID.data.data){
       return <div onDoubleClick={this.initDrag} className="containerInterruption">
       {/* return <div onMouseOver={this.initDrag} onMouseDown={this.initDrag} onMouseOut={this.endDrag} className="containerInterruption"> */}
@@ -229,64 +284,102 @@ class InterruptionOperatorView extends React.Component{
                 <InterruptionView />
             </div>
           </Pane>
-        <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
-          <div className="cardInfoInterruption viewReport">
-            <div className="containerHeaderFields">
-              <div className="containerInputsHeader">
-                <label className="field a-field a-field_a1 page__field">
-                  <input className="field__input a-field__input" placeholder="Coordinación Zonal X" value={this.state.coordinacionZonal} onChange={this.updateHeaders.bind(this,'coordinacionZonal')}/>
-                  <span className="a-field__label-wrap">
-                    <span className="a-field__label">Coordinación Zonal</span>
-                  </span>
-                </label>
-                <label className="field a-field a-field_a1 page__field">
-                  <input className="field__input a-field__input" placeholder="No. IT-CZXX-X-XXXX-XXXX" value={this.state.codigoReporte} onChange={this.updateHeaders.bind(this,'codigoReporte')}/>
-                  <span className="a-field__label-wrap">
-                    <span className="a-field__label">Código de Informe</span>
-                  </span>
-                </label>
+        {
+          this.props.sessionController.id_rol===1
+          ?
+          <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
+            <div className="cardInfoInterruption viewReport">
+              <div className="containerHeaderFields">
+                <div className="containerInputsHeader">
+                  <label className="field a-field a-field_a1 page__field">
+                    <input className="field__input a-field__input" placeholder="Coordinación Zonal X" value={this.state.coordinacionZonal} onChange={this.updateHeaders.bind(this,'coordinacionZonal')}/>
+                    <span className="a-field__label-wrap">
+                      <span className="a-field__label">Coordinación Zonal</span>
+                    </span>
+                  </label>
+                  <label className="field a-field a-field_a1 page__field">
+                    <input className="field__input a-field__input" placeholder="No. IT-CZXX-X-XXXX-XXXX" value={this.state.codigoReporte} onChange={this.updateHeaders.bind(this,'codigoReporte')}/>
+                    <span className="a-field__label-wrap">
+                      <span className="a-field__label">Código de Informe</span>
+                    </span>
+                  </label>
+                </div>
+                <div className="subjectContainer">
+                  <label className="field a-field a-field_a1 page__field">
+                    {/* <span className="a-field__label-wrap"> */}
+                      <span className="a-field__label__textarea">Asunto</span>
+                    {/* </span> */}
+                    <textarea className="field__input a-field__input" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum." value={this.state.asunto} onChange={this.updateHeaders.bind(this,'asunto')}/>
+                  </label>
+                </div>
               </div>
-              <div className="subjectContainer">
-                <label className="field a-field a-field_a1 page__field">
-                  {/* <span className="a-field__label-wrap"> */}
-                    <span className="a-field__label__textarea">Asunto</span>
-                  {/* </span> */}
-                  <textarea className="field__input a-field__input" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum." value={this.state.asunto} onChange={this.updateHeaders.bind(this,'asunto')}/>
-                </label>
+              <div className="editableReportContainer">
+                <ContentEditable
+                  className="editableReport"
+                  innerRef={this.editorRef}
+                  tagName="pre"
+                  html={this.state.html} // innerHTML of the editable div
+                  disabled={!this.state.editable} // use true to disable edition
+                  // onChange={this.handleChange} // handle innerHTML change
+                  onChange={this.handleChange.bind(this,'html')}
+                  onBlur={this.sanitize}
+                  style={{width:"100%"}}
+                />
+              </div>
+            {/* <DraftailEditor
+                rawContentState={this.initial || null}
+                onSave={this.onSave}
+                blockTypes={[
+                  { type: BLOCK_TYPE.HEADER_THREE },
+                  { type: BLOCK_TYPE.UNORDERED_LIST_ITEM },
+                ]}
+                inlineStyles={[{ type: INLINE_STYLE.BOLD }, { type: INLINE_STYLE.ITALIC }]}
+              /> */}
+            </div>
+
+        </Pane>
+            :
+            <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
+              <div className="cardInfoInterruption viewReport">
+                {/* <div className="minimap"> */}
+                  <Map isDashboardComponent={true}/>
+                {/* </div> */}
+              </div>
+            </Pane>
+        }
+        {
+          this.props.sessionController.id_rol===1?
+          <Pane key="interruptionCode" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
+            <div className="cardInfoInterruption viewCode">
+              <textarea className="editableContainer" value={this.state.html} onChange={this.handleChange.bind(this,'html')} />
+              <div className="SaveButtonContainer">
+                <button onClick={this.saveReportChanges} className="reportButtons">Save Changes</button>
+                <button className="reportButtons">Rebuild Report</button>
+              </div>
+              <div className="commentsContainer">
+                  <Chat_ message={this.state.messageToSend}/>
+                  {/* <textarea className="commentInput" value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} /> */}
+                  <div className="sendCommentContainer">
+                    <input className="textarea" onKeyPress={this.handleSendComment} value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} type="text" placeholder="Type here!"/>
+                    {/* <button className="fas fa-share-square buttonComment" onClick={this.handleSendComment}></button> */}
+                  </div>
               </div>
             </div>
-            <div className="editableReportContainer">
-              <ContentEditable
-                className="editableReport"
-                innerRef={this.editorRef}
-                tagName="pre"
-                html={this.state.html} // innerHTML of the editable div
-                disabled={!this.state.editable} // use true to disable edition
-                onChange={this.handleChange} // handle innerHTML change
-                onBlur={this.sanitize}
-                style={{width:"100%"}}
-              />
+          </Pane>
+          :
+          <Pane key="interruptionCode" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
+            <div className="cardInfoInterruption viewCode">
+              <div className="commentsContainer">
+                  <Chat_ message={this.state.messageToSend} interruptionID={this.props.interruptionData.ID.data.data.id_inte}/>
+                  {/* <textarea className="commentInput" value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} /> */}
+                  <div className="sendCommentContainer">
+                    <input className="textarea" onKeyPress={this.handleSendComment} value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} type="text" placeholder="Type here!"/>
+                    {/* <button className="fas fa-share-square buttonComment" onClick={this.handleSendComment}></button> */}
+                  </div>
+              </div>
             </div>
-          {/* <DraftailEditor
-              rawContentState={this.initial || null}
-              onSave={this.onSave}
-              blockTypes={[
-                { type: BLOCK_TYPE.HEADER_THREE },
-                { type: BLOCK_TYPE.UNORDERED_LIST_ITEM },
-              ]}
-              inlineStyles={[{ type: INLINE_STYLE.BOLD }, { type: INLINE_STYLE.ITALIC }]}
-            /> */}
-          </div>
-        </Pane>
-        <Pane key="interruptionCode" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
-          <div className="cardInfoInterruption viewCode">
-            <div className="SaveButtonContainer">
-              <button onClick={this.saveReportChanges} className="reportButtons">Save Changes</button>
-              <button className="reportButtons">Rebuild Report</button>
-            </div>
-            <textarea className="editableContainer" value={this.state.html} onChange={this.handleChange} />
-          </div>
-        </Pane>
+          </Pane>
+          }
         </SortablePane>
       </div>
     }else{

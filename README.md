@@ -1,7 +1,24 @@
-#Parte Inicial del proyecto de SMA manejo de interrupciones
+# Front-End plataforma SMA
 
-#Creando componenetes y comunicacion iunter componentes
+### SPA para SMA manejo de interrupciones
 
-Para iniciar
+### __Deprendencias Importantes__
 
-```npm install```
+*_react_
+*_socket.io-client_
+*_redux_
+*_react-contenteditable_
+*_leaflet_
+*_d3_
+*__otras 26 Librerias__ 
+
+#### Para Iniciar
+```npm
+npm install
+npm start
+```
+
+License
+----
+
+GLP

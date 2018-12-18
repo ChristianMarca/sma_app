@@ -96,7 +96,7 @@ class InterruptionOperatorView extends React.Component{
                 })
                 .then(resp=>resp.json())
                 .then(user=>{
-                    console.log('adqui esta',user)
+                    // console.log('adqui esta',user)
                     if (user && user.email){
                       console.log(user, 'continueWithToken')
                       this.props.onSignInApproved();
