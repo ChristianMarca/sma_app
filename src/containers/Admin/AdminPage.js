@@ -15,13 +15,13 @@ class AdminPage extends React.Component{
   onRolChanged=(e)=>{
     this.setState({
       rol: e.currentTarget.value
-      });
+    });
   }
 
   onOperatorChanged=(e)=>{
     this.setState({
       operator: e.currentTarget.value
-      });
+    });
   }
 
   onHandleSubmit=(event)=>{
@@ -39,7 +39,6 @@ class AdminPage extends React.Component{
               rol:'',
               email:''
             })
-            console.log(data)
             alert('Completado')
           }else{
             alert('ERROR')

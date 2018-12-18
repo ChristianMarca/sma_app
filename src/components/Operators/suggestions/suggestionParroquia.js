@@ -2,16 +2,10 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import {connect} from 'react-redux';
 import {
-  //requestParishAction,
   requestAddressAction,
-  // interruptionIdBsAction,
   interruptionParishAction,
   interruptionCantonAction,
   interruptionProvinceAction
-  // interruptionCantonAction,
-  // interruptionParishAction,
-  // interruptionCodeAction,
-  // interruptionBSAction,
 } from '../../../actions';
 import {UPDATE_INPUT_VALUE_PARISH,
   CLEAR_SUGGESTIONS_PARISH,
@@ -106,17 +100,9 @@ function mapStateToProps(state,ownProps) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    // onChange(event, { newValue }) {
-    // onChangeTest:(newValue,id_usuario)=>{
     onChange(event, { newValue }) {
-      // dispatch(requestIDAction(newValue,"nom_sit",id_usuario));
-      // dispatch(requestProvinceAction(newValue,"provincia",id_usuario));
       dispatch(updateInputValue(newValue));
-      // dispatch(interruptionBSAction(newValue))
     },
-    // onSuggestionsFetchRequested({ value }) {
-    //   dispatch(loadSuggestions(value));
-    // },
     async onSuggestionsFetchRequestedMerge(value,interruptionLevel,interruptionTechnologies,id_usuario) {
       await dispatch(requestAddressAction(value,"parroquia",interruptionLevel,interruptionTechnologies,id_usuario));
       await dispatch(loadSuggestions(value));
@@ -130,30 +116,20 @@ function mapDispatchToProps(dispatch) {
       dispatch(interruptionCantonAction(suggestion.canton));
       dispatch(updateInputValueProvincia(suggestion.provincia));
       dispatch(interruptionProvinceAction(suggestion.provincia));
-      // dispatch(updateInputValueID(String(suggestion.cell_id) ));
-      // dispatch(interruptionIdBsAction(suggestion.id_bs));
-      // dispatch(interruptionCodeAction(String(suggestion.cell_id) ))
-      // dispatch(interruptionBSAction(suggestion.nom_sit))
-      // dispatch(interruptionProvinceAction(suggestion.provincia))
-      // dispatch(interruptionCantonAction(suggestion.canton))
-      // dispatch(interruptionParishAction(suggestion.parroquia))    
     }
   };
 }
 
-// Merge it all (create final props to be passed)
 const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
   return {
     ...mapStateToProps,  // optional
     ...mapDispatchToProps,  // optional
-    // onChangeWithNeededValue: (newValue) => (
-      // onChange_(event, { newValue }) {
     onSuggestionsFetchRequested:({ value })=>(
       mapDispatchToProps.onSuggestionsFetchRequestedMerge(
         value,
         mapStateToProps.interruptionLevel,
         mapStateToProps.interruptionTechnologies,
-        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+        mapStateToProps.sessionController.id_user
       )
     )
   }
@@ -168,12 +144,8 @@ class SuggestionParish extends React.Component {
       onChange,
       disabled: this.props.isLockField
     };
-    // const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
     return (
       <div>
-        {/* <div className="status">
-          <strong>Status:</strong> {status}
-        </div> */}
         <Autosuggest 
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}

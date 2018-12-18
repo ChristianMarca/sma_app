@@ -3,7 +3,6 @@
   height: calc(100vh - 5.3vh);
   width: 100vw;
   max-height: calc(100vh - 6.6vh);
-   /* padding: 1em; */
    color: black;
   background-color:whitesmoke;
   border: 1px solid #FFF;
@@ -26,24 +25,18 @@ td{
 }
 .tableFilters{
   position: relative;
-  /* width: calc(100vw - 14vw); */
-  /* width: 100%; */
   max-width: calc(100vw - 14vw);
   height: 100%;
   color: #fff;
   display: flex;
   flex-direction: row;
-  /* flex-wrap: wrap; */
-  /* padding: 5px; */
   height: auto;
-  /* justify-content: flex-end; */
   align-content: center;
   align-items: center;
   text-align: center;
   margin: 0;
   padding: 0;
   margin-left: auto;
-  /* margin-left: 10%; */
 }
 .searchButtonleft{
   border-top-left-radius: 5px!important;
@@ -94,23 +87,17 @@ td{
 	background:-o-linear-gradient(top, #2e2e2e 5%, #3e3e3e 100%);
 	background:-ms-linear-gradient(top, #2e2e2e 5%, #3e3e3e 100%);
 	background:linear-gradient(to bottom, #2e2e2e 5%, rgba(255,255,255,0.25) 100%);
-	/* filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#fff',GradientType=0); */
 	background-color:#2E2E2E;
 }
-/* .searchButton:active{
-  position:relative;
-	top:1px;
-} */
 
 .areaAfectadaInput{
   background-color: transparent;
   height: 75%;
   border: none;
   border-bottom: 1px solid #fff;
-  /* padding: 5px; */
-  /* margin-right: 5px; */
   border-radius: 5px;
 }
+
 .areaAfectadaContainer{
   display: flex;
   flex-direction: row;
@@ -118,11 +105,12 @@ td{
   align-content: center;
   align-items: center;
 }
+
 .dateFilterPag{
   height: 5vh;
   width: auto;
-  /* width: auto; */
 }
+
 .dateFilterContainer{
   display: flex;
   flex-direction: row;
@@ -134,21 +122,10 @@ td{
 .dateFilterPag>.react-datetime-picker__calendar {
   color: #000000;
 }
-/* .dateFilterPag>.react-datetime-picker__button__input{
-  padding: 0!important;
-  margin: 0!important;
-  width: auto!important;
-  height: 100%!important;
-} */
-.react-datetime-picker__button__input>input{
-  /* padding: 0!important;
-  margin: 0!important;
-  width: 100%!important; */
-}
+
 .dateFilterPag>.react-datetime-picker__button{
   border-radius: 5px;
   border: none;
-  /* border: 1px solid #fff; */
   padding: 0!important;
   margin: 0!important;
   width: 65%!important;
@@ -169,10 +146,8 @@ td{
   width: auto;
   margin-top: 1px;
   margin-bottom: 2px;
-  /* background-color: #2E2E2E; */
   border: 1px solid rgba(255,255,255,0.25);
   border-radius: 10px;
-  /* background-color: #2E2E2E; */
 }
 .tableContainer{
  width: 100%;
@@ -187,7 +162,6 @@ td{
   padding: 15px;
   border: none;
   background-color: #2E2E2E;
-  /* border-radius: 10px; */
   outline: none;
 }
 .pagButton:hover{
@@ -203,7 +177,6 @@ td{
   border-top-right-radius: 10px;
 }
 .tableSubContainer{
-  /* background-color: red; */
   border-radius: 10px;
   border: 1px solid #2E2E2E;
   margin: 5px;
@@ -214,13 +187,6 @@ td{
   border-radius: 10px;
   padding: 10px;
   outline:none;
-  /* margin:0 auto;
-  width: 400px;
-  height: 100px;
-  position: relative;
-  top:50%;left:50%;
-  margin-left:-200px;
-  margin-top:-50px; */
 }
 .goInterruptionButton:hover{
   text-decoration: overline underline;
@@ -235,11 +201,6 @@ td{
   }
   .tableFilters{
     justify-content: flex-start!important;
-    /* max-width: 100%; */
-    /* width: 0px; */
-    /* align-content: flex-start;
-    align-items: flex-start;
-    align-self: flex-start; */
   }
   .dateFilterContainer{
     visibility: hidden;
@@ -248,15 +209,11 @@ td{
   }
   .react-datetime-picker__button,.dateFilterPag{
     visibility: hidden;
-    /* width: 0px!important; */
   }
   .areaAfectadaContainer{
     max-width: 100%;
     height: 100%;
     width: auto;
-    /* align-content: flex-start;
-    align-items: flex-start;
-    align-self: flex-start; */
   }
   .areaAfectadaInput{
     position: relative;
@@ -265,7 +222,6 @@ td{
   .searchButton{
     width: 50vw;
     height: 5vh;
-    /* max-width: 75%!important; */
   }
   .goButton{
     height: auto;
@@ -280,8 +236,6 @@ td{
 	display: block;
 	margin: 0 auto;
 	width: 24px;
-	/* height: 100px; */
-  /* margin-top: 125px; */
   transform: rotate(270deg)
 }
 
@@ -314,83 +268,47 @@ td{
   -ms-transform: rotate(45deg); /* IE 9 */
   -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
   transform: rotate(45deg);
-   
-  /* border-right: 2px solid white;
-  border-bottom: 2px solid white; */
   margin: 0 0 3px 4px;
-  
   width: 16px;
   height: 16px;
 }
 
-
-.unu
-{
+.unu{
   margin-top: 1px;
 }
 
-.unu, .doi, .trei
-{
+.unu, .doi, .trei{
     -webkit-animation: mouse-scroll 1s infinite;
     -moz-animation: mouse-scroll 1s infinite;
 }
 
-.unu
-{
+.unu{
   -webkit-animation-delay: .1s;
   -moz-animation-delay: .1s;
   -webkit-animation-direction: alternate;
 }
 
-.doi
-{
+.doi{
   -webkit-animation-delay: .2s;
   -moz-animation-delay: .2s;
   -webkit-animation-direction: alternate;
   margin-top: -6px;
 }
 
-.trei
-{
+.trei{
   -webkit-animation-delay: .3s;
   -moz-animation-delay: .3s;
   -webkit-animation-direction: alternate;
   margin-top: -6px;
 }
 
-.mouse
-{
+.mouse{
   height: auto;
   width: auto;
-/* height: 42px;
-width: 24px; */
   border-radius: 100%;
   transform: rotate(90deg);
   border: 2px solid white;
-  /* top: 170px; */
 }
-
-/* .wheel
-{
-  height: 5px;
-  width: 2px;
-  display: block;
-  margin: 5px auto;
-  background: white;
-  position: relative;
-  height: 4px;
-  width: 4px;
-  border: 2px solid #fff;
-  -webkit-border-radius: 8px;
-          border-radius: 8px;
-  
-} */
-
-/* .wheel
-{
-  -webkit-animation: mouse-wheel 0.6s linear infinite;
-  -moz-animation: mouse-wheel 0.6s linear infinite;
-} */
 
 @-webkit-keyframes mouse-wheel
 {

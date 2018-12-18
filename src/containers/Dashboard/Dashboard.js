@@ -12,16 +12,13 @@ const mapStateToProps=state=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-    // Elección del tipo de interrupción
         onSignInApproved: ()=> dispatch(isSignInAction(true)),
         onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
 	}
 }
 
 class Dashboard extends React.Component{
-  // constructor(){
-  //   super();
-  // }
+  
   componentDidMount(){
     const token = sessionStorage.getItem('token')||localStorage.getItem('token');
     if(token){
@@ -44,9 +41,7 @@ class Dashboard extends React.Component{
               })
               .then(resp=>resp.json())
               .then(user=>{
-                  console.log('adqui esta',user)
                   if (user && user.email){
-                    console.log(user, 'continueWithToken')
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
                   }
@@ -55,6 +50,7 @@ class Dashboard extends React.Component{
       })
       .catch(err=>{
         // this.props.history.push('/');
+        console.log({Error: err})
       })
     }else{
       this.props.history.push('/');

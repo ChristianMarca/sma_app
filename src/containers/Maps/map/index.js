@@ -140,7 +140,6 @@ class Mapaj extends Component {
           }
           locate = (data) => {
             this.setState({locate: data})
-            console.log('locate', data)
           }
           changeName = (value) => {
             // const h=new Side();
@@ -151,7 +150,6 @@ class Mapaj extends Component {
 
           showSettings(event) {
             event.preventDefault();
-            console.log(event)
           }
           searchMenu = (data) => {
             this.toggleMenu();
@@ -234,7 +232,6 @@ class Mapaj extends Component {
                 }
               }
             }
-            // console.log('clickeados',electionArray)
             this.setState({optionSelected: electionArray})
 
           }

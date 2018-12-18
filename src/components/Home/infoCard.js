@@ -5,7 +5,6 @@ import './style.css';
 
 const mapStateToProps=state=>{
 	return {
-    // Elección del tipo de interrupción
     sessionData: state.sessionReducer,
 	}
 }

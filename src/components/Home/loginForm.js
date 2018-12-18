@@ -8,16 +8,14 @@ import './style.css';
 
 const mapStateToProps=state=>{
 	return {
-    // Elección del tipo de interrupción
-    interruptionType: state.interruptionTypeReducer.interruptionType,
-    interruptionRB: state.interruptionAddressReducer,
-    interruptionDate: state.interruptionDateReducer,
-    interruptionCauses: state.interruptionCausesReducer,
+        interruptionType: state.interruptionTypeReducer.interruptionType,
+        interruptionRB: state.interruptionAddressReducer,
+        interruptionDate: state.interruptionDateReducer,
+        interruptionCauses: state.interruptionCausesReducer,
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-    // Elección del tipo de interrupción
         onSigninApproved: ()=> dispatch(isSignInAction(true)),
         onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
 	}
@@ -61,7 +59,6 @@ class LoginForm extends React.Component{
     }
 
     onSubmitSignIn=(event)=>{
-        // console.log(this.state)
         let message=document.getElementById("failMessage");
         if (message.style.visibility === 'visible'){
             message.style.visibility = 'hidden';
@@ -79,7 +76,6 @@ class LoginForm extends React.Component{
         })
         .then(respon=>{return respon.json()})
         .then(data=>{
-			console.log(data)
 			if (data.userId && data.success=== true){
 				this.saveAuthTokenInSession(data.token);
 				fetch(`${API_URL}/authentication/profile/${data.userId}`,{
@@ -91,24 +87,19 @@ class LoginForm extends React.Component{
 						})
 						.then(resp=>resp.json())
 						.then(user=>{
-                            console.log('user', user)
 								if (user && user.email){
-                                        // console.log(user, 'continue')
                                         this.props.onSigninApproved()
                                         this.props.onReceiveDataUser(user)
-										// this.props.loadUser(user);
-										// this.props.onRouteChange('Home')
 								}
 						})
-						.catch(console.log)
+						.catch(error=>console.log({Error:error}))
 				}else{
                     const message=document.getElementById("failMessage");
                     message.style.visibility="visible";
                     message.style.height='auto';
                     message.style.padding='.5em';
 			}
-		}).catch(console.log)
-
+		}).catch(error=>console.log({Error:error}))
 	}
 
     render(){
@@ -131,11 +122,8 @@ class LoginForm extends React.Component{
                                     <i className="fas fa-exclamation-triangle"></i>Correo o Contraseña incorrectos
                                 </div>
                                 <div className="form-check">
-                                    {/* <label className="form-check-label"> */}
                                         <input type="checkbox" id="rememberMe" onClick={this.onRememberChange} className="form-check-input" />
                                         <label className="marca" htmlFor="rememberMe">Remember Me</label>
-                                        {/* <small>Remember Me</small> */}
-                                    {/* </label> */}
                                     <br/>
                                     <button type="submit" onClick={this.onSubmitSignIn} className="btn btn-login float-right">Submit</button>
                                 </div>
@@ -143,16 +131,6 @@ class LoginForm extends React.Component{
                             <div className="copy-text">La presenta plataforma se encuentra en proceso de desarrollo, para mas información dirigirse a  <i className="fab fa-github" ></i> o en  <a href="http://www.arcotel.gob.ec/">ARCOTEL</a>
                             </div>
                         </div>
-                        {/* <div className="col-md-8 banner-sec"> */}
-                            {/* <a href="#" class="photo">
-                            <h1>Amber Heard</h1>
-                                <img src="https://s-media-cache-ak0.pinimg.com/736x/06/d1/5f/06d15fc8a69e2ab67143e5357a4184d7.jpg" />
-                            <div class="glow-wrap">
-                                <i class="glow"></i>
-                            </div>
-                            </a> */}
-                            {/* <a href="http://tiagoalexandrelopes.com/" target="_blank" id="author">About me</a> */}
-                        {/* </div> */}
                     </div>
                 </div>
             </section>

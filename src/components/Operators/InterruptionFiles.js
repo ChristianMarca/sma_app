@@ -20,7 +20,6 @@ class InterruptionInput extends React.Component{
   handleUploadImage(ev) {
     ev.preventDefault();
     const data = new FormData();
-    // console.log(data)
     data.append('file', this.uploadInput.files[0]);
     data.append('filename', this.fileName.value);
 
@@ -34,18 +33,16 @@ class InterruptionInput extends React.Component{
   }
 
   onDrop= acceptedFiles => {
-    console.log('files',acceptedFiles)
     var formData=new FormData();
     formData.append('userFile',acceptedFiles);
-    // axios.post('http://localhost:3000/uploadOperators',formData)
     acceptedFiles.forEach(file => {
         const reader = new FileReader();
         console.log('reader',reader)
         reader.onload = () => {
             const fileAsBinaryString = reader.result;
             fetch('http://localhost:3000/uploadOperators', {
-              credentials: 'same-origin', // 'include', default: 'omit'
-              method: 'POST', // 'GET', 'PUT', 'DELETE', etc.
+              credentials: 'same-origin',
+              method: 'POST',
               body: fileAsBinaryString, // Coordinate the body type with 'Content-Type'
               // headers: new Headers({
               //   'Content-Type': 'application/json'

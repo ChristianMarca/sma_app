@@ -96,7 +96,7 @@ class SuggestFields extends React.Component {
     .then(resp=>{
       this.setState({languages: resp.data})
     })
-    .catch(console.log)
+    .catch(error=>console.log({Error:error}))
     this.setState({
       ID: String(newValue)
     });
@@ -108,7 +108,7 @@ class SuggestFields extends React.Component {
     .then(resp=>{
       this.setState({languages: resp.data})
     })
-    .catch(console.log)
+    .catch(error=>console.log({Error:error}))
     this.setState({
       Est: String(newValue)
     });

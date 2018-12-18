@@ -55,17 +55,13 @@ class Chat extends React.Component{
 
         // Escuchar información
         this.socket.on('crearMensaje', function(mensaje,updateMessages_=updateMessages) {
-            console.log('Servidor:', mensaje);
             updateMessages_(mensaje)
-            // renderizarMensajes(mensaje, false);
-            // scrollBottom();
         });
         
         // Escuchar cambios de usuarios
         // cuando un usuario entra o sale del chat
         this.socket.on('listaPersona', function(personas) {
             console.log('personas',personas)
-            // renderizarUsuarios(personas);
         });
         
         // Mensajes privados
@@ -84,8 +80,6 @@ class Chat extends React.Component{
 
     componentDidMount=()=>{
         fetch(`${API_URL}/interrupcion/getComments?id_interruption=${this.props.interruptionViewSelected}`,{
-        // fetch(`${API_URL}/interrupcion/getComments?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
-            // fetch(`${API_URL}/interrupcion/getComments?id_interruption=${this.props.interruptionID}`,{
             method: 'GET',
             })
           .then(resp=>resp.json())
@@ -115,29 +109,19 @@ class Chat extends React.Component{
         // (snapshot here is the value returned from getSnapshotBeforeUpdate)
         const updateMessages=(newMessage)=>{
             let prevComments=this.state.comments;
-            // console.log(newMessage,this.state.comments,'safd',prevComments.push(newMessage))
             prevComments.push(newMessage)
-            // console.log(prevComments,'sdf')
-            this.setState({ comments: prevComments } 
-                // ({ comments: prevState.comments.push(newMessage) })
-                )
+            this.setState({ comments: prevComments })
         }
         if (snapshot !== null) {
             let {username,id_user}=this.props.sessionController;
         let interruptionView=this.props.interruptionViewSelected;
-          console.log('Funcioneando como se dessea',this.props.message,id_user)
           this.socket.emit('crearMensaje', {
             nombre: username,
             mensaje: this.props.message,
             id_user: id_user,
             id_interruption:interruptionView
             }, function(mensaje,updateMessages_=updateMessages) {
-                console.log(mensaje,'aqui ss')
                 updateMessages_(mensaje)
-                // this.setState({comments:mensa})
-                // txtMensaje.val('').focus();
-                // renderizarMensajes(mensaje, true);
-                // scrollBottom();
             });
     
         }
@@ -151,11 +135,9 @@ class Chat extends React.Component{
     handleComments=()=>{
         return this.state.comments.map((comment,index)=>{
             return <li key={index} className={comment.id_user3===this.props.sessionController.id_user?'self':'other'}>
-                    {/* <li className="self"></li> */}
                         <div className="avatar" />
                         <div className="msg">
                             <p>{comment.comentario}</p>
-                            {/* <p>Te vienes a cenar al centro? <emoji className="pizza"/></p> */}
                             <time>{comment.fecha}</time>
                         </div>
                     </li>
@@ -164,42 +146,25 @@ class Chat extends React.Component{
     render(){
         return(
             <div className="ContainerChat">
-                {/* <div className="menuHeader">          
-                    <div className="name">
-                        {this.props.sessionController.username}
-                    </div>
-                    <div className="last">18:09</div>
-                </div> */}
-                        <ol className="chat">
-                            {/* {this.handleComments()} */}
-                            {
-                                this.state.comments.map((comment,index)=>{
-                                    return <li key={index} className={comment.id_user3===this.props.sessionController.id_user?'self':'other'}>
-                                            {/* <li className="self"></li> */}
-                                                <div className="avatar" />
-                                                <div className="msg">
-                                                    <p>{comment.comentario}</p>
-                                                    {/* <p>Te vienes a cenar al centro? <emoji className="pizza"/></p> */}
-                                                    <time>{comment.fecha}</time>
-                                                </div>
-                                            </li>
-                                })
-                            }
-                            <li style={{ float:"left", clear: "both" }}
-                                ref={(el) => { this.messagesEnd = el; }}>
-                            </li>
-                        </ol>
-                        {/* <div style={{ float:"left", clear: "both" }}
-                            ref={(el) => { this.messagesEnd = el; }}>
-                        </div> */}
-                        {/* <input className="textarea" type="text" placeholder="Type here!"/>
-                        <div className="emojis"></div> */}
+                <ol className="chat">
+                    {
+                        this.state.comments.map((comment,index)=>{
+                            return <li key={index} className={comment.id_user3===this.props.sessionController.id_user?'self':'other'}>
+                                    <div className="avatar" />
+                                        <div className="msg">
+                                            <p>{comment.comentario}</p>
+                                            <time>{comment.fecha}</time>
+                                        </div>
+                                    </li>
+                        })
+                    }
+                    <li style={{ float:"left", clear: "both" }}
+                        ref={(el) => { this.messagesEnd = el; }}>
+                    </li>
+                </ol>
             </div>
         )
     }
 }
 
-const Chat_= connect(mapStateToProps,mapDispatchToProps)(Chat);
-export {
-    Chat_
-};
+export default connect(mapStateToProps,mapDispatchToProps)(Chat);

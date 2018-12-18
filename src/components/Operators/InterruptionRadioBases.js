@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 
 import {
-  // interruptionCodeAction,
   interruptionBSAction,
   interruptionCodeEstAction,
   interruptionProvinceAction,
@@ -11,17 +10,13 @@ import {
   interruptionParishAction,
   interruptionLevelSelectedAction,
   addRadioBaseAction
-  // interruptionSectorAction,
 } from '../../actions';
-// import SuggestField from './SuggestFields';
-// import SuggestionID from './SuggestionID';
-import './interruption.css'
-// import SuggestionEST from './SuggestionEST';
 import SuggestionCodeEst from './suggestions/suggestionCodEst';
 import SuggestionProvince from './suggestions/suggestionProvincia';
 import SuggestionCanton from './suggestions/suggestionCanton';
 import SuggestionParish from './suggestions/suggestionParroquia';
 import { API_URL } from "../../config";
+import './interruption.css'
 
 const mapStateToProps=state=>{
 	return {
@@ -87,14 +82,11 @@ class InterruptionAddress extends React.Component{
     this.selectedRadioButtonLevel = new Set();
   }
   onChangeTest=(event)=>{
-    console.log(event.target.value.length)
-    // event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
     event.target.value.length>=3 && axios.get(`${API_URL}/radioBases?id=${event.target.value}`)
-      .then(resp=>{console.log(resp.data)})
-      .catch(console.log)
+      // .then(resp=>{console.log(resp.data)})
+      .catch(error=>console.log({Error:error}))
   }
   toggleRadioButtonLevel = label => {
-    // console.log(label.currentTarget.value,'hello---')
     if (this.selectedRadioButtonLevel.has(label.currentTarget.value)) {
       this.selectedRadioButtonLevel.delete(label.currentTarget.value);
       this.props.onRemoveService(label.currentTarget.value)
@@ -114,11 +106,6 @@ class InterruptionAddress extends React.Component{
     this.props.onReceiveRadioBase(interruptionCodEstNew,{cod_est:interruptionCodEstNew})
   }
   render(){
-    // const {onChangeProvince,onChangeCanton,onChangeParish}=this.props;
-    // const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
-    // const parroquia=<h6 className="titleInput">Paroquia</h6>
-    // {/* <input placeholder="Parroquia" className="inputField" type="text" value={interruptionParish} onChange={onChangeParish}  required></input> */}
-    // <SuggestionParish />
     var parroquia=[];
     var canton=[];
     var provincia=[];
@@ -148,21 +135,13 @@ class InterruptionAddress extends React.Component{
     }
     return(
       <div className="addressContainer card-body">
-        {/* <SuggestField /> */}
         <h6 className="titleInput">Codigo de Estacion</h6>
-        {/* <SuggestionID  /> */}
         <div className="ContainerCodEst">
           <SuggestionCodeEst />
           <button type="button" className="buttonSubmitAddForCodEst" onClick={this.addCodEstUnique} >
-            {/* <i className="fas fa-plus-square"></i> */}
             &#x271A;
           </button>
         </div>
-        {/* <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
-        <input placeholder="Test" className="inputField" type="text" onChange={this.onChangeTest} required></input> */}
-        {/* <h6 className="titleInput">Radio Base</h6> */}
-        {/* <SuggestionEST /> */}
-        {/* <input placeholder="Nodo Principal" className="inputField" type="text" onChange={onChangeBS} required></input> */}
         <div className="servicesContainer">
             <h6 className="titleInput">Nivel de Afeccion</h6> 
             <div className="interruptionLevelContainer">
@@ -183,21 +162,9 @@ class InterruptionAddress extends React.Component{
                 <label className="interruptionLevel" htmlFor="parroquia">Parroquia</label>
             </div>
         </div>
-        {/* <h6 className="titleInput">Provincia</h6> */}
-        {/* <input placeholder="Azuay" className="inputField" type="text" value={interruptionProvince} onChange={onChangeProvince} required></input> */}
-        {/* <SuggestionProvince /> */}
-        {/* <h6 className="titleInput">Cantón</h6> */}
-        {/* <input placeholder="Cantón" className="inputField" type="text" value={interruptionCanton} onChange={onChangeCanton}  required></input> */}
-        {/* <SuggestionCanton /> */}
         {provincia}
         {canton}
         {parroquia}
-        {/* <h6 className="titleInput">Lugar Afectado</h6> */}
-        {/* <input placeholder="Azuay" className="inputField" id="inputResize" type="text" size="1" onChange={onChangeSector} required></input> */}
-        {/* <div className="textarea-container">
-          <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
-          <div className="textarea-size"></div>
-        </div> */}
       </div>
     )
   }

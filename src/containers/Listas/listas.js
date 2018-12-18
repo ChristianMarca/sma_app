@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import {Redirect,withRouter} from 'react-router-dom';
-// import axios from 'axios';
 import { API_URL } from "../../config";
 
 import { isSignInAction,receiveDataUserAction } from "../../actions";
@@ -9,7 +8,6 @@ import Lista from "../../components/Card/lista.js";
 
 const mapStateToProps=state=>{
 	return {
-    // Elección del tipo de interrupción
     sessionController: state.sessionReducer.dataUser
 	}
 }
@@ -44,9 +42,7 @@ class ListaInt extends React.Component {
               })
               .then(resp=>resp.json())
               .then(user=>{
-                  console.log('adqui esta',user)
                   if (user && user.email){
-                    console.log(user, 'continueWithToken')
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
                   }
@@ -54,8 +50,7 @@ class ListaInt extends React.Component {
           }
       })
       .catch(err=>{
-        // this.props.history.push('/');
-        console.log('Aqui un error', err)
+        console.log({Error:err})
       })
     }else{
       this.props.history.push('/');
@@ -78,10 +73,6 @@ class ListaInt extends React.Component {
   }
 
   render() {
-    // let card =<div className="containerListSuper">
-    //   <Lista/>
-    // </div>
-    // return (card)
     return(
       this.getContentFromPage()
     )

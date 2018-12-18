@@ -3,7 +3,6 @@ import Autosuggest from 'react-autosuggest';
 import {connect} from 'react-redux';
 import {requestIDAction,
   interruptionCodeEstAction,
-  // interruptionLevelSelectedAction,
   interruptionProvinceAction,
   interruptionCantonAction,
   interruptionParishAction,
@@ -15,7 +14,6 @@ import {UPDATE_INPUT_VALUE_COD_EST,
   CLEAR_SUGGESTIONS_COD_EST,
 MAYBE_UPDATE_SUGGESTIONS_COD_EST,
 LOAD_SUGGESTIONS_BEGIN_COD_EST} from '../../../constants';
-// import {updateInputValue as updateInputValueID} from './SuggestionID';
 
 import store from '../../../index';
 import '../suggestions.css';
@@ -42,9 +40,7 @@ function escapeRegexCharacters(str) {
 function loadSuggestions(value) {
   return dispatch => {
     dispatch(loadSuggestionsBegin());
-    // console.log(value,'sadsd')
     dispatch(maybeUpdateSuggestions(getMatchingSuggests(value), value));
-    // dispatch(updateInputValue(value));
   };
 }
 
@@ -103,13 +99,8 @@ function mapDispatchToProps(dispatch) {
 
   return {
     onChange(event, { newValue }) {
-    // onChangeTest: (newValue,id_usuario)=>{
-      // onChangeTest: (newValue)=>{ 
-      // dispatch(requestIDAction(newValue,"cod_est",id_usuario));
       dispatch(updateInputValue(newValue));
-      // dispatch(interruptionBSAction(newValue))
     },
-    // async onSuggestionsFetchRequestedMerge({ value },id_usuario) {
     async onSuggestionsFetchRequestedMerge(value,id_usuario) {
       await dispatch(requestIDAction(value,"cod_est",id_usuario));
       await dispatch(loadSuggestions(value));
@@ -118,7 +109,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(clearSuggestions());
     },
     onSelectValue: (event,{suggestion})=> {
-      // dispatch(updateInputValueID(String(suggestion.cell_id) ));
       dispatch(interruptionIdBsAction(suggestion.id_bs));
       dispatch(interruptionCodeAction(String(suggestion.cell_id) ))
       dispatch(interruptionCodeEstAction(suggestion.cod_est))
@@ -130,24 +120,14 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-// Merge it all (create final props to be passed)
 const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
   return {
     ...mapStateToProps,  // optional
     ...mapDispatchToProps,  // optional
-    // onChangeWithNeededValue: (newValue) => (
-      // onChange_(event, { newValue }) {
-    // onChange:(event, { newValue })=> (
-    //   mapDispatchToProps.onChangeTest(
-    //     newValue,
-    //     mapStateToProps.sessionController.id_user  // <<< here the magic happens
-    //   )
-    // )
-    // onChange:(event, { newValue })=> (
     onSuggestionsFetchRequested:({ value })=>(
       mapDispatchToProps.onSuggestionsFetchRequestedMerge(
         value,
-        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+        mapStateToProps.sessionController.id_user
       )
     )
   }
@@ -161,12 +141,8 @@ class SuggestionCodeEst extends React.Component {
       value,
       onChange
     };
-    // const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
     return (
       <div>
-        {/* <div className="status">
-          <strong>Status:</strong> {status}
-        </div> */}
         <Autosuggest 
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}

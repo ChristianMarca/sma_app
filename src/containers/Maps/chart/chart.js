@@ -21,7 +21,6 @@ let height_view=null;
 let dates=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 export const CreateChartAPI = () => {
-  // Declaración de Variables.
   let svg = null;
   let bars = null;
   let bars1=null;
@@ -40,8 +39,6 @@ export const CreateChartAPI = () => {
   let margin=null;
 
   const createChart = (node, data,data1, data2) => {
-    // Creación de SVG
-    //console.log("El nodod", node,node.getBoundingClientRect())
 
     width=node.getBoundingClientRect().width;
     height=node.getBoundingClientRect().height;
@@ -68,7 +65,6 @@ export const CreateChartAPI = () => {
     createGradient(defs2,"barGradientOtecel", styleDefs.primaryColor2, styleDefs.secondaryColor2);
 
     xscale = d3.scaleBand()
-      // .domain(data.map((d,i) => i))
       .domain(dates)
       .rangeRound([0, width])
       .paddingInner(setup.barSeparation*14);

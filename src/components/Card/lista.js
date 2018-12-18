@@ -15,13 +15,11 @@ import { API_URL } from "../../config";
 
 const mapStateToProps=state=>{
 	return {
-    // Elección del tipo de interrupción
     sessionController: state.sessionReducer.dataUser
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-    // Elección del tipo de interrupción
     onSignInApproved: ()=> dispatch(isSignInAction(true)),
     onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
 	}
@@ -53,7 +51,6 @@ class Lista extends React.Component {
   async fetchInterrupciones() {
 
     let offset = this.state.elementosPagina * (this.state.pagina - 1);
-    console.log(this.props.sessionController,'info Session')
     const {id_rol,id_user}= this.props.sessionController;
     let datos = [
       offset,
@@ -74,7 +71,6 @@ class Lista extends React.Component {
       body: JSON.stringify(datos)
     })
     let resultado = await response.json();
-    console.log('testeiadn', resultado)
     let {total} = await resultado;
     let {interrupciones} = await resultado;
     return [total, interrupciones]
@@ -167,7 +163,6 @@ class Lista extends React.Component {
 
   saveSelectedMultiple = ({selectedKeys}) => {
     let llaves = ["0", "9", "1"].concat(selectedKeys.sort());
-    console.log('EL ingreso',llaves)
     this.setState({campos: llaves})
   }
 
@@ -177,7 +172,7 @@ class Lista extends React.Component {
       this.fetchInterrupciones().then(res => {
         res[1]?this.setState({totalInt: res[0], dataInt: res[1]}):this.setState({totalInt: res[0], dataInt: []})
       })
-      .catch(error=>console.log('io Error',error))
+      .catch(error=>console.log({Error:error}))
     }
     
     if (this.state.campOrden !== prevState.campOrden || this.state.orden !== prevState.orden) {
@@ -206,14 +201,9 @@ class Lista extends React.Component {
               })
               .then(resp=>resp.json())
               .then(user=>{
-                  console.log('adqui esta',user)
                   if (user && user.email){
-                    console.log(user, 'continueWithToken')
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
-
-                      // this.loadUser(user);
-                      // this.onRouteChange('Home')
                     this.fetchInterrupciones().then(res => {
                       this.setState({totalInt: res[0], dataInt: res[1]})
                     })
@@ -223,17 +213,12 @@ class Lista extends React.Component {
       })
       .catch(err=>{
         // this.props.history.push('/');
-        console.log('Aqui un error', err)
+        console.log({Error:err})
       })
     }else{
       this.props.history.push('/');
     }
   }
-  // componentDidMount() {
-  //   this.fetchInterrupciones().then(res => {
-  //     this.setState({totalInt: res[0], dataInt: res[1]})
-  //   })
-  // }
 
   onChangeI = date => {
     this.setState({filtroFechaInicial: date})
@@ -277,7 +262,6 @@ class Lista extends React.Component {
       {/* <Divider/>
       <MenuItem key="9">Tipo</MenuItem> */}
     </Menu>);
-    //console.log(this.state.totalInt, this.state.dataInt)
     let card = <div className="interruptionListContainer">
       <div className="configContainer">
         <div className="dropButtons">
@@ -295,7 +279,6 @@ class Lista extends React.Component {
           onChangeInput={this.onChangeInput} 
           valueI={this.state.filtroFechaInicial} 
           valueE={this.state.filtroFechaFinal}/>
-
       </div>
       <TablaInt 
         data={this.state.dataInt} 

@@ -17,7 +17,6 @@ import {updateInputValue as updateInputValueEST} from './SuggestionEST';
 
 import store from '../../../index';
 import '../suggestions.css';
-// import { merge } from 'd3-array';
 
 const getMatchingSuggests=(value)=> {
   const IDs=store.getState().requestIDReducer.ID.data;
@@ -98,10 +97,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    // onChange_(event, { newValue }) {
       onChangeTest:(newValue,id_usuario)=> {
-      // console.log('aqui esrta, PEPE ',exmaple.sessionController.id_user, ownProps)
-      // console.log('tesr',id_usuario)
       dispatch(requestIDAction(newValue,"cell_id",id_usuario));
       dispatch(updateInputValue(newValue));
       dispatch(interruptionCodeAction(String(newValue) ))
@@ -124,17 +120,14 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-// Merge it all (create final props to be passed)
 const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
   return {
     ...mapStateToProps,  // optional
     ...mapDispatchToProps,  // optional
-    // onChangeWithNeededValue: (newValue) => (
-      // onChange_(event, { newValue }) {
     onChange:(event, { newValue })=> (
       mapDispatchToProps.onChangeTest(
         newValue,
-        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+        mapStateToProps.sessionController.id_user
       )
     )
   }
@@ -149,12 +142,8 @@ class SuggestionID extends React.Component {
       value,
       onChange
     };
-    // const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
     return (
       <div>
-        {/* <div className="status">
-          <strong>Status:</strong> {status}
-        </div> */}
         <Autosuggest 
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}

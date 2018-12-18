@@ -39,22 +39,21 @@ class InterruptionOperatorView extends React.Component{
   }
 
   socketConnectionEnable=()=>{
-    const socket = io.connect(`${API_URL}`,{path:'/socket'});
-    // const socket = io.connect(`${API_URL}/socket`);
-    // console.log('this', socket, API_URL)
-    socket.on('connect',function(){
+    this.socket = io.connect(`${API_URL}`,{path:'/socket'});
+    
+    this.socket.on('connect',function(){
         console.log('Conectado al Servidor')
     })
-    socket.on('disconnect',function(){
+    this.socket.on('disconnect',function(){
         console.log('Perdimos la conexion al server')
     })
-    socket.on('message',(data)=>{
+    this.socket.on('message',(data)=>{
         console.log('llego :' , data)
     })
-    socket.emit('echo','Es el Socket')
-    socket.emit('temir',"testk")
-    socket.emit('interruptionSelected',{interruption:this.props.interruptionViewSelected})
-    socket.on('timer',(time)=>{
+    this.socket.emit('echo','Es el Socket')
+    this.socket.emit('temir',"testk")
+    this.socket.emit('interruptionSelected',{interruption:this.props.interruptionViewSelected})
+    this.socket.on('timer',(time)=>{
       var time_=time.countdown.split(':').map((item,index)=>{
         switch (index){
           case 0:
@@ -66,11 +65,10 @@ class InterruptionOperatorView extends React.Component{
         }
       })
       this.setState({time: time_})
-      // console.log(time,'pepejj')
     })
 
-    socket.on('update',data=>{console.log('si leyo ',data)})
-    socket.on("FromAPI", data => this.setState({ response: data }));
+    // this.socket.on('update',data=>{console.log('si leyo ',data)})
+    this.socket.on("FromAPI", data => this.setState({ response: data }));
   }
 
   componentDidMount=async()=>{
@@ -96,26 +94,12 @@ class InterruptionOperatorView extends React.Component{
                 })
                 .then(resp=>resp.json())
                 .then(user=>{
-                    // console.log('adqui esta',user)
                     if (user && user.email){
-                      console.log(user, 'continueWithToken')
                       this.props.onSignInApproved();
                       this.props.onReceiveDataUser(user);
-
-                        // this.loadUser(user);
-                        // this.onRouteChange('Home')
-                      // console.log(user,this.props.interruptionData,this.props.interruptionViewSelected,'.../.a/')
                       this.props.onRequestDataInterruption(this.props.interruptionViewSelected,user.id_user)
                       this.setState({isReceiveDataOfInterruption:true})
                       this.socketConnectionEnable()
-                      // try{
-                      //   var testd=
-                      //   document.getElementById("infoContainerI")
-                      //   console.log(testd)
-                      //   testd.innerHTML(this.getHtml())
-                      // }catch(e){
-                      //   alert('g')
-                      // }
                     }
                     else{
                       this.props.history.push('/listas');
@@ -125,7 +109,7 @@ class InterruptionOperatorView extends React.Component{
         })
         .catch(err=>{
           // this.props.history.push('/');
-          console.log('Aqui un error', err)
+          console.log({Error:err})
         })
       }else{
         this.props.history.push('/listas');
@@ -135,6 +119,11 @@ class InterruptionOperatorView extends React.Component{
       this.props.history.push('/');
     }
   }
+
+  componentWillUnmount=()=>{
+      this.socket.disconnect();
+  }
+
   getInfoInterruption=()=>{
     const {data}= this.props.interruptionData.ID;
     if(this.props.interruptionData.ID.data.data){

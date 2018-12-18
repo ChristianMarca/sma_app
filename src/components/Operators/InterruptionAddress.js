@@ -7,9 +7,7 @@ import {interruptionCodeAction,
   interruptionProvinceAction,
   interruptionCantonAction,
   interruptionParishAction,
-  // interruptionSectorAction,
 } from '../../actions';
-// import SuggestField from './SuggestFields';
 import SuggestionID from './suggestions/SuggestionID';
 import './interruption.css'
 import SuggestionEST from './suggestions/SuggestionEST';
@@ -26,9 +24,7 @@ const mapStateToProps=state=>{
     //Cantón
     interruptionCanton: state.interruptionAddressReducer.interruptionCanton,
     //Parish
-    interruptionParish: state.interruptionAddressReducer.interruptionParish,
-
-    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
+    interruptionParish: state.interruptionAddressReducer.interruptionParish
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -43,8 +39,6 @@ const mapDispatchToProps=(dispatch)=>{
     onChangeCanton: (event)=> dispatch(interruptionCantonAction(event.target.value)),
     //Parish
     onChangeParish: (event)=> dispatch(interruptionParishAction(event.target.value)),
-    //Sector
-    // onChangeSector: (event)=> dispatch(interruptionSectorAction(event.target.value)),
 	}
 }
 
@@ -66,37 +60,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 class InterruptionAddress extends React.Component{
   onChangeTest=(event)=>{
-    console.log(event.target.value.length)
-    // event.target.value.length>=3 && axios.get(`http://localhost:3000/radioBases?id=${event.target.value}`)
     event.target.value.length>=3 && axios.get(`${API_URL}/radioBases?id=${event.target.value}`)
-      .then(resp=>{console.log(resp.data)})
-      .catch(console.log)
+      // .then(resp=>{console.log(resp.data)})
+      .catch(error=>console.log({Error:error}))
   }
   render(){
     const {onChangeProvince,onChangeCanton,onChangeParish}=this.props;
     const {interruptionProvince, interruptionCanton,interruptionParish} = this.props;
     return(
       <div className="addressContainer card-body">
-        {/* <SuggestField /> */}
         <h6 className="titleInput">Código</h6>
         <SuggestionID  />
-        {/* <input placeholder="1A23" className="inputField" type="text" onChange={onChangeInterruptionCode} required></input>
-        <input placeholder="Test" className="inputField" type="text" onChange={this.onChangeTest} required></input> */}
         <h6 className="titleInput">Radio Base</h6>
         <SuggestionEST />
-        {/* <input placeholder="Nodo Principal" className="inputField" type="text" onChange={onChangeBS} required></input> */}
         <h6 className="titleInput">Provincia</h6>
         <input placeholder="Azuay" className="inputField" type="text" value={interruptionProvince} onChange={onChangeProvince} required></input>
         <h6 className="titleInput">Cantón</h6>
         <input placeholder="Cantón" className="inputField" type="text" value={interruptionCanton} onChange={onChangeCanton}  required></input>
         <h6 className="titleInput">Paroquia</h6>
         <input placeholder="Parroquia" className="inputField" type="text" value={interruptionParish} onChange={onChangeParish}  required></input>
-        {/* <h6 className="titleInput">Lugar Afectado</h6> */}
-        {/* <input placeholder="Azuay" className="inputField" id="inputResize" type="text" size="1" onChange={onChangeSector} required></input> */}
-        {/* <div className="textarea-container">
-          <textarea placeholder="Azuay" id="inputResize" type="text" size="1" onChange={onChangeSector} required></textarea>
-          <div className="textarea-size"></div>
-        </div> */}
       </div>
     )
   }

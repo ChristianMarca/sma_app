@@ -44,8 +44,8 @@ class ProfileIcon extends React.Component{
       }
     })
     .then(resp=>resp.json())
-    .then(console.log)
-    .catch(console.log)
+    // .then(console.log)
+    .catch(error=>console.log({Error:error}))
     window.localStorage.removeItem("token")||window.sessionStorage.removeItem("token");
     this.props.onSignOutApproved()
     this.props.history.push('/');

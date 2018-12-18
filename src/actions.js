@@ -66,24 +66,6 @@ import { API_URL } from "./config";
 
 // Elección del tipo de interrupción
 export const interruptionTypeAction=(type)=>{
-  // document.getElementById("buttonTypeR").style.background=type=='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
-  // document.getElementById("buttonTypeR").style.color=type=='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';;
-  // document.getElementById("buttonTypeS").style.background=type=='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';
-  // document.getElementById("buttonTypeS").style.color=type=='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
-  // var now  = "04/09/2013 15:00:00";
-  // var then = "02/09/2013 14:20:30";
-
-  // var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
-  // var d = moment.duration(ms);
-  // var s = moment(d).format("hh:mm:ss");
-  // console.log(s)
-  // var now  = "04/09/2013 15:00:30";
-  // var then = "02/09/2013 14:20:31";
-
-  // var ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
-  // var d = moment.duration(ms);
-  // var s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
-  // console.log(s)
   return {
     type: INTERRUPTION_TYPE,
     payload: type

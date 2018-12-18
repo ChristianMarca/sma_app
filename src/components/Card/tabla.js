@@ -13,7 +13,6 @@ class TablaInt extends React.Component {
         let headData = this.props.campos.map(res => base[res])
 
         let seleccion = data.map((elemento, index) => {
-          // console.log('saf',index,elemento.id_inte)
           return (<ListaInt key={elemento.id_inte} columns={headData} data={elemento}></ListaInt>)
         })
         let etiquetas = [<ListaInt key="Cabecera" id="Head" columns={headData} data={headData} handleClick={this.props.fCampo}></ListaInt>
@@ -24,15 +23,12 @@ class TablaInt extends React.Component {
         return ([])
       }
     } catch (error) {
-      console.error('no hay datos');
-      // expected output: SyntaxError: unterminated string literal
-      // Note - error messages will vary depending on browser
+      console.error({Error:error});
     }
   }
   render() {
     var divition=this.tablaGen().map((row,index)=>{
       if(index!==0){
-        // return row
           return <tbody key={index} className="TBod wrapper row-fadeIn-wrapper">
               {row}
           </tbody>
@@ -44,11 +40,9 @@ class TablaInt extends React.Component {
         }
     })
     return (
-      // <div className="Tabla">
         <table className="tableContainerInterruption" id='TableContainer'>
           {divition}
         </table>
-      // </div>
     )
   }
 }

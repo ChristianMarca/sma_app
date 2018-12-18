@@ -22,7 +22,6 @@ const Carrucel=props=>{
                                     <p>Tiene como objetivo realizar el manejo de las interrupciones del servicio de telefonía móvil avanzada
                                     mediante la implementacion de varias herramientas para facilitar el proceso, mediante una interfaz amigable
                                     .</p>
-                                    {/* <a href="#"></a> */}
                                 </figcaption>			
                             </figure>
                         </div>
@@ -34,7 +33,6 @@ const Carrucel=props=>{
                                     <h2>Plataforma <span>SMA_APP</span></h2>
                                     <p>Se comunica con <span>BSs_APP</span> con el fin de 
                                         facilitar la visualización de estado de Radio Bases.</p>
-                                    {/* <a href="#"></a> */}
                                 </figcaption>			
                             </figure>
                         </div>
@@ -45,7 +43,6 @@ const Carrucel=props=>{
                                     <h4>Desarrolladores    </h4>
                                     <h2><i className="fab fa-github" href="https://github.com/ChristianMarca">C.Marca</i>/<i className="fab fa-github">A.Crespo</i></h2>
                                 </figcaption>
-                                {/* <a href="#"></a> */}
                             </figure>
                         </div>
                     </div>

@@ -240,7 +240,6 @@ class Map extends React.Component {
 
   dataRequest= async()=>{
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
-    console.log(this.props.sessionController,'jsahas  sjs')
     const {id_rol,id_user}= this.props.sessionController;
     this.props.isDashboardComponent!==false?(()=>{
       axios(`${API_URL}/mapa/data_radiobase_interruption?id_rol=${id_rol}&id_user=${id_user}`, {
@@ -281,7 +280,7 @@ class Map extends React.Component {
       // this.map.addLayer(markerCNT);
 
       document.getElementById("spinner").style.visibility = "hidden";
-    }).catch(err => console.log(err))
+    }).catch(err => console.log({Error:err}))
     //Fin de funcion de pedido de datos
 
     // const handleData = (datos) => {
@@ -313,7 +312,6 @@ class Map extends React.Component {
     this.setState({value})
   }
   locate = (data) => {
-    //console.log('La data retornada', data.coordinates)
     this.setState({data: data})
     try {
       this.map.flyTo(L.latLng(data.coordinates[1], data.coordinates[0]), 18);
@@ -321,7 +319,7 @@ class Map extends React.Component {
       // var popupt = L.popup().setLatLng([data.coordinates[1],data.coordinates[0]])
       // .setContent("Click In me").openPopup().closePopup().openOn(this.map);
     } catch (err) {
-      // console.log(err)
+      console.log({Error:err})
     }
   }
 

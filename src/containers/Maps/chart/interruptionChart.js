@@ -1,8 +1,7 @@
 import React from 'react';
 import { CreateChartAPI } from './chart';
+import './chart.style.css';
 const chartAPI = CreateChartAPI();
-
-// const style = require("./chart.style.css");
 
 export class BridgeComponent extends React.Component{
 

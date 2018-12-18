@@ -9,10 +9,8 @@
   display: -webkit-flex;
   display: flex;
   flex-direction: row;
-  /* -webkit-flex-flow: row wrap; */
   background: #2E2E2E;
   color: rgba(255,255,255,0.5);
-  /* overflow: hidden; */
   align-items: center;
 }
 .listNav li {

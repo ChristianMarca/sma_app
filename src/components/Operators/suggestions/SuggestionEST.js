@@ -98,7 +98,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    // onChange(event, { newValue }) {
     onChangeTest:(newValue,id_usuario)=>{
       dispatch(requestIDAction(newValue,"nom_sit",id_usuario));
       dispatch(updateInputValue(newValue));
@@ -122,17 +121,14 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-// Merge it all (create final props to be passed)
 const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
   return {
     ...mapStateToProps,  // optional
     ...mapDispatchToProps,  // optional
-    // onChangeWithNeededValue: (newValue) => (
-      // onChange_(event, { newValue }) {
     onChange:(event, { newValue })=> (
       mapDispatchToProps.onChangeTest(
         newValue,
-        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+        mapStateToProps.sessionController.id_user
       )
     )
   }
@@ -146,12 +142,8 @@ class SuggestionEST extends React.Component {
       value,
       onChange
     };
-    // const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
     return (
       <div>
-        {/* <div className="status">
-          <strong>Status:</strong> {status}
-        </div> */}
         <Autosuggest 
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}

@@ -2,20 +2,14 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import {connect} from 'react-redux';
 import {
-  //requestCantonAction,
   requestAddressAction,
-  // interruptionIdBsAction,
   interruptionCantonAction,
   interruptionProvinceAction
-  // interruptionCantonAction,
-  // interruptionParishAction,
-  // interruptionCodeAction,
-  // interruptionBSAction,
 } from '../../../actions';
 import {UPDATE_INPUT_VALUE_CANTON,
-  CLEAR_SUGGESTIONS_CANTON,
-MAYBE_UPDATE_SUGGESTIONS_CANTON,
-LOAD_SUGGESTIONS_BEGIN_CANTON} from '../../../constants';
+        CLEAR_SUGGESTIONS_CANTON,
+        MAYBE_UPDATE_SUGGESTIONS_CANTON,
+        LOAD_SUGGESTIONS_BEGIN_CANTON} from '../../../constants';
 import {updateInputValue as updateInputValueProvincia} from './suggestionProvincia';
 
 import store from '../../../index';
@@ -104,17 +98,9 @@ function mapStateToProps(state,ownProps) {
 function mapDispatchToProps(dispatch) {
 
   return {
-    // onChange(event, { newValue }) {
-    // onChangeTest:(newValue,id_usuario)=>{
     onChange(event, { newValue }) {
-      // dispatch(requestIDAction(newValue,"nom_sit",id_usuario));
-      // dispatch(requestProvinceAction(newValue,"provincia",id_usuario));
       dispatch(updateInputValue(newValue));
-      // dispatch(interruptionBSAction(newValue))
     },
-    // onSuggestionsFetchRequested({ value }) {
-    //   dispatch(loadSuggestions(value));
-    // },
     async onSuggestionsFetchRequestedMerge(value,interruptionLevel,interruptionTechnologies,id_usuario) {
       await dispatch(requestAddressAction(value,"canton",interruptionLevel,interruptionTechnologies,id_usuario));
       await dispatch(loadSuggestions(value));
@@ -125,13 +111,7 @@ function mapDispatchToProps(dispatch) {
     onSelectValue: (event,{suggestion})=> {
       dispatch(interruptionCantonAction(suggestion.canton))
       dispatch(interruptionProvinceAction(suggestion.provincia))
-      dispatch(updateInputValueProvincia(suggestion.provincia));
-      // dispatch(interruptionIdBsAction(suggestion.id_bs));
-      // dispatch(interruptionCodeAction(String(suggestion.cell_id) ))
-      // dispatch(interruptionBSAction(suggestion.nom_sit))
-      // dispatch(interruptionProvinceAction(suggestion.provincia))
-      // dispatch(interruptionCantonAction(suggestion.canton))
-      // dispatch(interruptionParishAction(suggestion.parroquia))    
+      dispatch(updateInputValueProvincia(suggestion.provincia));    
     }
   };
 }
@@ -148,7 +128,7 @@ const mergeProps = (mapStateToProps,mapDispatchToProps, ownProps) => {
         value,
         mapStateToProps.interruptionLevel,
         mapStateToProps.interruptionTechnologies,
-        mapStateToProps.sessionController.id_user  // <<< here the magic happens
+        mapStateToProps.sessionController.id_user
       )
     )
   }
@@ -166,12 +146,8 @@ class SuggestionCanton extends React.Component {
       onChange,
       disabled: this.props.isLockField
     };
-    // const status = (isLoading ? 'Loading...' : 'Type to load suggestions');
     return (
       <div>
-        {/* <div className="status">
-          <strong>Status:</strong> {status}
-        </div> */}
         <Autosuggest 
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}

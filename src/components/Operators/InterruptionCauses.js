@@ -19,9 +19,6 @@ const mapStateToProps=state=>{
     interruptionCauses: state.interruptionCausesReducer,
     interruptionSector: state.interruptionAddressReducer.interruptionSector,
     interruptionServices: state.interruptionServicesReducer.interruptionServices
-    // //Código de Estación Base
-    // interruptionTags: state.interruptionAddressCauses.interruptionBS,
-
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -76,7 +73,6 @@ class InterruptionCauses extends React.Component{
     const regex = /@([^@<\\]*(?:\\.[^-<\\]*)*)@/g,reemp = "<b class='tags'>$1</b>",resultado = document.getElementById("resultado");
     var matches = this.getMatches(texto.target.value, regex, 1);
     matches.map(match=>{
-      console.log('exmaple',match)
       return console.log(match,similarity('Fallo en el Sistema Electrico',match||''))
     })    
 
@@ -85,7 +81,6 @@ class InterruptionCauses extends React.Component{
     resultado.innerHTML = texto.target.value.replace(regex,reemp);
   }
   toggleCheckboxServices = label => {
-    // console.log(label.currentTarget.value,'hello---')
     if (this.selectedCheckboxesServices.has(label.currentTarget.value)) {
       this.selectedCheckboxesServices.delete(label.currentTarget.value);
       this.props.onRemoveService(label.currentTarget.value)
@@ -95,7 +90,6 @@ class InterruptionCauses extends React.Component{
     }
   }
   toggleCheckboxTechnologies = label => {
-    // console.log(label.currentTarget.value,'hello---')
     if (this.selectedCheckboxesTechnologies.has(label.currentTarget.value)) {
       this.selectedCheckboxesTechnologies.delete(label.currentTarget.value);
       this.props.onRemoveTechonology(label.currentTarget.value)
@@ -106,25 +100,21 @@ class InterruptionCauses extends React.Component{
   }
   render(){
     const {onChangeSector}=this.props;
-    console.log('info',this.props.interruptionServices)
     return(
       <div className="addressContainer card-body">
         <div className="servicesContainer">
             <h6 className="titleInput">Servicios Afectados</h6> 
             <div className="service">
                 <input className="radioButton" id="voz" type="checkbox" name="services" 
-                          value={"VOZ"} 
-                          // checked={this.state.operator === "CONECEL"} 
+                          value={"VOZ"}
                           onChange={this.toggleCheckboxServices} />
                 <label className="services" htmlFor="voz">VOZ</label>
                 <input className="radioButton" id="sms" type="checkbox" name="services" 
-                          value={"SMS"} 
-                          // checked={this.state.operator === "OTECEL"} 
+                          value={"SMS"}
                           onChange={this.toggleCheckboxServices} />
                 <label className="services" htmlFor="sms">SMS</label>
                 <input className="radioButton" id="datos" type="checkbox" name="services" 
-                          value={"DATOS"} 
-                          // checked={this.state.operator === "CNT"} 
+                          value={"DATOS"}
                           onChange={this.toggleCheckboxServices} />
                 <label className="services" htmlFor="datos">DATOS</label>
             </div>
@@ -134,18 +124,15 @@ class InterruptionCauses extends React.Component{
             <h6 className="titleInput">Tecnologias Afectadas</h6> 
             <div className="service">
                 <input className="radioButton" id="gsm" type="checkbox" name="tecnologias" 
-                          value={"GSM"} 
-                          // checked={this.state.operator === "CONECEL"} 
+                          value={"GSM"}
                           onChange={this.toggleCheckboxTechnologies} />
                 <label className="services" htmlFor="gsm">GSM</label>
                 <input className="radioButton" id="umts" type="checkbox" name="tecnologias" 
-                          value={"UMTS"} 
-                          // checked={this.state.operator === "OTECEL"} 
+                          value={"UMTS"}
                           onChange={this.toggleCheckboxTechnologies} />
                 <label className="services" htmlFor="umts">UMTS</label>
                 <input className="radioButton" id="lte" type="checkbox" name="tecnologias" 
-                          value={"LTE"} 
-                          // checked={this.state.operator === "CNT"} 
+                          value={"LTE"}
                           onChange={this.toggleCheckboxTechnologies} />
                 <label className="services" htmlFor="lte">LTE</label>
             </div>
@@ -158,11 +145,9 @@ class InterruptionCauses extends React.Component{
         </div>
 
         <h6 className="titleInput">Causas</h6>
-        {/* <div className="card searchContainer"> */}
         <div className="searchContainer">
           <div className="textarea-containerCauses">
             <textarea placeholder="Azuay" id="inputCauses"
-              //  className="card-header" 
                type="text" size="1" onChange={this.regexA}  required></textarea>
             <div className="textarea-size"></div>
           </div>

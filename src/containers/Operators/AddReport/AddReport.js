@@ -26,14 +26,11 @@ import { interruptionTypeAction,
   interruptionServicesRemoveAllActions,
   interruptionTechnologyRemoveAllActions,
   removeAllRadioBaseAction,
-  // removeAllRadioBaseIDAction
 } from '../../../actions';
 import {connect} from 'react-redux';
 import {Redirect, withRouter} from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from "../../../config";
-
-// import InterruptionAddress from '../../../components/Operators/InterruptionAddress';
 import InterruptionRadioBases from '../../../components/Operators/InterruptionRadioBases';
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
 import InterruptionCauses from '../../../components/Operators/InterruptionCauses';
@@ -44,7 +41,6 @@ import '../Operators.css'
 
 const mapStateToProps=state=>{
 	return {
-    // Elección del tipo de interrupción
     interruptionType: state.interruptionTypeReducer.interruptionType,
     interruptionRB: state.interruptionAddressReducer,
     interruptionDate: state.interruptionDateReducer,
@@ -53,7 +49,6 @@ const mapStateToProps=state=>{
     interruptionLevel: state.interruptionAddressReducer.interruptionLevel,
     interruptionTechnologies: state.interruptionTechnologiesReducer.interruptionTechnologies,
     interruptionRadioBase: state.radioBasesAddReducer,
-    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
     interruptionProvince: state.reducerSuggestProvincia.value,
     interruptionCanton: state.reducerSuggestCanton.value,
     interruptionParish: state.reducerSuggestParish.value,
@@ -62,7 +57,6 @@ const mapStateToProps=state=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-    // Elección del tipo de interrupción
     onSubmitInterruptionType: (type)=> dispatch(interruptionTypeAction(type)),
     onSubmitInterruptionComplete: ()=>dispatch(interruptionSubmitedAction()),
     onSignInApproved: ()=> dispatch(isSignInAction(true)),
@@ -72,9 +66,7 @@ const mapDispatchToProps=(dispatch)=>{
     onReceiveRadioBaseIdRemove:(data)=>dispatch(interruptionIdBsAction(data)),
     onRemoveAllServices: ()=>dispatch(interruptionServicesRemoveAllActions()),
     onRemoveAllTechnologies: ()=>dispatch(interruptionTechnologyRemoveAllActions()),
-    onRemoveAllRadioBases: ()=>dispatch(removeAllRadioBaseAction()),
-    // onRemoveAllRadioBasesID: ()=>dispatch(removeAllRadioBaseIDAction())
-    
+    onRemoveAllRadioBases: ()=>dispatch(removeAllRadioBaseAction())
 	}
 }
 
@@ -107,14 +99,9 @@ class AddReport extends React.Component{
               })
               .then(resp=>resp.json())
               .then(user=>{
-                  console.log('adqui esta',user)
                   if (user && user.email){
-                    console.log(user, 'continueWithToken')
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
-
-                      // this.loadUser(user);
-                      // this.onRouteChange('Home')
                       if(this.props.sessionController.id_rol===2){
                         document.getElementById("buttonTypeR").style.background=this.props.interruptionType==='Random'?'rgba(255,255,255,0.5)':'#2E2E2E';
                         document.getElementById("buttonTypeR").style.color=this.props.interruptionType==='Random'?'#2E2E2E':'rgba(255,255,255,0.5)';;
@@ -127,7 +114,7 @@ class AddReport extends React.Component{
       })
       .catch(err=>{
         // this.props.history.push('/');
-        console.log('Aqui un error', err)
+        console.log({Error:err})
       })
     }else{
       this.props.history.push('/');
@@ -150,25 +137,21 @@ class AddReport extends React.Component{
       interruptionRadioBase,
       interruptionServices,
       interruptionTechnologies,
-      // interruptionSector,
-      // interruptionLevel,
       interruptionProvince,
       interruptionCanton,
       interruptionParish,
       interruptionRB
-    }=this.props
+      }=this.props
     var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
-    if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
+    if(probe.indexOf(false) !== -1)  return alert('Fechas Invalidas')
     if(interruptionRB.interruptionLevel.length===0) return alert('Seleccione al menos una tecnologia afectada')
     var keys={
         interruptionType,
-        // interruptionSector,
         interruptionDate,
         interruptionCauses,
         interruptionServices,
         interruptionTechnologies,
         interruptionRadioBase,
-        // interruptionLevel,
         interruptionProvince,
         interruptionCanton,
         interruptionParish,
@@ -177,7 +160,6 @@ class AddReport extends React.Component{
     }
     axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{
-        console.log(resp.data,'realizando test');
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
         this.props.onRemoveAllRadioBases();
@@ -188,7 +170,6 @@ class AddReport extends React.Component{
   }
   handleSubmitTest=async(event)=> {
     event.preventDefault();
-    // const {interruptionType,interruptionRB,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices}=this.props
     const {interruptionType,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices,interruptionTechnologies,interruptionSector}=this.props
     var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
     if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
@@ -204,32 +185,17 @@ class AddReport extends React.Component{
     }
     axios.post(`${API_URL}/radioBases/newInterruption`,keys)
       .then(resp=>{
-        console.log(resp.data);
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
         this.props.onRemoveAllRadioBases();
         this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
       })
       .catch(err=>alert(err))
-      // .catch(err=>alert(err.response.data))
-    // axios.get(`http://192.168.1.140:3000/radioBases?province=${interruptionRB.interruptionProvince}`)
-    //   .then(resp=>{console.log(resp.data)})
-    //   .catch(console.log)
-    // this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   cancel=()=>{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   handleAddRadioBase=()=>{
-    //Version 1
-    // const {interruptionCode,interruptionIdBs}=this.props.interruptionRB;
-    // console.log('hola',this.props.interruptionRB, interruptionIdBs)
-    // axios.post(`${API_URL}/radioBases/getRadioBasesCellId`,{interruptionIdBs})
-    //   .then(data=>{console.log(data)})
-    // this.props.onReceiveRadioBase(interruptionCode,this.props.interruptionRB);
-    //Version 1
-    // this.props.onReceiveRadioBaseIdRemove(null)
-    //Version 1
     if(this.props.interruptionTechnologies.length){
       const { interruptionProvince,interruptionCanton,interruptionParish}=this.props;
       const id_usuario=this.props.sessionController.id_user;
@@ -239,18 +205,13 @@ class AddReport extends React.Component{
         nivel_interrupcion:nivel_interrupcion,
         location:location,
         tecnologias_afectadas:this.props.interruptionTechnologies
-      }
-      )
+      })
       .then(data=>{
-        console.log(data.data,'fjhk??')
         data.data.codigo_estacion.map((estacion=>{
           return this.props.onReceiveRadioBase(estacion.cod_est,estacion)
         }));
-        // data.data.cell_ids.map((estacion=>{
-        //   this.props.onReceiveRadioBaseID(estacion.cod_est+estacion.id_bs,estacion)
-        // }))
       })
-      .catch(error=>{console.log(error)})
+      .catch(error=>{console.log({Error:error})})
     }else{
       alert('Seleccion una RB')
     }
@@ -261,33 +222,11 @@ class AddReport extends React.Component{
     if(this.props.sessionController.id_rol===2){
       return(
         <form className="containeNewInterruption" onSubmit={this.handleSubmit}>
-
-            {/* <ul className="listNav" id="myTopnav">
-            <li className="headerItem active"><a className="ItemList">SMA</a></li>
-              <li className="headerItem"><a className="ItemList"><i className="fas fa-chart-line"></i> Activity</a></li>
-              <li className="headerItem"><a className="ItemList"><i className="fas fa-file-medical-alt"></i> Report</a></li>
-              <li className="headerItem"><a className="ItemList"><i className="fas fa-chart-bar"></i> Stadistics</a></li>
-              <li className="headerItem"><a className="ItemList"><i className="fas fa-map-marked-alt"></i> Maps</a></li>
-
-              <li className="headerItemRight">
-                <a className="searchItem">
-                  <input placeholder="search" className="search" />
-                  <i className="fas fa-search searchIcon"></i>
-                </a>
-              </li>
-              <li className="itemName"><a className=""> Name</a></li>
-              <li className="itemCollapse"><a className=""><img src="http://rocaldent.com.ve/rocaldent/public/images/image-not-found.png" alt="Avatar" className="avatar"/></a></li>
-              <li className="icon headerItemRight" onClick={this.changeNav}>
-                <i className="fas fa-bars"></i>
-              </li>
-            </ul> */}
-
           <div className="bodyContainer">
             <div className="itemContainer">
               <div className="card-header newHeader">
                 <h4>Agregar Nueva Interrupción</h4>
                 <div className="typeButtons">
-                    {/* <a className="">Tipo de interrupción</a> */}
                     <button type="button" id="buttonTypeS" className="buttonTypeRight" onClick={()=>onSubmitInterruptionType('Scheduled')} ><i className="far fa-calendar-alt"></i> Programada</button>
                     <button type="button" id="buttonTypeR" className="buttonTypeLeft" onClick={()=>onSubmitInterruptionType('Random')} ><i className="fas fa-random"></i>  Fortuita</button>
                 </div>
@@ -295,19 +234,15 @@ class AddReport extends React.Component{
             </div>
             <div className="card-body cardComponents">
               <div className="card cardInput">
-                <h6 className="card-header containerADD"><div>Radio Base</div><a><i onClick={this.handleAddRadioBase} className="addButton fas fa-plus-square"></i></a></h6>
-                {/* <InterruptionAddress className="itemContainer card-body" /> */}
+                <h6 className="card-header containerADD">
+                  <div>Radio Base</div><button className="ButtonTag"><i onClick={this.handleAddRadioBase} className="addButton fas fa-plus-square"></i></button></h6>
                 <InterruptionRadioBases className="itemContainer card-body" />
               </div>
               <div className="card cardInput"> 
                 <h6 className="card-header">Resumen</h6>
-                {/* {this.handleMapRadioBases} */}
                 <div className='card-body miniCards'>
-                  {console.log(this.props.interruptionRadioBase)}
                   {Object.keys(dataRb).map(function(key, index) {
-
                     return <RadioBase key={key} data={dataRb[key]}/>
-                    // return this.props.interruptionRadioBase[key];
                   })}
                 </div>
               </div>
@@ -318,15 +253,8 @@ class AddReport extends React.Component{
               <div className="card cardInput">
                 <h6 className="card-header">Fecha</h6>
                 <InterruptionDate className="itemContainer" />
-
                 <InterruptionFiles />
               </div>
-              {/* <div className="card cardInput">
-                <h6 className="card-header">Anexos</h6>
-                <div className="itemContainer">
-                  <InterruptionFiles />
-                </div>
-              </div> */}
             </div>
             <div className="submitsButtons">
               <button type="submit" id="buttonTypeS" className="buttonSubmits" ><i className="fas fa-save"></i> Save</button>
@@ -347,8 +275,6 @@ class AddReport extends React.Component{
   }
 
   render(){
-    // const {onSubmitInterruptionType}=this.props;
-    // const dataRb=this.props.interruptionRadioBase.radioBasesAdd;
     return(
       this.getContentFromPage()
     )

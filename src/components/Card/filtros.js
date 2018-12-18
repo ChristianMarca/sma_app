@@ -3,9 +3,6 @@ import DateTimePicker from 'react-datetime-picker/dist/entry.nostyle';
 
 export default class Filtro extends React.Component {
 
-  // constructor() {
-  //   super();
-  // }
   onChangeInit = date => this.props.onChangeI(date);
   onChangeEnd = date => this.props.onChangeE(date);
   handleClick = e => this.props.onClicGO(e);
@@ -41,8 +38,6 @@ export default class Filtro extends React.Component {
             calendarIcon={<i className="far fa-calendar-alt"></i>}
             />
         </div>
-      {/* </div>
-      <div> */}
           <div className="titleNav">
             Area afectada:
           </div>

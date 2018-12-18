@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from "react-redux";
-// import io from "socket.io-client";
 import {withRouter} from 'react-router-dom';
 import { SortablePane, Pane } from 'react-sortable-pane';
 import ContentEditable from "react-contenteditable";
@@ -15,7 +14,7 @@ import Map from "../Maps/map/mapa";
 import '../Maps/chart.style.css';
 import '../../components/viewInterruptions/style.chat.css'
 
-import {Chat_} from '../../components/viewInterruptions/chat';
+import Chat from '../../components/viewInterruptions/chat';
 
 import { API_URL } from "../../config";
 
@@ -48,39 +47,14 @@ class InterruptionOperatorView extends React.Component{
       showExternalHTML: false,
       isSortable:false,
       html: `<div class="lds-ripple"><div></div><div></div></div>`,
-      comments:``,
-      asunto: ``,
+      comments:'',
+      asunto: '',
       coordinacionZonal:``,
-      codigoReport:``,
+      codigoReporte:``,
       editable: true,
       messageToSend:''
     }
   }
-
-  // socketConnectionEnable=()=>{
-  //   this.socket = io.connect(`${API_URL}`,{path:'/socket'});
-  //   let {username}=this.props.sessionController;
-  //   let interruptionView=this.props.interruptionViewSelected;
-  //   this.socket.on('connect', ()=> {
-  //       console.log('Conectado al servidor',this.socket.id);
-  //       var usuario={
-  //           nombre: username,
-  //           sala: String(interruptionView)                
-  //       }
-  //       this.socket.emit('entrarChat', usuario, function(resp) {
-  //           console.log('Usuarios conectados', resp);
-  //           // renderizarUsuarios(resp);
-  //       });
-    
-  //   });
-    
-  //   // escuchar
-  //   this.socket.on('disconnect', function() {
-    
-  //       console.log('Perdimos conexión con el servidor');
-    
-  //   });
-  // }
 
   componentDidMount=async()=>{
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
@@ -105,21 +79,17 @@ class InterruptionOperatorView extends React.Component{
                 })
                 .then(resp=>resp.json())
                 .then(user=>{
-                    // console.log('adqui esta',user)
                     if (user && user.email){
-                      console.log(user, 'continueWithToken')
                       this.props.onSignInApproved();
                       this.props.onReceiveDataUser(user);
                       this.props.onRequestDataInterruption(this.props.interruptionViewSelected,user.id_user)
                         .then(data=>{
                           this.setState({isReceiveDataOfInterruption:true})
-                          // console.log(this.props.interruptionData.ID.data,'data',this.props.interruptionData.ID.data.data.id_inte)
                           fetch(`${API_URL}/interrupcion/getReport?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
                             method: 'GET',
                             })
                           .then(resp=>resp.json())
                           .then(report=>{
-                            // this.setState({html: report})
                             this.setState({
                               html: report.html,
                               asunto: report.asunto,
@@ -127,7 +97,7 @@ class InterruptionOperatorView extends React.Component{
                               codigoReporte:report.codigoReport
                             })
                           })
-                          .catch(e=>this.setState({html:<h1>Something Fail</h1>}))
+                          .catch(err=>{console.log({Error:err});this.setState({html:<h1>Something Fail</h1>})})
                         })
                     }
                     else{
@@ -137,8 +107,7 @@ class InterruptionOperatorView extends React.Component{
             }
         })
         .catch(err=>{
-          // this.props.history.push('/');
-          console.log('Aqui un error', err)
+          console.log({Error:err})
         })
       }else{
         this.props.history.push('/listas');
@@ -152,9 +121,6 @@ class InterruptionOperatorView extends React.Component{
   paneStyle = {
     display: 'flex',
     alignItems: 'center',
-    // justifyContent: 'center',
-    // border: 'solid 1px #ddd',
-    // backgroundColor: '#f0f0f0',
   };
 
   initDrag=(event)=>{
@@ -171,27 +137,15 @@ class InterruptionOperatorView extends React.Component{
 
   initial = JSON.parse(sessionStorage.getItem("draftail:content"))
 
-  // onSave = (content) => {
-  //   console.log("saving", content)
-  //   sessionStorage.setItem("draftail:content", JSON.stringify(content))
-  // }
-
-  // fromHTML = (html) => {const a=convertToRaw(convertFromHTML(this.importerConfig)(html));
-  //   console.log(a); return a;
-  // }
-
   handleChange = (stateName,event) => {
-    // this.setState({ html: evt.target.value });
     this.setState({[stateName]: event.target.value});
   };
 
   handleSendComment=(event)=>{
-    // console.log("test",this.state.comments)
     if(event.key==='Enter'){
       this.setState({messageToSend:this.state.comments})
       this.setState({comments:``})
     }
-
     // event.key==='Enter' && fetch(`${API_URL}/interrupcion/addComment?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}&id_user=${this.props.sessionController.id_user}`,{
     //   method: 'PUT',
     //   body: JSON.stringify({comment:this.state.comments}),
@@ -223,23 +177,15 @@ class InterruptionOperatorView extends React.Component{
     this.setState({ editable: !this.state.editable });
   };
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (this.state.html === nextState.html || !this.props.interruptionData.ID.data.data) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
   saveReportChanges=()=>{
     var jsonStringify=JSON.stringify({
       contentHtml:this.state.html,
       contentHeader:{
         asunto:this.state.asunto,
-        codigoReport: this.state.codigoReport,
+        codigoReport: this.state.codigoReporte,
         coordinacionZonal: this.state.coordinacionZonal
       }
     });
-    // console.log(this.state.html,jsonStringify)
     // var sendHtml=jsonStringify.replace(/\\n/g, "")
     //               .replace(/\\'/g, "'")
     //               .replace(/\\"/g, '"')
@@ -248,23 +194,18 @@ class InterruptionOperatorView extends React.Component{
     //               .replace(/\\t/g, "")
     //               .replace(/\\b/g, "")
     //               .replace(/\\f/g, "");
-    // console.log(sendHtml)
-    // console.log(jsonStringify)
     fetch(`${API_URL}/interrupcion/updateReport?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
       method: 'PUT',
-      // body: JSON.stringify({contentHtml:sendHtml}),
       body: jsonStringify,
-      // body: JSON.stringify({contentHtml:this.state.html}),
       headers:{
         'Content-Type': 'application/json',
-        // 'Accept': 'application/json, text/plain, */*',
       }
       })
     .then(resp=>resp.json())
     .then(report=>{
       alert(report)
     })
-    .catch(e=>{console.log(e);alert('Something Fail')})
+    .catch(err=>{console.log({Error:err});alert('Something Fail')})
   }
 
   updateHeaders=(stateName,event)=>{
@@ -272,12 +213,8 @@ class InterruptionOperatorView extends React.Component{
   }
 
   getInfoInterruption=()=>{
-    // const {data}= this.props.interruptionData.ID;
-    // console.log('es re render')
     if(this.props.interruptionData.ID.data.data){
       return <div onDoubleClick={this.initDrag} className="containerInterruption">
-      {/* return <div onMouseOver={this.initDrag} onMouseDown={this.initDrag} onMouseOut={this.endDrag} className="containerInterruption"> */}
-      {/* // return <div className="containerInterruption"> */}
         <SortablePane className="viewInformation" direction="horizontal" margin={5} isSortable={this.state.isSortable}>
           <Pane key="interruptionView" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
             <div className="cardInfoInterruption viewInformation">
@@ -306,9 +243,7 @@ class InterruptionOperatorView extends React.Component{
                 </div>
                 <div className="subjectContainer">
                   <label className="field a-field a-field_a1 page__field">
-                    {/* <span className="a-field__label-wrap"> */}
                       <span className="a-field__label__textarea">Asunto</span>
-                    {/* </span> */}
                     <textarea className="field__input a-field__input" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitationullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sintoccaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id estlaborum." value={this.state.asunto} onChange={this.updateHeaders.bind(this,'asunto')}/>
                   </label>
                 </div>
@@ -326,24 +261,13 @@ class InterruptionOperatorView extends React.Component{
                   style={{width:"100%"}}
                 />
               </div>
-            {/* <DraftailEditor
-                rawContentState={this.initial || null}
-                onSave={this.onSave}
-                blockTypes={[
-                  { type: BLOCK_TYPE.HEADER_THREE },
-                  { type: BLOCK_TYPE.UNORDERED_LIST_ITEM },
-                ]}
-                inlineStyles={[{ type: INLINE_STYLE.BOLD }, { type: INLINE_STYLE.ITALIC }]}
-              /> */}
             </div>
 
         </Pane>
             :
             <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
               <div className="cardInfoInterruption viewReport">
-                {/* <div className="minimap"> */}
                   <Map isDashboardComponent={true}/>
-                {/* </div> */}
               </div>
             </Pane>
         }
@@ -357,11 +281,9 @@ class InterruptionOperatorView extends React.Component{
                 <button className="reportButtons">Rebuild Report</button>
               </div>
               <div className="commentsContainer">
-                  <Chat_ message={this.state.messageToSend}/>
-                  {/* <textarea className="commentInput" value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} /> */}
+                  <Chat message={this.state.messageToSend}/>
                   <div className="sendCommentContainer">
                     <input className="textarea" onKeyPress={this.handleSendComment} value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} type="text" placeholder="Type here!"/>
-                    {/* <button className="fas fa-share-square buttonComment" onClick={this.handleSendComment}></button> */}
                   </div>
               </div>
             </div>
@@ -370,11 +292,9 @@ class InterruptionOperatorView extends React.Component{
           <Pane key="interruptionCode" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
             <div className="cardInfoInterruption viewCode">
               <div className="commentsContainer">
-                  <Chat_ message={this.state.messageToSend} interruptionID={this.props.interruptionData.ID.data.data.id_inte}/>
-                  {/* <textarea className="commentInput" value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} /> */}
+                  <Chat message={this.state.messageToSend}/>
                   <div className="sendCommentContainer">
                     <input className="textarea" onKeyPress={this.handleSendComment} value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} type="text" placeholder="Type here!"/>
-                    {/* <button className="fas fa-share-square buttonComment" onClick={this.handleSendComment}></button> */}
                   </div>
               </div>
             </div>

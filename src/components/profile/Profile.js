@@ -5,17 +5,13 @@ import './Profile.css'
 
 const mapStateToProps=state=>{
 	return {
-    //Parish
     sessionController: state.sessionReducer.dataUser
-
-    // interruptionSector: state.interruptionAddressReducer.interruptionSector,
-	}
+  }
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-    //Código de Interrupción
-        // onChangeParish: (event)=> dispatch(interruptionParishAction(event.target.value)),
-	}
+    
+  }
 }
 
 class Profile extends React.Component{
@@ -35,9 +31,6 @@ class Profile extends React.Component{
       classNamePassword:'passwordValid',
       classNamePasswordInvalid:'passwordValid',
       someFail: false,
-      // name: this.props.user.name,
-      // age: this.props.user.age,
-      // pet: this.props.user.pet
     }
 
   }
@@ -76,13 +69,7 @@ class Profile extends React.Component{
         'Content-Type': 'application/json',
         'authorization': window.sessionStorage.getItem('token')
       },
-      // body: JSON.stringify({formInput: data})
-    }).then(resp=>{
-      // if(resp.status===200 || resp.status===304){
-      //   this.props.toogleModal();
-      //   this.props.loadUser({...this.props.user,...data});
-      // }
-      console.log('pepeasa',resp.json(),resp)
+      }).then(resp=>{
       if(resp.status===400){
         this.setState({classNamePassword: 'passwordInvalid'});
         this.setState({someFail: true})    
@@ -91,9 +78,8 @@ class Profile extends React.Component{
     })
     .catch(error=>{
       this.setState({classNamePassword: 'passwordInvalid',someFail: true})
-      console.log('sinfunciona el fallo: ', error)
-    }
-    )
+      console.log({Error:error})
+    })
   }
   validatePasswordEquality=()=>{
     if(this.state.password.length>0 && this.state.repeatNewPassword.length>0){
@@ -105,13 +91,11 @@ class Profile extends React.Component{
         return false;
       }
     }
-    // return false
   }
   onUpdatePassword=()=>{
     this.state.password?
     this.validateLastPassword()
       .then(data=>{
-        // console.log('dataREvision',data)
         if(data && this.validatePasswordEquality()){
           if(data.status && data.ok && this.state.isValidPasswords){
             return fetch(`${API_URL}/authentication/passwordChange/${this.props.sessionController.id_user}&${this.state.password}`,{
@@ -120,16 +104,13 @@ class Profile extends React.Component{
                 'Content-Type': 'application/json',
                 'authorization': window.sessionStorage.getItem('token')
               },
-              // body: JSON.stringify({formInput: data})
-            }).then(resp=>{
-              // console.log('datauaudario : ',resp.json())
+              }).then(resp=>{
               this.setState({someFail: false})
               return resp
             })
             .catch(error=>{
               this.setState({classNamePassword: 'passwordInvalid',someFail: true})
-              // alert('aqui')
-              return console.log('sinfunciona el fallo: ', error)
+              return console.log({Error:error})
             })
           }
           else{
@@ -139,27 +120,23 @@ class Profile extends React.Component{
       })
       .then(()=>{
         fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
-          // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{
-            method: 'POST',
-            headers: {
+          method: 'POST',
+          headers: {
               'Content-Type': 'application/json',
               'authorization': window.sessionStorage.getItem('token')
             },
-            body: JSON.stringify({formInput: {
+          body: JSON.stringify({formInput: {
               nombre: this.state.nombre,
               apellido: this.state.apellido,
               username: this.state.username,
               telefono: this.state.telefono
             }})
           }).then(resp=>{
-            // console.log(resp,resp.json(),'pepepashvsags')
-            // return resp
             if(resp.status===200 || resp.status===304){
               (!this.state.someFail && this.validatePasswordEquality())&&
               this.props.toogleModal();
-              // this.props.loadUser({...this.props.user,...data});
             }
-          }).catch(console.log)
+          }).catch(error=>console.log({Error: error}))
       })
       .catch((err)=>{
         this.setState({someFail: true})
@@ -167,7 +144,6 @@ class Profile extends React.Component{
       })
       :
       fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
-        // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -180,37 +156,11 @@ class Profile extends React.Component{
             telefono: this.state.telefono
           }})
         }).then(resp=>{
-          // console.log(resp,resp.json(),'pepepashvsags')
-          // return resp
           if(resp.status===200 || resp.status===304){
             this.props.toogleModal();
             this.forceUpdate()
-            // this.props.loadUser({...this.props.user,...data});
           }
-        }).catch(console.log)
-
-    // fetch(`${API_URL}/authentication/dataChange/${this.props.sessionController.id_user}`,{
-    //   // fetch(`${API_URL}/authentication/profile/${this.props.sessionController.id_user}`,{
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'authorization': window.sessionStorage.getItem('token')
-    //     },
-    //     body: JSON.stringify({formInput: {
-    //       nombre: this.state.nombre,
-    //       apellido: this.state.apellido,
-    //       username: this.state.username,
-    //       telefono: this.state.telefono
-    //     }})
-    //   }).then(resp=>{
-    //     // console.log(resp,resp.json(),'pepepashvsags')
-    //     // return resp
-    //     if(resp.status===200 || resp.status===304){
-    //       !this.state.someFail&&
-    //       this.props.toogleModal();
-    //       // this.props.loadUser({...this.props.user,...data});
-    //     }
-    //   }).catch(console.log)
+        }).catch(error=>console.log({Error:error}))
   }
   removeInvalidClass=()=>{
     this.setState({classNamePassword: 'passwordValid'});
@@ -219,20 +169,11 @@ class Profile extends React.Component{
 
   render(){
     const {toogleModal}=this.props;
-    // console.log('estado de usuario', this.props.sessionController)
     return (
       <div className="profile-modal">
         <article className="modalInfoContainer">
           <main className="mainModalForm">
-          {/* <img
-               src="https://banner2.kisspng.com/20180716/lra/kisspng-logo-person-user-person-icon-5b4d2bd2236ca6.6010202115317841461451.jpg"
-              className="h3 w3 dib" alt="avatar" /> */}
-            {/* <h1>{`Name: ${this.state.name}`}</h1>
-            <h4>{`Images Submited: ${user.entries}`}</h4>
-            <p>{`Member since: ${user.joined}`}</p> */}
-  
-            {/* <hr /> */}
-              <label className="labelForm headerform" htmlFor="name">Nombre: </label>
+            <label className="labelForm headerform" htmlFor="name">Nombre: </label>
               <input onChange={this.onFormChange} className="inputform" placeholder={this.state.nombre} type="text" name="user-name"  id="name" />
 
               <label className="labelForm" htmlFor="last">Apellido: </label>
@@ -244,7 +185,6 @@ class Profile extends React.Component{
               <label className="labelForm" htmlFor="phone">Telefono: </label>
               <input onChange={this.onFormChange} className="inputform" placeholder={this.state.telefono} type="text" name="user-phone"  id="phone" />
 
-              {/* onBlur={this.validateLastPassword} */}
               <label className="labelForm" htmlFor="lastPassword">Antigua Contracena: </label>
               <input onChange={this.onFormChange} onFocus={this.removeInvalidClass} className={`inputform ${this.state.classNamePassword}`} placeholder={'Last Password'} type="password" pattern='.{6,}' minLength={8} name="user-last-password"  id="lastPassword" />
 

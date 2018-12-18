@@ -1,8 +1,6 @@
 import React from 'react';
-// import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {withRouter} from 'react-router-dom';
-// import axios from "axios";
 import { isSignInAction, receiveDataUserAction } from "../../actions";
 import { BridgeComponent } from "./chart/interruptionChart";
 import { getRandomArray } from './randomize';
@@ -24,7 +22,6 @@ const mapStateToProps=state=>{
 }
 const mapDispatchToProps=(dispatch)=>{
 	return{
-    // Elección del tipo de interrupción
     onSignInApproved: ()=> dispatch(isSignInAction(true)),
     onReceiveDataUser: (data)=>dispatch(receiveDataUserAction(data))
 	}
@@ -33,7 +30,7 @@ const mapDispatchToProps=(dispatch)=>{
 class Maps extends React.Component{
   constructor(props) {
     super(props);
-    const randomGenerator = getRandomArray(numBars || 20, setup.dataRangeMin, setup.dataRangeMax);
+    const randomGenerator = getRandomArray(numBars || 12, setup.dataRangeMin, setup.dataRangeMax);
     this.state = {
       data: randomGenerator(),
       data1: randomGenerator(),
@@ -71,7 +68,6 @@ class Maps extends React.Component{
   }
 
   updateDimensions=()=> {
-    // this.setState({width: $(window).width(), height: $(window).height()});
     var w = window,
         d = document,
         documentElement = d.documentElement,
@@ -211,7 +207,7 @@ class Maps extends React.Component{
       this._isMounted&& this.fetchInterrupciones().then(res => {
         res[1]?this.setState({totalInt: res[0], dataInt: res[1]}):this.setState({totalInt: res[0], dataInt: []})
       })
-      .catch(error=>console.log('io Error',error))
+      .catch(error=>console.log({Error: error}))
     }
     
     if (this.state.campOrden !== prevState.campOrden || this.state.orden !== prevState.orden) {
@@ -249,20 +245,12 @@ class Maps extends React.Component{
               .then(resp=>resp.json())
               .then(user=>{
                   if (user && user.email){
-                    // console.log(user, 'continueWithToken')
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
                     this._isMounted=true;
-
-                    // if(this.props.sessionController.dataUser.id_rol===3){
                       this._isMounted&&this.fetchInterrupciones().then(res => {
                         this.setState({totalInt: res[0], dataInt: res[1]})
                       })
-                    // }
-
-                      // this.loadUser(user);
-                      // this.onRouteChange('Home')
-                      // alert('entro')
                       // this.startDynamicData();
                       // window.addEventListener("resize", this.updateDimensions);
                   }
@@ -270,6 +258,7 @@ class Maps extends React.Component{
           }
       })
       .catch(err=>{
+        console.log({Error:err})
         // this.props.history.push('/');
       })
     }else{
@@ -285,7 +274,6 @@ class Maps extends React.Component{
   }
 
   getContentFromPage=()=>{
-    // if(!this.props.sessionController.dataUser.id_rol) return <Redirect to="/" push={true} />;
     if(!this.props.sessionController.dataUser.id_rol) return <div>Wait or Redirect</div>;
     if(this.props.sessionController.dataUser.id_rol!==3){
       const loginRender=
@@ -302,18 +290,6 @@ class Maps extends React.Component{
                   elementos={this.state.elementosPagina} 
                   page={this.state.pagina} 
                   handleClickNav={this.handleClickNav}/>
-                {/* <article className="mw5 center bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-                  <div className="tc">
-                    <img src="http://tachyons.io/img/avatar_1.jpg" className="br-100 h3 w3 dib" title="Photo of a kitty staring at you" alt="testImage" />
-                    <h1 className="f4">Mimi Whitehouse</h1>
-                    <hr className="mw3 bb bw1 b--black-10"/>
-                  </div>
-                  <p className="lh-copy measure center f6 black-70">
-                    Quite affectionate and outgoing.
-                    She loves to get chin scratches and will
-                    roll around on the floor waiting for you give her more of them.
-                  </p>
-                </article> */}
               </div>
                 <div className="minimap">
                   <Map isDashboardComponent={true}/>
@@ -331,11 +307,9 @@ class Maps extends React.Component{
 
   render(){
     return(
-      // <div>Maps Here!</div>
       this.getContentFromPage()
     )
   }
 }
 
-// export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Maps));
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Maps));

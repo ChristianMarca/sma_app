@@ -22,7 +22,6 @@
 
 .textarea-container {
   position: relative;
-  /* align-content: center; */
   width: 70%;
   height: auto;
   margin-left: 20px;
@@ -33,9 +32,6 @@
   position: relative;
   width: 100%;
   height: auto;
-  /* margin-left: 20px;
-  margin-right: 20px; */
-  /* margin-bottom: 10px; */
   display: flex;
   -webkit-flex-flow: column wrap;
   flex-flow: column wrap;
@@ -44,10 +40,7 @@
 
 textarea, .textarea-size {
   min-height: 35px;
-  /* font-size: 14px; */
   box-sizing: border-box;
-  /* padding: 4px;
-  border: 1px solid; */
   border: 1px solid #2e2e2e;
   border-radius: 5px;
   overflow: hidden;
@@ -72,7 +65,6 @@ textarea {
   border-radius: 5px;
   border: 1px solid #2e2e2e;
   width: 100%;
-  /* height: auto; */
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 10px;
@@ -83,7 +75,6 @@ textarea {
   border-radius: 5px;
   border: 1px solid #2e2e2e;
   width: 100%;
-  /* height: auto; */
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 10px;
@@ -95,12 +86,8 @@ textarea {
 }
 .react-datetime-picker__button__input>input{
   width: auto!important;
-  /* padding:0, 2px,0,20px!important; */
 }
-/* .containerDateField{
-  max-width: 100%;
-  width: 100%;
-} */
+
 .scheduledContainer{
   width: 100%;
   align-items: center;
@@ -112,7 +99,6 @@ textarea {
   font-family: cursive;
   font-size: 23px;
 }
-
 
 .tags {
   display: inline-block;
@@ -135,17 +121,17 @@ textarea {
   text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   font-weight: bold;
   }
-  .tags:before {
-    content: "";
-    position: absolute;
-    top:0;
-    left: -12px;
-    width: 0;
-    height: 0;
-    border-color: transparent #2E2E2E transparent transparent;
-    border-style: solid;
-    border-width: 12px 12px 12px 0;
-    }
+.tags:before {
+  content: "";
+  position: absolute;
+  top:0;
+  left: -12px;
+  width: 0;
+  height: 0;
+  border-color: transparent #2E2E2E transparent transparent;
+  border-style: solid;
+  border-width: 12px 12px 12px 0;
+  }
 
 .tags:after {
     content: "";
@@ -163,7 +149,6 @@ textarea {
     }
 .textField{
   width: 100%;
-  /* border: 1px solid red; */
   -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
   border-radius: 5px;
@@ -175,22 +160,9 @@ textarea {
 .searchContainer{
   text-align: center;
   width: 96%;
-  /* width: 98%; */
 }
-/* .inputCauses{
-  width: 80%;
-  height: 100%;
-} */
-.react-datetime-picker__calendar, .react-datetime-picker__clock{
-  /* position: relative!important; */
 
-  /* display: block!important;
-  flex-direction: column!important;
-  align-content: center!important;
-  align-items: center!important;
-  align-self: center!important;
-  text-align: center!important
-  left: auto!important; */
+.react-datetime-picker__calendar, .react-datetime-picker__clock{
   margin-left: -90px;
 }
 .react-datetime-picker, .react-datetime-picker *, .react-datetime-picker *:before, .react-datetime-picker *:after{
@@ -199,24 +171,16 @@ textarea {
 }
 .rbCard{
   position: relative;
-  /* width: 80%; */
   width: auto;
   margin: 3px;
   padding: 5px;
-  /* left: 10%; */
   border: 1px solid #2e2e2e;
-  /* background-color: blue; */
   border-radius: 5px;
-  /* display: block; */
   display:  inline-flex;
-  /* display: inline-block; */
   overflow: auto;
   flex-direction: row;
   flex-wrap: wrap;
   align-self: center;
-  /* align-content: center;
-  align-self: center; */
-  /* justify-content: flex-start; */
   -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
 }
@@ -225,19 +189,19 @@ textarea {
   margin-right: auto;
   display: inline-flex;
   flex-direction: row;
-  /* max-width: 90%; */
   height: auto;
   padding-right: 10%!important;
 }
+.ButtonTag{
+  background: transparent;
+  border: none;
+}
 .closeButton{
-  /* padding-right: 5px; */
-  /* margin-left: auto; */
   color: #2E2E2E;
   transition: 0.25s;
 }
 .closeButton:hover{
   color: rgba(255,0,0,0.5);
-  /* transform: scale(1.25); */
 }
 .itemCardRB{
   padding: 0 5px 0 5px;
@@ -316,18 +280,13 @@ input[type="checkbox"]:checked + label[class="services"],
 input[type="radio"]:checked + label[class="services"] {
   padding-left: 10px;
   color: #fff;
-  /* color: #2E2E2E; */
 }
 input[type="checkbox"]:checked + label[class="services"]::before,
 input[type="radio"]:checked + label[class="services"]::before {
   top: 0;
   width: 100%;
-  height: 100%;
-  /* background: #8e44ad; */
-  /* background: rgba(255,255,255,0.5); */
-  background: #2E2E2E;
-  /* background-color: red; */
-}
+  height: 100%;background: #2E2E2E;
+  }
 /* Transition */
 label,
 label::before {
@@ -363,7 +322,6 @@ label[class="interruptionLevel"]::before {
   display: block;
   width: 24px;
   height: 24px;
-  /* border: 2px solid #fefbff; */
   border: 2px solid #2E2E2E;
   border-radius: 4px;
   z-index: -1;
@@ -377,23 +335,17 @@ input[type="checkbox"]:checked + label[class="interruptionLevel"],
 input[type="radio"]:checked + label[class="interruptionLevel"] {
   padding-left: 10px;
   color: #fff;
-  /* color: #2E2E2E; */
 }
 input[type="checkbox"]:checked + label[class="interruptionLevel"]::before,
 input[type="radio"]:checked + label[class="interruptionLevel"]::before {
   top: 0;
   width: 100%;
   height: 100%;
-  /* background: #8e44ad; */
-  /* background: rgba(255,255,255,0.5); */
   background: #2E2E2E;
-  /* background-color: red; */
 }
 
 .ContainerCodEst{
   display: flex;
-  /* background-color: red; */
-  /* max-height: 10%; */
   position: relative;
 }
 .buttonSubmitAddForCodEst{
@@ -402,12 +354,6 @@ input[type="radio"]:checked + label[class="interruptionLevel"]::before {
   height: 100%;
   margin-top: 3px;
   cursor: pointer;
-  /* padding: 7px; */
-  /* display: inline-block; */
-  /* margin-right: 10px;
-  margin-left: 10px;
-  margin-bottom: 5px;
-  margin-top: 5px; */
   border-radius: 5px;
   color:#2E2E2E;
   background-color: transparent;
@@ -418,7 +364,6 @@ input[type="radio"]:checked + label[class="interruptionLevel"]::before {
 .buttonSubmitAddForCodEst>i{
   border: none;
   font-size: 16pt;
-  /* background-color: #fff; */
   color: #fff;
 }
 .buttonSubmitAddForCodEst:hover{

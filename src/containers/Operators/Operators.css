@@ -1,45 +1,18 @@
-/* .headerContainer{
-  list-style: none;
-  direction:  row;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background-color: #2E2E2E;
-  border: 2px solid red;
-  color: rgba(255,255,255,0.5);
-
-} */
-
 .bodyContainer{
   width: calc(100%-5px);
   margin: 1px;
   border-radius: 5px;
   border: 1px solid #2E2E2E;
   height: 100vh;
-  /* text-align: center; */
-  /* height: 100vw; */
-  /* background-color: rebeccapurple; */
-  /* align-content: center;
-  align-items: center; */
-
 }
 .card{
-  /* background-color: aquamarine; */
-  /* border: 1px solid #212121; */
-  /* border-radius: 5px; */
-  /* margin: 5px 0 5px 0; */
   width: calc((100vw - 5*10px)/4.1);
   margin: 0 2px 0 2px;
-  /* border: 0 1px 1px 1px solid #212121; */
-  /* position: relative; */
-
-  /* height: auto; */
 }
 .card-header{
   width: 100%;
   padding: 5px 5px 5px 5px;
   margin: 5px 0 0 0;
-  /* height: auto; */
-  /* background-color: red; */
   border: 1px solid #212121;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -49,13 +22,9 @@
 .card-body{
   position: relative;
   max-width: 100%;
-  /* max-height: 100%; */
   height: auto;
-  /* max-height: calc(100vh - 23vh); */
-  /* overflow: auto; */
   margin-bottom: 5px;
   background-color: #f9f8fd;
-  /* background-color: beige; */
   border: 1px solid #212121;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -65,12 +34,10 @@
 .miniCards{
   height: 93%;
   overflow: scroll;
-  /* z-index: -1; */
 }
 .newHeader{
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
 }
 .typeButtons{
   margin-left: auto;
@@ -106,15 +73,6 @@
 }
 .cardInput{
   max-height: calc(100vh - 23vh);
-  /* overflow: scroll; */
-  /* width: calc((100vw - 5*10px)/4.1); */
-  /* padding-top: 0; */
-  /* height: auto; */
-  /* margin-top: -15px;
-  margin-bottom: -15px; */
-}
-.datesComponents{
-  /* width: calc(100%-); */
 }
 .submitsButtons{
   display: flex;
@@ -161,8 +119,6 @@
     align-items: center;
   }
   .cardComponents{
-    /* -webkit-flex-flow: column wrap;
-    flex-flow: column wrap; */
     flex-wrap: wrap;
     align-items: center;
     align-self: center;

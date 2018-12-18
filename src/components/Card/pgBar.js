@@ -3,13 +3,7 @@ import "./style.css";
 
 export default class PageBar extends React.Component {
 
-  // constructor(props) {
-  //   super(props);
-  //   //this.handleClick = this.handleClick.bind(this);
-  // }
   handleClick = e => {
-    // console.log('--------------1',e.target.getAttribute('data-key'))
-    // console.log('--------------2',e.target.value)
     this.props.handleClickNav(e.target.getAttribute('data-key'));
   }
 
@@ -22,37 +16,28 @@ export default class PageBar extends React.Component {
     if (paginas <= 5) {
       for (let i = 1; i <= paginas; i++) {
         navNum = navNum.concat([
-        // <div key={i}>
           <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
-        // </div>
           ]);
-        //console.log(navNum)
       }
     } else {
       if (actual > 3) {
         if (next < paginas) {
           for (let i = prev; i <= next; i++) {
             navNum = navNum.concat([
-            // <div key={i}>
               <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
-            // {/* </div> */}
               ]);
           }
         } else {
           for (let i = paginas - 4; i <= paginas; i++) {
             navNum = navNum.concat([
-            // <div key={i}>
               <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
-            // </div>
               ]);
           }
         }
       } else {
         for (let i = 1; i <= 5; i++) {
           navNum = navNum.concat([
-          // <div key={i}>
             <button key={i} className="pagButton" onClick={this.handleClick} data-key={i}>{i}</button>
-          // {/* </div> */}
             ]);
         }
       }
