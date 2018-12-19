@@ -190,43 +190,88 @@ export const requestIDAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
   dispatch({type: ID_REQUEST_PENDING});
   // newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
   return new Promise((resolve,reject)=>{
-    newValue.length >=3 &&axios.get(`${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    // newValue.length >=3 &&axios.get(`${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    newValue.length >=3 &&axios({
+      method: 'GET',
+      url:`${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
+    })
       .then(data=>{resolve(dispatch({type: ID_REQUEST_SUCCESS, payload: data}))})
       .catch(error=>reject(dispatch({type: ID_REQUEST_FAILED, payload: error})))
   })
 }
 
 export const requestAddressAction =(newValue,typeSearch,nivel_interrupcion,tecnologias,id_usuario)=>(dispatch)=>{
+  const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
   dispatch({type: ADDRESS_REQUEST_PENDING});
   return new Promise((resolve,reject)=>{
-    return axios.get(`${API_URL}/radioBases/addressInterruption?${typeSearch}=${newValue}&id_user=${id_usuario}&nivel_interrupcion=${nivel_interrupcion}&tecnologias_afectadas=${tecnologias}`)
+    // return axios.get(`${API_URL}/radioBases/addressInterruption?${typeSearch}=${newValue}&id_user=${id_usuario}&nivel_interrupcion=${nivel_interrupcion}&tecnologias_afectadas=${tecnologias}`)
+    return axios({
+      method:'GET',
+      url:`${API_URL}/radioBases/addressInterruption?${typeSearch}=${newValue}&id_user=${id_usuario}&nivel_interrupcion=${nivel_interrupcion}&tecnologias_afectadas=${tecnologias}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
+    })
       .then(data=>{resolve(dispatch({type: ADDRESS_REQUEST_SUCCESS, payload: data}))})
       .catch(error=>reject(dispatch({type: ADDRESS_REQUEST_FAILED, payload: error})))
   })
 }
 
 export const requestProvinceAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
+  const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
   dispatch({type: PROVINCE_REQUEST_PENDING});
   return new Promise((resolve,reject)=>{
-    return axios.get(`${API_URL}/radioBases/address?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    // return axios.get(`${API_URL}/radioBases/address?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    return axios({
+      method:'GET',
+      url:`${API_URL}/radioBases/address?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
+    })
       .then(data=>{resolve(dispatch({type: PROVINCE_REQUEST_SUCCESS, payload: data}))})
       .catch(error=>reject(dispatch({type: PROVINCE_REQUEST_FAILED, payload: error})))
   })
 }
 
 export const requestCantonAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
+  const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
   dispatch({type: CANTON_REQUEST_PENDING});
   return new Promise((resolve,reject)=>{
-    return axios.get(`${API_URL}/radioBases/address1?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    // return axios.get(`${API_URL}/radioBases/address1?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    return axios({
+      method: 'GET',
+      url: `${API_URL}/radioBases/address1?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
+    })
       .then(data=>{resolve(dispatch({type: CANTON_REQUEST_SUCCESS, payload: data}))})
       .catch(error=>reject(dispatch({type: CANTON_REQUEST_FAILED, payload: error})))
   })
 }
 
 export const requestParishAction =(newValue,typeSearch,id_usuario)=>(dispatch)=>{
+  const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
   dispatch({type: PARISH_REQUEST_PENDING});
   return new Promise((resolve,reject)=>{
-    return axios.get(`${API_URL}/radioBases/address2?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    // return axios.get(`${API_URL}/radioBases/address2?${typeSearch}=${newValue}&id_user=${id_usuario}`)
+    return axios({
+      method:'GET',
+      url:`${API_URL}/radioBases/address2?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
+    })
       .then(data=>{resolve(dispatch({type: PARISH_REQUEST_SUCCESS, payload: data}))})
       .catch(error=>reject(dispatch({type: PARISH_REQUEST_FAILED, payload: error})))
   })
@@ -295,10 +340,19 @@ export const interruptionViewIdAction=(id)=>({
 
 //Fetch Interruption
 export const requestInterruptionFetchAction =(id_interruption,id_usuario)=>(dispatch)=>{
+  const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
   dispatch({type: INTERRUPTION_SELECTED_REQUEST_PENDING});
   // newValue.length >=3 &&axios.get(`http://192.168.1.102:3000/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`)
   return new Promise((resolve,reject)=>{
-    axios.get(`${API_URL}/radioBases/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`)
+    // axios.get(`${API_URL}/radioBases/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`)
+    axios({
+      method:'GET',
+      url: `${API_URL}/radioBases/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      }
+    })
       .then(data=>{resolve(dispatch({type: INTERRUPTION_SELECTED_REQUEST_SUCCESS, payload: data}))})
       .catch(error=>reject(dispatch({type: INTERRUPTION_SELECTED_REQUEST_FAILED, payload: error})))
   })

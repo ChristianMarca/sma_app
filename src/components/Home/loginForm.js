@@ -59,6 +59,7 @@ class LoginForm extends React.Component{
     }
 
     onSubmitSignIn=(event)=>{
+        const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
         let message=document.getElementById("failMessage");
         if (message.style.visibility === 'visible'){
             message.style.visibility = 'hidden';
@@ -68,7 +69,10 @@ class LoginForm extends React.Component{
         event.preventDefault()
 		fetch(`${API_URL}/authentication/signin`,{
 			method: 'post',
-			headers: {'Content-Type': 'application/json'},
+			headers: {
+                'Content-Type': 'application/json',
+                // 'authorization': token
+            },
 			body: JSON.stringify({
 				email: this.state.signInEmail,
 				password: this.state.signInPasword,

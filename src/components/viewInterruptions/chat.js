@@ -79,8 +79,13 @@ class Chat extends React.Component{
       }
 
     componentDidMount=()=>{
+        const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
         fetch(`${API_URL}/interrupcion/getComments?id_interruption=${this.props.interruptionViewSelected}`,{
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': token
+            }
             })
           .then(resp=>resp.json())
           .then(report=>{

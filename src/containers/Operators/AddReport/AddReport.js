@@ -130,6 +130,7 @@ class AddReport extends React.Component{
   }
   handleSubmit=async(event)=>{
     event.preventDefault();
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     const {
       interruptionType,
       interruptionDate,
@@ -158,7 +159,16 @@ class AddReport extends React.Component{
         interruptionIdUser: this.props.sessionController.id_user,
         interruptionRB
     }
-    axios.post(`${API_URL}/radioBases/newInterruption`,keys)
+    // axios.post(`${API_URL}/radioBases/newInterruption`,keys)
+    axios({
+      method: 'POST',
+      url:`${API_URL}/radioBases/newInterruption`,
+      data:keys,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+    }
+    })
       .then(resp=>{
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
@@ -170,6 +180,7 @@ class AddReport extends React.Component{
   }
   handleSubmitTest=async(event)=> {
     event.preventDefault();
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     const {interruptionType,interruptionDate,interruptionCauses,interruptionRadioBase,interruptionServices,interruptionTechnologies,interruptionSector}=this.props
     var probe=interruptionType==='Scheduled'?interruptionDate.interruptionTime.split(':').map((item)=>item<0?false:true):[]
     if(probe.indexOf(false) !== -1)  return alert('Fechas Invalida')
@@ -183,7 +194,16 @@ class AddReport extends React.Component{
         interruptionRadioBase,
         interruptionIdUser: this.props.sessionController.id_user
     }
-    axios.post(`${API_URL}/radioBases/newInterruption`,keys)
+    // axios.post(`${API_URL}/radioBases/newInterruption`,keys)
+    axios({
+      method: 'POST',
+      url:`${API_URL}/radioBases/newInterruption`,
+      data:keys,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+    }
+    })
       .then(resp=>{
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
@@ -196,15 +216,29 @@ class AddReport extends React.Component{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
   handleAddRadioBase=()=>{
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     if(this.props.interruptionTechnologies.length){
       const { interruptionProvince,interruptionCanton,interruptionParish}=this.props;
       const id_usuario=this.props.sessionController.id_user;
       const nivel_interrupcion=this.props.interruptionLevel;
       const location={provincia:interruptionProvince,canton:interruptionCanton,parroquia: interruptionParish};
-      axios.post(`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,{
-        nivel_interrupcion:nivel_interrupcion,
-        location:location,
-        tecnologias_afectadas:this.props.interruptionTechnologies
+      // axios.post(`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,{
+      //   nivel_interrupcion:nivel_interrupcion,
+      //   location:location,
+      //   tecnologias_afectadas:this.props.interruptionTechnologies
+      // })
+      axios({
+        method: 'POST',
+        url:`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,
+        data:{
+            nivel_interrupcion:nivel_interrupcion,
+            location:location,
+            tecnologias_afectadas:this.props.interruptionTechnologies
+          },
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': token
+      }
       })
       .then(data=>{
         data.data.codigo_estacion.map((estacion=>{

@@ -48,7 +48,14 @@ class ListaInt extends React.Component {
     })
   }
   componentDidMount=()=>{
-    fetch(`${API_URL}/radioBases/interruptionTime?interruption_id=${this.props.data.id_inte}`)
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    fetch(`${API_URL}/radioBases/interruptionTime?interruption_id=${this.props.data.id_inte}`,{
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json',
+          'authorization': token
+      },
+      })
             .then(data=>data.json())
             .then(time=>{
                 time.countdown.split(':').some(v=>v<0)?this.setState((prevState) => 

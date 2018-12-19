@@ -63,11 +63,13 @@ class Profile extends React.Component{
     }
   };
   validateLastPassword=()=>{
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     return fetch(`${API_URL}/authentication/passwordValidate/${this.props.sessionController.id_user}&${this.state.lastPassword}`,{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'authorization': window.sessionStorage.getItem('token')
+        // 'authorization': window.sessionStorage.getItem('token')
+        'authorization': token
       },
       }).then(resp=>{
       if(resp.status===400){
@@ -93,6 +95,7 @@ class Profile extends React.Component{
     }
   }
   onUpdatePassword=()=>{
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     this.state.password?
     this.validateLastPassword()
       .then(data=>{
@@ -102,7 +105,7 @@ class Profile extends React.Component{
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'authorization': window.sessionStorage.getItem('token')
+                'authorization': token
               },
               }).then(resp=>{
               this.setState({someFail: false})
@@ -123,7 +126,7 @@ class Profile extends React.Component{
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
-              'authorization': window.sessionStorage.getItem('token')
+              'authorization': token
             },
           body: JSON.stringify({formInput: {
               nombre: this.state.nombre,
@@ -147,7 +150,7 @@ class Profile extends React.Component{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'authorization': window.sessionStorage.getItem('token')
+            'authorization': token
           },
           body: JSON.stringify({formInput: {
             nombre: this.state.nombre,

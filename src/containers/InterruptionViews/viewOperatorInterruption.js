@@ -87,6 +87,10 @@ class InterruptionOperatorView extends React.Component{
                           this.setState({isReceiveDataOfInterruption:true})
                           fetch(`${API_URL}/interrupcion/getReport?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}`,{
                             method: 'GET',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'authorization': token
+                            }
                             })
                           .then(resp=>resp.json())
                           .then(report=>{
@@ -178,6 +182,7 @@ class InterruptionOperatorView extends React.Component{
   };
 
   saveReportChanges=()=>{
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     var jsonStringify=JSON.stringify({
       contentHtml:this.state.html,
       contentHeader:{
@@ -199,6 +204,7 @@ class InterruptionOperatorView extends React.Component{
       body: jsonStringify,
       headers:{
         'Content-Type': 'application/json',
+        'authorization': token
       }
       })
     .then(resp=>resp.json())

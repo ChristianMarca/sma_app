@@ -83,6 +83,7 @@ class Maps extends React.Component{
   // }
 
   async fetchInterrupciones() {
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     const {id_rol,id_user}= this.props.sessionController.dataUser;
     let offset = this.state.elementosPagina * (this.state.pagina - 1);
     let datos = [
@@ -99,7 +100,8 @@ class Maps extends React.Component{
     const response = await fetch(`${API_URL}/interrupcion/inter`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': token
       },
       body: JSON.stringify(datos)
     })

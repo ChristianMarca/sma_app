@@ -92,7 +92,16 @@ class SuggestFields extends React.Component {
 
   onChangeID = (event, { newValue }) => {
     // newValue.length>=2 && axios.get(`http://192.168.1.102:3000/radioBases?id=${newValue}`)
-    newValue.length>=2 && axios.get(`${API_URL}/radioBases?id=${newValue}`)
+    // newValue.length>=2 && axios.get(`${API_URL}/radioBases?id=${newValue}`)
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    newValue.length>=2 && axios({
+      method: 'GET',
+      url:`${API_URL}/radioBases?id=${newValue}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+    }
+    })
     .then(resp=>{
       this.setState({languages: resp.data})
     })
@@ -104,7 +113,16 @@ class SuggestFields extends React.Component {
 
   onChangeEst = (event, { newValue }) => {
     // newValue.length>=2 && axios.get(`http://192.168.1.102:3000/radioBases?est=${newValue}`)
-    newValue.length>=2 && axios.get(`${API_URL}/radioBases?est=${newValue}`)
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    // newValue.length>=2 && axios.get(`${API_URL}/radioBases?est=${newValue}`)
+    newValue.length>=2 && axios({
+      method: 'GET',
+      url: `${API_URL}/radioBases?est=${newValue}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+    }
+    })
     .then(resp=>{
       this.setState({languages: resp.data})
     })

@@ -26,13 +26,28 @@ class AdminPage extends React.Component{
 
   onHandleSubmit=(event)=>{
     event.preventDefault();
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     if(this.state.rol.length!==0){
       if ((this.state.rol==='OPERADOR' && this.state.operator.length!==0)||(this.state.rol!=='OPERADOR')){
-        axios.post(`${API_URL}/register`,{
-          rol: this.state.rol,
-          operator: this.state.operator,
-          email: this.state.email
-        }).then((data)=>{
+        // axios.post(`${API_URL}/register`,{
+        //   rol: this.state.rol,
+        //   operator: this.state.operator,
+        //   email: this.state.email
+        // })
+        axios({
+          method: 'POST',
+          url:`${API_URL}/register`,
+          data: {
+            rol: this.state.rol,
+            operator: this.state.operator,
+            email: this.state.email
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': token
+          }
+        })
+        .then((data)=>{
           if(data.status===200){
             this.setState({
               operator:'',

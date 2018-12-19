@@ -82,7 +82,16 @@ class InterruptionAddress extends React.Component{
     this.selectedRadioButtonLevel = new Set();
   }
   onChangeTest=(event)=>{
-    event.target.value.length>=3 && axios.get(`${API_URL}/radioBases?id=${event.target.value}`)
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    // event.target.value.length>=3 && axios.get(`${API_URL}/radioBases?id=${event.target.value}`)
+    event.target.value.length>=3 && axios({
+      method: 'GET',
+      url: `${API_URL}/radioBases?id=${event.target.value}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+    }
+    })
       // .then(resp=>{console.log(resp.data)})
       .catch(error=>console.log({Error:error}))
   }
