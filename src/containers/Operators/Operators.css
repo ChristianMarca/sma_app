@@ -5,6 +5,9 @@
   border: 1px solid #2E2E2E;
   height: 100vh;
 }
+.containerNewInterruption{
+  width: auto
+}
 .card{
   width: calc((100vw - 5*10px)/4.1);
   margin: 0 2px 0 2px;
@@ -23,6 +26,7 @@
   position: relative;
   max-width: 100%;
   height: auto;
+  /* overflow: auto; */
   margin-bottom: 5px;
   background-color: #f9f8fd;
   border: 1px solid #212121;
@@ -70,10 +74,11 @@
 .cardComponents{
   display: flex;
   justify-content: space-between;
+  height: auto;
 }
-.cardInput{
+/* .cardInput{
   max-height: calc(100vh - 23vh);
-}
+} */
 .submitsButtons{
   display: flex;
   flex-direction: row;

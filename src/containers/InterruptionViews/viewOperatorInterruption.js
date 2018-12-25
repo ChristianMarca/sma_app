@@ -4,6 +4,9 @@ import {withRouter} from 'react-router-dom';
 import { SortablePane, Pane } from 'react-sortable-pane';
 import ContentEditable from "react-contenteditable";
 import sanitizeHtml from "sanitize-html";
+import Dropdown from 'rc-dropdown';
+import Menu, {Item as MenuItemDropdown, Divider} from 'rc-menu';
+import 'rc-dropdown/assets/index.css';
 import { 
   requestInterruptionFetchAction,
   isSignInAction,
@@ -38,8 +41,8 @@ const mapDispatchToProps=(dispatch)=>{
 }
 
 class InterruptionOperatorView extends React.Component{
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.editorRef = React.createRef();
     this.state={
       isReceiveDataOfInterruption: false,
@@ -52,7 +55,9 @@ class InterruptionOperatorView extends React.Component{
       coordinacionZonal:``,
       codigoReporte:``,
       editable: true,
-      messageToSend:''
+      messageToSend:'',
+      stateOfInterruption:['inProcess'],
+      selectedKeysMenuReport:[]
     }
   }
 
@@ -139,8 +144,6 @@ class InterruptionOperatorView extends React.Component{
     this.setState({isSortable: false});
   }
 
-  initial = JSON.parse(sessionStorage.getItem("draftail:content"))
-
   handleChange = (stateName,event) => {
     this.setState({[stateName]: event.target.value});
   };
@@ -150,19 +153,6 @@ class InterruptionOperatorView extends React.Component{
       this.setState({messageToSend:this.state.comments})
       this.setState({comments:``})
     }
-    // event.key==='Enter' && fetch(`${API_URL}/interrupcion/addComment?id_interruption=${this.props.interruptionData.ID.data.data.id_inte}&id_user=${this.props.sessionController.id_user}`,{
-    //   method: 'PUT',
-    //   body: JSON.stringify({comment:this.state.comments}),
-    //   headers:{
-    //     'Content-Type': 'application/json'
-    //   }
-    //   })
-    // .then(resp=>resp.json())
-    // .then(report=>{
-    //   // alert(report)
-    //   this.setState({comments:``})
-    // })
-    // .catch(e=>{console.log(e);alert('Something Fail')})
   }
 
   sanitizeConf = {
@@ -218,19 +208,97 @@ class InterruptionOperatorView extends React.Component{
     this.setState({[stateName]: event.target.value});
   }
 
+  getItemsForStateInterruption=()=>{
+    return <Menu onSelect={this.onSelectInterruptionState} defaultSelectedKeys={this.state.stateOfInterruption} className="menuInterruptionState">
+      <MenuItemDropdown key="initiation" group="StateOfInterruption">Inicio</MenuItemDropdown>
+      <Divider/>
+      <MenuItemDropdown key="inProcess" group="StateOfInterruption">En Proceso</MenuItemDropdown>
+      <Divider/>
+      <MenuItemDropdown key="Finish" group="StateOfInterruption">Finalizar</MenuItemDropdown>
+    </Menu>;
+  }
+
+  getItemsForMenuReport=()=>{
+    return <Menu onSelect={this.onSelectInterruptionState} selectedKeys={this.state.selectedKeys}  className="menuInterruptionState">
+      <MenuItemDropdown key="saveChanges" group="actionInReport">Guardar Cambios</MenuItemDropdown>
+      {/* <div key="saveChanges" group="actionInReport">Guardar Cambios</div> */}
+      <Divider/>
+      <MenuItemDropdown key="rebuildReport" group="actionInReport">Restablecer Informe</MenuItemDropdown>
+      <Divider/>
+      <MenuItemDropdown key="sendReport" group="actionInReport">Enviar por Correo</MenuItemDropdown>
+    </Menu>;
+  }
+
+  //Dropdow simple
+  // onSelectInterruptionState = ({key}) => {
+  onSelectInterruptionState = (selected) => {
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    fetch(`${API_URL}/interrupcion/actions`,{
+      method: 'post',
+      body:JSON.stringify({
+        group: selected.item.props.group,
+        selected: selected.key,
+        contentHtml:this.state.html,
+        id_interruption: this.props.interruptionViewSelected,
+        contentHeader:{
+          asunto:this.state.asunto,
+          codigoReport: this.state.codigoReporte,
+          coordinacionZonal: this.state.coordinacionZonal
+        }
+      }),
+      headers: {
+          'Content-Type': 'application/json',
+          'authorization': token
+      },
+    })
+    .then(resp=>resp.json())
+    .then(resp=>{
+      switch(selected.key){
+        case 'rebuildReport':
+          this.setState({html:resp.html})
+          break;
+        case 'sendReport':
+          alert('Enviado')
+          break;
+        default:
+          break;
+      }
+    })
+    .catch(error=>{
+      console.log({Error:error})
+      alert('Something Fail')
+    })
+    this.setState({selectedKeysMenuReport:[]})
+    // switch(key){
+    //   case 'initiation':
+    //     break;
+    //   case 'inProcess':
+    // }
+    // this.setState({stateOfInterruption: key})
+    // alert(key)
+  }
+
+  onVisibleChangeInterruptionState(visible) {
+    //this.setState({elementosPagina: key})
+  }
+
+
   getInfoInterruption=()=>{
     if(this.props.interruptionData.ID.data.data){
       return <div onDoubleClick={this.initDrag} className="containerInterruption">
         <SortablePane className="viewInformation" direction="horizontal" margin={5} isSortable={this.state.isSortable}>
           <Pane key="interruptionView" defaultSize={{ width: '20%', height: '100%' }} style={this.paneStyle}>
-            <div className="cardInfoInterruption viewInformation">
-                <InterruptionView />
-            </div>
+            <Dropdown trigger={['contextMenu']} overlay={this.getItemsForStateInterruption()} animation="slide-up" onVisibleChange={this.onVisibleChangeInterruptionState} alignPoint>
+              <div className="cardInfoInterruption viewInformation">
+                  <InterruptionView />
+              </div>
+            </Dropdown>
           </Pane>
         {
           this.props.sessionController.id_rol===1
           ?
           <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
+            <Dropdown trigger={['contextMenu']} overlay={this.getItemsForMenuReport()} animation="slide-up" onVisibleChange={this.onVisibleChangeInterruptionState} alignPoint>
             <div className="cardInfoInterruption viewReport">
               <div className="containerHeaderFields">
                 <div className="containerInputsHeader">
@@ -268,7 +336,7 @@ class InterruptionOperatorView extends React.Component{
                 />
               </div>
             </div>
-
+          </Dropdown>
         </Pane>
             :
             <Pane key="interruptionReport" defaultSize={{ width: '59.2%', height: '100%' }} style={this.paneStyle}>
@@ -311,9 +379,6 @@ class InterruptionOperatorView extends React.Component{
     }else{
       return <div >Please Wait or Edit Report for Enable HTML Code</div>
     }
-  }
-  toggleExternalHTML=()=>{
-    this.setState({showExternalHTML: !this.state.showExternalHTML});
   }
   
   render(){

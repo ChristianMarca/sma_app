@@ -35,7 +35,11 @@ const mapStateToProps=state=>{
     //INterruption Level
     interruptionLevel: state.interruptionAddressReducer.interruptionLevel,
     // interruptionSector: state.interruptionAddressReducer.interruptionSector,
-    interruptionCodEstNew: state.reducerSuggestCodeEst.value
+    interruptionCodEstNew: state.reducerSuggestCodeEst.value,
+
+    interruptionTechnologies: state.interruptionTechnologiesReducer.interruptionTechnologies,
+
+    sessionController: state.sessionReducer.dataUser
 	}
 }
 const mapDispatchToProps=(dispatch)=>{
@@ -114,6 +118,41 @@ class InterruptionAddress extends React.Component{
     const {interruptionCodEstNew}=this.props;
     this.props.onReceiveRadioBase(interruptionCodEstNew,{cod_est:interruptionCodEstNew})
   }
+  handleAddRadioBase=()=>{
+    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+    if(this.props.interruptionTechnologies.length){
+      const { interruptionProvince,interruptionCanton,interruptionParish}=this.props;
+      const id_usuario=this.props.sessionController.id_user;
+      const nivel_interrupcion=this.props.interruptionLevel;
+      const location={provincia:interruptionProvince,canton:interruptionCanton,parroquia: interruptionParish};
+      // axios.post(`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,{
+      //   nivel_interrupcion:nivel_interrupcion,
+      //   location:location,
+      //   tecnologias_afectadas:this.props.interruptionTechnologies
+      // })
+      axios({
+        method: 'POST',
+        url:`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,
+        data:{
+            nivel_interrupcion:nivel_interrupcion,
+            location:location,
+            tecnologias_afectadas:this.props.interruptionTechnologies
+          },
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': token
+      }
+      })
+      .then(data=>{
+        data.data.codigo_estacion.map((estacion=>{
+          return this.props.onReceiveRadioBase(estacion.cod_est,estacion)
+        }));
+      })
+      .catch(error=>{console.log({Error:error})})
+    }else{
+      alert('Seleccion una RB')
+    }
+  }
   render(){
     var parroquia=[];
     var canton=[];
@@ -144,36 +183,70 @@ class InterruptionAddress extends React.Component{
     }
     return(
       <div className="addressContainer card-body">
-        <h6 className="titleInput">Codigo de Estacion</h6>
-        <div className="ContainerCodEst">
-          <SuggestionCodeEst />
-          <button type="button" className="buttonSubmitAddForCodEst" onClick={this.addCodEstUnique} >
-            &#x271A;
-          </button>
+        <div className="servicesContainer">
+          <div class="cardChild">
+            <header>
+              <div class="subTitleCard">
+                Codigo de Estación
+              </div>
+              </header>
+            <div class="cardContent">
+              <h6 className="titleInput">Codigo de Estacion</h6>
+              <div className="ContainerCodEst">
+                <SuggestionCodeEst />
+                <button type="button" className="buttonSubmitAddForCodEst" onClick={this.addCodEstUnique} >
+                  &#x271A;
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="servicesContainer">
-            <h6 className="titleInput">Nivel de Afeccion</h6> 
-            <div className="interruptionLevelContainer">
-                <input className="radioButton" id="provincia" type="radio" name="interruptionLevel" 
-                          value={"PROVINCIA"} 
-                          checked={this.props.interruptionLevel === "PROVINCIA"} 
-                          onChange={this.onInterruptionLevelChange} />
-                <label className="interruptionLevel" htmlFor="provincia">Provincia</label>
-                <input className="radioButton" id="canton" type="radio" name="interruptionLevel" 
-                          value={"CANTON"} 
-                          checked={this.props.interruptionLevel === "CANTON"} 
-                          onChange={this.onInterruptionLevelChange} />
-                <label className="interruptionLevel" htmlFor="canton">Canton</label>
-                <input className="radioButton" id="parroquia" type="radio" name="interruptionLevel" 
-                          value={"PARROQUIA"} 
-                          checked={this.props.interruptionLevel === "PARROQUIA"} 
-                          onChange={this.onInterruptionLevelChange} />
-                <label className="interruptionLevel" htmlFor="parroquia">Parroquia</label>
+          <div class="cardChild">
+            <header>
+              <div class="subTitleCard">
+                Localizacion
+                {/* <button onClick={this.handleAddRadioBase} className="subTitleCard buttonSubmitAddForCodEst"> */}
+                {/* &#x271A; */}
+                {/* </button> */}
+              </div>
+              </header>
+            <div class="cardContent">
+              <div className="ContainerAddButton">
+                  <h6 className="titleInput">Nivel de Afeccion</h6>
+                  <button onClick={this.handleAddRadioBase} className="buttonSubmitAddForCodEst addButton">
+                  &#x271A;
+                  </button> 
+              </div>
+                <div className="interruptionLevelContainer">
+                    <input className="radioButton" id="provincia" type="radio" name="interruptionLevel" 
+                              value={"PROVINCIA"} 
+                              checked={this.props.interruptionLevel === "PROVINCIA"} 
+                              onChange={this.onInterruptionLevelChange} />
+                    <label className="interruptionLevel" htmlFor="provincia">Provincia</label>
+                    <input className="radioButton" id="canton" type="radio" name="interruptionLevel" 
+                              value={"CANTON"} 
+                              checked={this.props.interruptionLevel === "CANTON"} 
+                              onChange={this.onInterruptionLevelChange} />
+                    <label className="interruptionLevel" htmlFor="canton">Canton</label>
+                    <input className="radioButton" id="parroquia" type="radio" name="interruptionLevel" 
+                              value={"PARROQUIA"} 
+                              checked={this.props.interruptionLevel === "PARROQUIA"} 
+                              onChange={this.onInterruptionLevelChange} />
+                    <label className="interruptionLevel" htmlFor="parroquia">Parroquia</label>
+                </div>
+                  {/* <span>
+                    Agregar Radio Bases &emsp;
+                  </span>
+                  <button onClick={this.handleAddRadioBase} className="buttonSubmitAddForCodEst addButton">
+                &#x271A;
+                </button> */}
+              {provincia}
+              {canton}
+              {parroquia}
+              </div>
             </div>
-        </div>
-        {provincia}
-        {canton}
-        {parroquia}
+          </div>
       </div>
     )
   }

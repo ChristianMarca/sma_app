@@ -215,47 +215,47 @@ class AddReport extends React.Component{
   cancel=()=>{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
   }
-  handleAddRadioBase=()=>{
-    const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
-    if(this.props.interruptionTechnologies.length){
-      const { interruptionProvince,interruptionCanton,interruptionParish}=this.props;
-      const id_usuario=this.props.sessionController.id_user;
-      const nivel_interrupcion=this.props.interruptionLevel;
-      const location={provincia:interruptionProvince,canton:interruptionCanton,parroquia: interruptionParish};
-      // axios.post(`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,{
-      //   nivel_interrupcion:nivel_interrupcion,
-      //   location:location,
-      //   tecnologias_afectadas:this.props.interruptionTechnologies
-      // })
-      axios({
-        method: 'POST',
-        url:`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,
-        data:{
-            nivel_interrupcion:nivel_interrupcion,
-            location:location,
-            tecnologias_afectadas:this.props.interruptionTechnologies
-          },
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': token
-      }
-      })
-      .then(data=>{
-        data.data.codigo_estacion.map((estacion=>{
-          return this.props.onReceiveRadioBase(estacion.cod_est,estacion)
-        }));
-      })
-      .catch(error=>{console.log({Error:error})})
-    }else{
-      alert('Seleccion una RB')
-    }
-  }
+  // handleAddRadioBase=()=>{
+  //   const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
+  //   if(this.props.interruptionTechnologies.length){
+  //     const { interruptionProvince,interruptionCanton,interruptionParish}=this.props;
+  //     const id_usuario=this.props.sessionController.id_user;
+  //     const nivel_interrupcion=this.props.interruptionLevel;
+  //     const location={provincia:interruptionProvince,canton:interruptionCanton,parroquia: interruptionParish};
+  //     // axios.post(`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,{
+  //     //   nivel_interrupcion:nivel_interrupcion,
+  //     //   location:location,
+  //     //   tecnologias_afectadas:this.props.interruptionTechnologies
+  //     // })
+  //     axios({
+  //       method: 'POST',
+  //       url:`${API_URL}/radioBases/getRadioBasesForLocation?id_user=${id_usuario}`,
+  //       data:{
+  //           nivel_interrupcion:nivel_interrupcion,
+  //           location:location,
+  //           tecnologias_afectadas:this.props.interruptionTechnologies
+  //         },
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'authorization': token
+  //     }
+  //     })
+  //     .then(data=>{
+  //       data.data.codigo_estacion.map((estacion=>{
+  //         return this.props.onReceiveRadioBase(estacion.cod_est,estacion)
+  //       }));
+  //     })
+  //     .catch(error=>{console.log({Error:error})})
+  //   }else{
+  //     alert('Seleccion una RB')
+  //   }
+  // }
   getContentFromPage=()=>{
     const {onSubmitInterruptionType}=this.props;
     const dataRb=this.props.interruptionRadioBase.radioBasesAdd;
     if(this.props.sessionController.id_rol===2){
       return(
-        <form className="containeNewInterruption" onSubmit={this.handleSubmit}>
+        <form className="containerNewInterruption" onSubmit={this.handleSubmit}>
           <div className="bodyContainer">
             <div className="itemContainer">
               <div className="card-header newHeader">
@@ -269,7 +269,9 @@ class AddReport extends React.Component{
             <div className="card-body cardComponents">
               <div className="card cardInput">
                 <h6 className="card-header containerADD">
-                  <div>Radio Base</div><button className="ButtonTag"><i onClick={this.handleAddRadioBase} className="addButton fas fa-plus-square"></i></button></h6>
+                  <div>Radio Base</div>
+                  {/* <button className="ButtonTag"><i onClick={this.handleAddRadioBase} className="addButton fas fa-plus-square"></i></button> */}
+                  </h6>
                 <InterruptionRadioBases className="itemContainer card-body" />
               </div>
               <div className="card cardInput"> 

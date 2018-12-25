@@ -7,6 +7,11 @@
   cursor: pointer;
 }
 
+.menuInterruptionState{
+  width: 150px;
+  cursor: pointer;
+}
+
 .cardInfoDetails{
   display: flex;
   flex-direction: column;
@@ -107,7 +112,7 @@
   font-family: sans-serif;
   -ms-text-justify: distribute-all-lines;
   text-justify: distribute-all-lines;
-  background-color: rgba(255, 255, 255, 0.9);
+  /* background-color: rgba(255, 255, 255, 0.9); */
 }
 
 .editableReportContainer{

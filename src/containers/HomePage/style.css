@@ -143,7 +143,15 @@
   margin-left:auto;
   margin-right:auto
 }
-.btn-login{background: #DE6262; color:#fff; font-weight:600;}
+.btn-login{
+  width: 40%;
+  height: 50px;
+  font-size: 18pt;
+  background: #DE6262;
+  color:#fff; 
+  font-weight:800;
+  margin-bottom: 20px;
+}
 i{cursor: pointer;}
 
 @media all and (max-width:780px){

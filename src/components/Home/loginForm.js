@@ -59,7 +59,6 @@ class LoginForm extends React.Component{
     }
 
     onSubmitSignIn=(event)=>{
-        const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
         let message=document.getElementById("failMessage");
         if (message.style.visibility === 'visible'){
             message.style.visibility = 'hidden';
