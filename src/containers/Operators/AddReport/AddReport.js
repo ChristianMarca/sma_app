@@ -136,8 +136,12 @@ class AddReport extends React.Component{
   }
   handleSubmit=async(event)=>{
     event.preventDefault();
-    document.getElementById('lds-ellipsis').style.visibility='visible';
-    document.getElementById('SendInterruption').disabled=true;
+    try{
+      document.getElementById('lds-ellipsis').style.visibility='visible';
+      document.getElementById('SendInterruption').disabled=true;
+    }catch(e){
+
+    }
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     const {
       interruptionType,
@@ -180,7 +184,6 @@ class AddReport extends React.Component{
     }
     })
       .then(resp=>{
-        console.log(resp)
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
         this.props.onRemoveAllRadioBases();

@@ -38,10 +38,9 @@ class InterruptionDate extends React.Component{
     const {onSubmitInterruptionTime}=this.props;
     const now  = interruptionEnd;
     const then = interruptionStart;
-    console.log(now,then,'sad//./.')
     const ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
     const d = moment.duration(ms);
-    const s = Math.floor(d.asHours()) + moment.tz("America/Guayaquil").format(":mm:ss");
+    const s = Math.floor(d.asHours()) + moment(ms).tz("America/Guayaquil").format(":mm:ss");
     onSubmitInterruptionTime(s)
     return(s)
   }

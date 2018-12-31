@@ -128,9 +128,10 @@ class ListaInt extends React.Component {
           seleccion = Array.prototype.concat(selec, [
             <td key={'locate'+moment()+data.id}>{getLocationForInterruption(data)}</td>,
             <td key={this.state._className+moment()+data.id}>
+            {console.log(moment.duration(this.state.infoTime.actualDay, "days"),this.state.infoTime.actualDay,'sdfs')}
               {
                 moment.duration(this.state.infoTime.actualDay, "days")
-              .format("DD:hh:mm").split(':').map((item,index,array)=>{
+              .format("dd:hh:mm").split(':').map((item,index,array)=>{
                   if(array.length===2){
                     if(index===0){
                       return `${item} h : `
@@ -138,7 +139,7 @@ class ListaInt extends React.Component {
                       return `${item} m`
                     }
                   }
-                  else{
+                  else if(array.length===3){
                     if(index===0){
                       return `${item} d : `
                     }
@@ -147,8 +148,9 @@ class ListaInt extends React.Component {
                     }else{
                       return `${item} m`
                     }
+                  }else{
+                    return `${item} m`
                   }
-
               })
               }
             </td>,
