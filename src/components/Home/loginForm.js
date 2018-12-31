@@ -128,7 +128,7 @@ class LoginForm extends React.Component{
                                         <input type="checkbox" id="rememberMe" onClick={this.onRememberChange} className="form-check-input" />
                                         <label className="marca" htmlFor="rememberMe">Remember Me</label>
                                     <br/>
-                                    <button type="submit" onClick={this.onSubmitSignIn} className="btn btn-login float-right">Submit</button>
+                                    <button type="submit" onClick={this.onSubmitSignIn} className="btn btn-login float-right">Inicia sesión</button>
                                 </div>
                             </form>
                             <div className="copy-text">La presenta plataforma se encuentra en proceso de desarrollo, para mas información dirigirse a  <i className="fab fa-github" ></i> o en  <a href="http://www.arcotel.gob.ec/">ARCOTEL</a>

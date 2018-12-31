@@ -2,7 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import DateTimePicker from 'react-datetime-picker';
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 
 import {interruptionStartAction,interruptionEndAction,interruptionTimeAction} from '../../actions';
 import './interruption.css';
@@ -37,9 +38,10 @@ class InterruptionDate extends React.Component{
     const {onSubmitInterruptionTime}=this.props;
     const now  = interruptionEnd;
     const then = interruptionStart;
+    console.log(now,then,'sad//./.')
     const ms = moment(now,"DD/MM/YYYY HH:mm:ss").diff(moment(then,"DD/MM/YYYY HH:mm:ss"));
     const d = moment.duration(ms);
-    const s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    const s = Math.floor(d.asHours()) + moment.tz("America/Guayaquil").format(":mm:ss");
     onSubmitInterruptionTime(s)
     return(s)
   }

@@ -145,8 +145,8 @@
 }
 .btn-login{
   width: 40%;
-  height: 50px;
-  font-size: 18pt;
+  height: auto;
+  font-size: 14pt;
   background: #DE6262;
   color:#fff; 
   font-weight:800;

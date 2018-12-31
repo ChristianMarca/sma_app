@@ -184,13 +184,13 @@ class InterruptionAddress extends React.Component{
     return(
       <div className="addressContainer card-body">
         <div className="servicesContainer">
-          <div class="cardChild">
+          <div className="cardChild">
             <header>
-              <div class="subTitleCard">
+              <div className="subTitleCard">
                 Codigo de Estación
               </div>
               </header>
-            <div class="cardContent">
+            <div className="cardContent">
               <h6 className="titleInput">Codigo de Estacion</h6>
               <div className="ContainerCodEst">
                 <SuggestionCodeEst />
@@ -202,16 +202,16 @@ class InterruptionAddress extends React.Component{
           </div>
         </div>
         <div className="servicesContainer">
-          <div class="cardChild">
+          <div className="cardChild">
             <header>
-              <div class="subTitleCard">
+              <div className="subTitleCard">
                 Localizacion
                 {/* <button onClick={this.handleAddRadioBase} className="subTitleCard buttonSubmitAddForCodEst"> */}
                 {/* &#x271A; */}
                 {/* </button> */}
               </div>
               </header>
-            <div class="cardContent">
+            <div className="cardContent">
               <div className="ContainerAddButton">
                   <h6 className="titleInput">Nivel de Afeccion</h6>
                   <button onClick={this.handleAddRadioBase} className="buttonSubmitAddForCodEst addButton">

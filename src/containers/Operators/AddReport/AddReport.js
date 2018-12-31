@@ -35,9 +35,12 @@ import InterruptionRadioBases from '../../../components/Operators/InterruptionRa
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
 import InterruptionCauses from '../../../components/Operators/InterruptionCauses';
 import InterruptionFiles from '../../../components/Operators/InterruptionFiles';
-import RadioBase from "../../../components/Operators/radioBase";
+// import RadioBase from "../../../components/Operators/radioBase";
+import ModalPreview from '../../../components/Operators/Modal_Interruption_Preview';
+import PreviewForm from '../../../components/Operators/interruptionPreviewSend';
 
 import '../Operators.css'
+import InterruptionSummary from '../../../components/Operators/interruptionSummary';
 
 const mapStateToProps=state=>{
 	return {
@@ -75,6 +78,9 @@ class AddReport extends React.Component{
     super();
     this.state={
       submitForm:false,
+      isPreviewModalOpen:false,
+      emailAddress:[],
+      CZ:''
     }
   }
   componentDidMount(){
@@ -130,6 +136,8 @@ class AddReport extends React.Component{
   }
   handleSubmit=async(event)=>{
     event.preventDefault();
+    document.getElementById('lds-ellipsis').style.visibility='visible';
+    document.getElementById('SendInterruption').disabled=true;
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
     const {
       interruptionType,
@@ -157,7 +165,9 @@ class AddReport extends React.Component{
         interruptionCanton,
         interruptionParish,
         interruptionIdUser: this.props.sessionController.id_user,
-        interruptionRB
+        interruptionRB,
+        interruptionEmailAddress: this.state.emailAddress,
+        coordinacion_zonal: this.state.CZ
     }
     // axios.post(`${API_URL}/radioBases/newInterruption`,keys)
     axios({
@@ -170,13 +180,17 @@ class AddReport extends React.Component{
     }
     })
       .then(resp=>{
+        console.log(resp)
         this.props.onSubmitInterruptionComplete();
         this.props.onRemoveAllServices();
         this.props.onRemoveAllRadioBases();
         this.props.onRemoveAllTechnologies();
         this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
       })
-      .catch(err=>alert(err))
+      .catch(err=>{
+        alert(err);
+        document.getElementById('SendInterruption').disabled=false;
+      })
   }
   handleSubmitTest=async(event)=> {
     event.preventDefault();
@@ -192,7 +206,8 @@ class AddReport extends React.Component{
         interruptionServices,
         interruptionTechnologies,
         interruptionRadioBase,
-        interruptionIdUser: this.props.sessionController.id_user
+        interruptionIdUser: this.props.sessionController.id_user,
+        emailAddress: this.state.emailAddress
     }
     // axios.post(`${API_URL}/radioBases/newInterruption`,keys)
     axios({
@@ -211,6 +226,10 @@ class AddReport extends React.Component{
         this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
       })
       .catch(err=>alert(err))
+  }
+  handleSubmitTest1=(event)=>{
+    event.preventDefault()
+    this.toogleModalPreview()
   }
   cancel=()=>{
     this.setState((prevState) => ({ submitForm: !prevState.submitForm }))
@@ -250,11 +269,28 @@ class AddReport extends React.Component{
   //     alert('Seleccion una RB')
   //   }
   // }
+  toogleModalPreview=()=>{
+    this.setState(prevState=>(
+        {
+            ...prevState,
+            isPreviewModalOpen: !prevState.isPreviewModalOpen
+        }
+    ) )
+  }
+
+  getEmailsToSendReport=(emails)=>{
+    this.setState({emailAddress:emails})
+  }
+  getCZToSend=(Cz)=>{
+    this.setState({CZ:Cz})
+  }
+
   getContentFromPage=()=>{
     const {onSubmitInterruptionType}=this.props;
-    const dataRb=this.props.interruptionRadioBase.radioBasesAdd;
+    // const dataRb=this.props.interruptionRadioBase.radioBasesAdd;
     if(this.props.sessionController.id_rol===2){
       return(
+        // <form className="containerNewInterruption" onSubmit={this.handleSubmit}>
         <form className="containerNewInterruption" onSubmit={this.handleSubmit}>
           <div className="bodyContainer">
             <div className="itemContainer">
@@ -275,11 +311,19 @@ class AddReport extends React.Component{
                 <InterruptionRadioBases className="itemContainer card-body" />
               </div>
               <div className="card cardInput"> 
-                <h6 className="card-header">Resumen</h6>
-                <div className='card-body miniCards'>
-                  {Object.keys(dataRb).map(function(key, index) {
+                <h6 className="card-header">
+                  <div>Resumen</div>
+                  {/* <button className=""> */}
+                    <div className="buttonRemoveAllRadioBases">
+                      <button className="custom-underline" onClick={this.props.onRemoveAllRadioBases}>Eliminar todo</button>
+                    </div>
+                  {/* </button> */}
+                </h6>
+                <div className='card-body resumenBodyContaniner'>
+                  <InterruptionSummary />
+                  {/* {Object.keys(dataRb).map(function(key, index) {
                     return <RadioBase key={key} data={dataRb[key]}/>
-                  })}
+                  })} */}
                 </div>
               </div>
               <div className="card cardInput">
@@ -293,9 +337,24 @@ class AddReport extends React.Component{
               </div>
             </div>
             <div className="submitsButtons">
-              <button type="submit" id="buttonTypeS" className="buttonSubmits" ><i className="fas fa-save"></i> Save</button>
+              <button type="button" id="buttonTypeS" className="buttonSubmits" onClick={this.toogleModalPreview}><i className="fas fa-save"></i> Save</button>
               <button type="button" id="buttonTypeS" className="buttonSubmits" onClick={this.cancel} ><i className="fas fa-ban"></i> Cancel</button>
               {this.state.submitForm && <Redirect to="/" push={true} />}
+              {this.state.isPreviewModalOpen &&
+                <ModalPreview>
+                    {/* <Profile isProfileOpen={this.state.isProfileOpen} toogleModal={this.toogleModal}/> */}
+                    <div className="preview-modal">
+                      <div className="containerInfoPreview">
+                        <PreviewForm emailsSelected={this.getEmailsToSendReport} _CZ={this.getCZToSend}/>
+                        <div className="submitButtonsPreview">
+                          <button type="submit" id="SendInterruption" className="buttonSubmitPreview" onClick={this.handleSubmit} ><i className="fas fa-save"></i> Save</button>
+                          <button type="submit" id="buttonTypeS" className="buttonCancelPreview" onClick={this.toogleModalPreview} ><i className="fas fa-edit"></i> Modificar</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="lds-ellipsis" id="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </ModalPreview>
+            }
             </div>
           </div>
         </form>

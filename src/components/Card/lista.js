@@ -33,9 +33,7 @@ class Lista extends React.Component {
       elementosPagina: 10,
       campOrden: "fecha_inicio",
       orden: "DESC",
-      campos: [
-        "0", "9", "1"
-      ],
+      campos: ["0", "29","10", "1"],
       dataInt: [],
       totalInt: 0,
       bandera: true,
@@ -163,7 +161,7 @@ class Lista extends React.Component {
   }
 
   saveSelectedMultiple = ({selectedKeys}) => {
-    let llaves = ["0", "9", "1"].concat(selectedKeys.sort());
+    let llaves = ["0", "29","10", "1"].concat(selectedKeys.sort());
     this.setState({campos: llaves})
   }
 
@@ -206,6 +204,17 @@ class Lista extends React.Component {
                     this.props.onSignInApproved();
                     this.props.onReceiveDataUser(user);
                     this.fetchInterrupciones().then(res => {
+                      // switch(res[1].nivel_interrupcion){
+                      //   case 'PARROQUIA':
+                      //     this.setState({campos:["0", "29","13", "1"]});
+                      //     break;
+                      //   case 'CANTON':
+                      //     this.setState({campos:["0", "29","12", "1"]});
+                      //     break;
+                      //   default:
+                      //     this.setState({campos:["0", "29","11", "1"]});
+                      //     break;
+                      // }
                       this.setState({totalInt: res[0], dataInt: res[1]})
                     })
                   }

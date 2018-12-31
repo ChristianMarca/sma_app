@@ -210,22 +210,27 @@ class InterruptionOperatorView extends React.Component{
 
   getItemsForStateInterruption=()=>{
     return <Menu onSelect={this.onSelectInterruptionState} defaultSelectedKeys={this.state.stateOfInterruption} className="menuInterruptionState">
-      <MenuItemDropdown key="initiation" group="StateOfInterruption">Inicio</MenuItemDropdown>
+      <MenuItemDropdown key="ACTIVO" group="StateOfInterruption">ACTIVO</MenuItemDropdown>
       <Divider/>
-      <MenuItemDropdown key="inProcess" group="StateOfInterruption">En Proceso</MenuItemDropdown>
+      <MenuItemDropdown key="REVISION" group="StateOfInterruption">REVISION</MenuItemDropdown>
       <Divider/>
-      <MenuItemDropdown key="Finish" group="StateOfInterruption">Finalizar</MenuItemDropdown>
+      <MenuItemDropdown key="INACTIVO" group="StateOfInterruption">INACTIVO</MenuItemDropdown>
     </Menu>;
   }
 
   getItemsForMenuReport=()=>{
     return <Menu onSelect={this.onSelectInterruptionState} selectedKeys={this.state.selectedKeys}  className="menuInterruptionState">
       <MenuItemDropdown key="saveChanges" group="actionInReport">Guardar Cambios</MenuItemDropdown>
-      {/* <div key="saveChanges" group="actionInReport">Guardar Cambios</div> */}
       <Divider/>
       <MenuItemDropdown key="rebuildReport" group="actionInReport">Restablecer Informe</MenuItemDropdown>
       <Divider/>
       <MenuItemDropdown key="sendReport" group="actionInReport">Enviar por Correo</MenuItemDropdown>
+    </Menu>;
+  }
+
+  getItemsForAddInterruption=()=>{
+    return <Menu onSelect={this.onSelectInterruptionState} selectedKeys={this.state.selectedKeys}  className="menuInterruptionState">
+      <MenuItemDropdown key="saveChanges" group="actionInReport">Reportar por Email</MenuItemDropdown>
     </Menu>;
   }
 
@@ -371,6 +376,9 @@ class InterruptionOperatorView extends React.Component{
                     <input className="textarea" onKeyPress={this.handleSendComment} value={this.state.comments} onChange={this.handleChange.bind(this,'comments')} type="text" placeholder="Type here!"/>
                   </div>
               </div>
+              <button className="SendInterruptionForEmail">
+                Enviar Reporte Por Interrupcion
+              </button>
             </div>
           </Pane>
           }

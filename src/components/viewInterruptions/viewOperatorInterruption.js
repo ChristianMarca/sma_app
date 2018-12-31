@@ -3,7 +3,8 @@ import React from 'react';
 import { connect } from "react-redux";
 import io from "socket.io-client";
 import {withRouter} from 'react-router-dom';
-import  moment from 'moment';
+// import  moment from 'moment';
+import moment from 'moment-timezone';
 import {
   requestInterruptionFetchAction,
   isSignInAction,
@@ -153,7 +154,7 @@ class InterruptionOperatorView extends React.Component{
               Fecha Inicio:
             </div >
             <div className="body-info">
-              {moment(data.data.fecha_inicio).format('MM-DD-YYYY / HH:mm:ss')}
+              {moment(data.data.fecha_inicio).tz("America/Guayaquil").format('MM-DD-YYYY / HH:mm:ss')}
             </div>
           </div>
           {data.data.id_tipo===1&&
@@ -162,7 +163,7 @@ class InterruptionOperatorView extends React.Component{
               Fecha Finalizacion:
             </div >
             <div className="body-info">
-              {moment(data.data.fecha_fin).format('MM-DD-YYYY / HH:mm:ss')}
+              {moment(data.data.fecha_fin).tz("America/Guayaquil").format('MM-DD-YYYY / HH:mm:ss')}
             </div>
           </div>}
           {data.data.id_tipo===1&&

@@ -68,8 +68,8 @@ const rootReducer = (state, action) => {
 	return appReducers(state, action)
 }
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware,looger))
-// const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+// const store = createStore(rootReducer, applyMiddleware(thunkMiddleware,looger))
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 export default store;
 
 ReactDOM.render(

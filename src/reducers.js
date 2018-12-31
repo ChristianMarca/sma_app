@@ -80,7 +80,8 @@ import {
   INTERRUPTION_SELECTED_REQUEST_SUCCESS,
   INTERRUPTION_SELECTED_REQUEST_FAILED
 } from './constants';
-import moment from 'moment';
+// import moment from 'moment';
+import moment from 'moment-timezone';
 // Elección del tipo de interrupción
 const initialStateType={
   interruptionType: "Scheduled"
@@ -135,8 +136,8 @@ export const interruptionAddressReducer =(state=initialStateBS, action={})=>{
 
 //Inicio de Interrupció
 const initialStateDate={
-  interruptionStart: moment().toDate(),
-  interruptionEnd: moment().toDate(),
+  interruptionStart: moment().tz("America/Guayaquil").toDate(),
+  interruptionEnd: moment().tz("America/Guayaquil").toDate(),
   interruptionTime:"",
 };
 

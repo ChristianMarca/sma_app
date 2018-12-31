@@ -5,6 +5,17 @@ import "./table.css";
 
 class TablaInt extends React.Component {
 
+  constructor(){
+    super();
+    this.state={
+      interruptionClassName:"__inicio__operador__"
+    }
+  }
+
+  setStateFromChild=(data)=>{
+    console.log(data,'tes asa data')
+  }
+
   tablaGen() {
     try {
       let {data} = this.props;
@@ -13,7 +24,7 @@ class TablaInt extends React.Component {
         let headData = this.props.campos.map(res => base[res])
 
         let seleccion = data.map((elemento, index) => {
-          return (<ListaInt key={elemento.id_inte} columns={headData} data={elemento}></ListaInt>)
+          return (<ListaInt stateOfInterruption={this.setStateFromChild} key={elemento.id_inte} columns={headData} data={elemento}></ListaInt>)
         })
         let etiquetas = [<ListaInt key="Cabecera" id="Head" columns={headData} data={headData} handleClick={this.props.fCampo}></ListaInt>
           ];
@@ -29,7 +40,7 @@ class TablaInt extends React.Component {
   render() {
     var divition=this.tablaGen().map((row,index)=>{
       if(index!==0){
-          return <tbody key={index} className="TBod wrapper row-fadeIn-wrapper">
+          return <tbody key={index} className={`TBod wrapper row-fadeIn-wrapper`}>
               {row}
           </tbody>
         }

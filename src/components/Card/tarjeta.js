@@ -4,7 +4,10 @@ import io from "socket.io-client";
 import {Redirect, withRouter} from 'react-router-dom';
 import { interruptionViewIdAction } from "../../actions";
 import {API_URL} from '../../config';
-import moment from 'moment'
+// import moment from 'moment'
+// var moment = require('moment-timezone');
+import moment  from  'moment-timezone';
+import "moment-duration-format";
 import "./table.css";
 
 const mapStateToProps=state=>{
@@ -26,7 +29,9 @@ class ListaInt extends React.Component {
       this.state={
         openInterruption:false,
         data:{},
-        test_:'inicio'
+        _className:'',
+        _classNameButton:'',
+        infoTime:{}
       }
       this.handleClick = this.handleClick.bind(this);
     }
@@ -49,29 +54,55 @@ class ListaInt extends React.Component {
   }
   componentDidMount=()=>{
     const token = window.sessionStorage.getItem('token')||window.localStorage.getItem('token');
-    fetch(`${API_URL}/radioBases/interruptionTime?interruption_id=${this.props.data.id_inte}`,{
+    // fetch(`${API_URL}/radioBases/interruptionTime?interruption_id=${this.props.data.id_inte}`,{
+    //   method: 'GET',
+    //   headers: {
+    //       'Content-Type': 'application/json',
+    //       'authorization': token
+    //   },
+    //   })
+    //         .then(data=>data.json())
+    //         .then(time=>{
+    //             time.countdown.split(':').some(v=>v<0)?this.setState((prevState) => 
+    //               ({ test_: "finalizado" })
+    //               ):
+    //               this.setState((prevState) => 
+    //                 ({ test_: "inicio" })
+    //               )
+    //         })
+    //         .catch(error=>console.log({Error:error}))
+    fetch(`${API_URL}/interrupcion/getStateInterruption?interruption_id=${this.props.data.id_inte}`,{
       method: 'GET',
       headers: {
           'Content-Type': 'application/json',
           'authorization': token
       },
       })
-            .then(data=>data.json())
-            .then(time=>{
-                time.countdown.split(':').some(v=>v<0)?this.setState((prevState) => 
-                  ({ test_: "finalizado" })
-                  ):
-                  this.setState((prevState) => 
-                    ({ test_: "inicio" })
-                  )
-            })
-            .catch(error=>console.log({Error:error}))
+      .then(res=>res.json())
+      .then(res=>{
+        this.setState({_className:`__${res.status}__${res.level}__`,_classNameButton:`__${res.status}__${res.level}__button__`,infoTime:res})
+        this.props.stateOfInterruption(res)
+      })
+      .catch(err=>console.log({Error:err}))
   }
 
   columnas=()=> {
     try {
       let {columns} = this.props;
       let {data} = this.props;
+      // const isArray = function(a) {
+      //   return (!!a) && (a.constructor === Array);
+      // };
+      const getLocationForInterruption=(_data)=>{
+        switch(_data.nivel_interrupcion){
+          case 'PARROQUIA':
+            return _data.parroquia_inte;
+          case 'CANTON':
+            return _data.canton_inte;
+          default:
+            return _data.provincia_inte;
+        }
+      }
       if ( Object.keys(data).length !== 0 ) {
         let seleccion = [];
         if (Array.isArray(data)) {
@@ -82,8 +113,11 @@ class ListaInt extends React.Component {
                 <td key={elemento+moment()} data-key={elemento} onClick={this.handleClick}>{elem}</td>
               )
           })
-          seleccion = Array.prototype.concat(selec, [<td key="RevC">Revision</td>
-            ])
+          seleccion = Array.prototype.concat(selec, [
+            <td key="RevL">Localidad</td>,
+            <td key="RevT">Tiempo Transcurrido</td>,
+            <td key="RevC">Revision</td>
+          ])
         } else {
           let selec = columns.map((elemento, index) => {
             return (
@@ -91,21 +125,48 @@ class ListaInt extends React.Component {
                 {data[elemento]}
               </td>)
           })
-          seleccion = Array.prototype.concat(selec, [<td key={data.id_inte}>
-            <div key={data.id_inte+moment()} onClick={()=>this.handleClickSelectInterruption(data.id_inte)} className="mouse_scroll">
-            <div className="mouse inicio">
-              <div className="wheel">Ir</div>
-            </div>
-            <div>
-              <span className={`m_scroll_arrows unu ${this.state.test_}`}></span>
-              <span className={`m_scroll_arrows doi ${this.state.test_}`}></span>
-              <span className={`m_scroll_arrows trei ${this.state.test_}`}></span>
-            </div>
-            </div>
-          
-            {this.state.openInterruption && <Redirect to="/interruptionOperator" push={true} />}
-          </td>
-            ])
+          seleccion = Array.prototype.concat(selec, [
+            <td key={'locate'+moment()+data.id}>{getLocationForInterruption(data)}</td>,
+            <td key={this.state._className+moment()+data.id}>
+              {
+                moment.duration(this.state.infoTime.actualDay, "days")
+              .format("DD:hh:mm").split(':').map((item,index,array)=>{
+                  if(array.length===2){
+                    if(index===0){
+                      return `${item} h : `
+                    }else{
+                      return `${item} m`
+                    }
+                  }
+                  else{
+                    if(index===0){
+                      return `${item} d : `
+                    }
+                    else if(index===1){
+                      return `${item} h : `
+                    }else{
+                      return `${item} m`
+                    }
+                  }
+
+              })
+              }
+            </td>,
+            <td key={data.id_inte}>
+              <div key={data.id_inte+moment()} onClick={()=>this.handleClickSelectInterruption(data.id_inte)} className="mouse_scroll">
+              <div className="mouse inicio">
+                <div className="wheel">Ir</div>
+              </div>
+              <div>
+                <span className={`m_scroll_arrows unu ${this.state._classNameButton}`}></span>
+                <span className={`m_scroll_arrows doi ${this.state._classNameButton}`}></span>
+                <span className={`m_scroll_arrows trei ${this.state._classNameButton}`}></span>
+              </div>
+              </div>
+            
+              {this.state.openInterruption && <Redirect to="/interruptionOperator" push={true} />}
+            </td>
+          ])
         }
         return (seleccion)
       } else {
@@ -117,7 +178,7 @@ class ListaInt extends React.Component {
   }
 
   render() {
-    let card = <tr key={moment()} className="rowTarget nfl">
+    let card = <tr key={moment()} className={`rowTarget nfl ${this.state._className}`}>
       {this.columnas()}</tr>;
     return (card)
   }

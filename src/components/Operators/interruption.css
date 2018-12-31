@@ -166,7 +166,7 @@ textarea {
   margin-left: -90px;
 }
 .react-datetime-picker, .react-datetime-picker *, .react-datetime-picker *:before, .react-datetime-picker *:after{
-  z-index: 10000!important;
+  z-index: 1!important;
   visibility: visible!important;
 }
 .rbCard{
@@ -348,7 +348,8 @@ label[class="services"] {
   padding-right: 10px;
   line-height: 36px;
   cursor: pointer;
-  z-index: 1000;
+  /* z-index: 1000; */
+  z-index: 1;
 }
 label[class="services"]::before {
   content: " ";
@@ -464,6 +465,195 @@ input[type="radio"]:checked + label[class="interruptionLevel"]::before {
   color:#fff;
   background-color: #2E2E2E;
 }
+
+.containerInterruptionSummary{
+  width: 98%;
+  height: auto;
+  align-content: center;
+  align-items: center;
+  border: 1px solid #3e3e3e;
+  margin: 5px 0 5px 0;
+  border-radius: 5px;
+}
+.containerEmails{
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+.containerNewEmail{
+  position: relative;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-content: center;
+  align-content: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.email-field {
+  width: 65%;
+  position: relative;
+	display: inline-block;
+	color: #f4f2ca;
+	text-align: center;
+  background-color: #3e3e3e;
+  height: 100%;
+  margin-right: 10px;
+	border: none;
+	cursor: pointer;
+	outline: none;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-transition: all .1s linear;
+	-moz-transition: all .1s linear;
+	transition: all .1s linear;
+}
+.email-field:hover {
+	background-color: #2e2e2e;
+}
+.containerCZ{
+  align-self: center;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.options-field-cz{
+  
+  width: 20%;
+  height: 30px;
+  text-align: center;
+  padding: 5px;
+  color: #f4f2ca;
+  margin-left: 10px;
+  background: #2e2e2e;
+  border: none;
+  border-radius: 5px;
+}
+
+#add-email {
+	width: 10%;
+	height: 100%;
+	border: none;
+	text-indent: -9999px;
+  opacity: .75;
+	background: url(http://helixpowered.com/assets/img/arrow-circle-on-right.svg) no-repeat;
+	background-size: 100%;
+	background-position: 0 1px;
+	-webkit-transition: all .2s linear;
+	-moz-transition: all .2s linear;
+	transition: all .2s linear;
+  
+	cursor: pointer; /* for demo only */
+
+	/* display: none; */
+}
+#add-email:hover {
+	opacity: .33;
+}
+.containerEmail{
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+.containerEmailView{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 5px;
+  border: 1px dotted #3E3E3E;
+  border-radius: 5px;
+  padding: 5px;
+}
+.subContainerEmailView{
+  margin: 0 5px 0 5px;
+  color: rgba(0,0,255,0.75);
+  display: flex;
+}
+.subContainerEmailView>span{
+  text-decoration: underline;
+}
+
+.buttonRemoveEmail{
+  color: red;
+  height: auto;
+  width: auto;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  padding: 2px;
+  margin-left: 5px;
+}
+.containerInterruptionSummaryModal em{
+  width: 100%;
+  max-width: 100%;
+}
+
+.containerInterruptionSummaryModal li{
+  border-left: 5px solid #2e2e2e!important;
+  border-radius: 10px;
+  max-width: 100%;
+  /* padding-left: 10px; */
+}
+.containerInterruptionSummaryModal{
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+.listPreview{
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  text-align: justify;
+  overflow-y: scroll;
+}
+.listPreview>ol>li{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 5px 0 5px 0;
+  border-bottom: 1px dotted #2E2E2E;
+  border-right: 1px dotted #2E2E2E;
+}
+.listPreview .titlePreview{
+  align-content: center;
+  text-align: center;
+  /* color: rgba(255,0,0,0.75); */
+  color: #fff;
+  font-size: 12pt;
+  background-color: #2E2E2E;
+  border-top-left-radius:5px;
+  border-top-right-radius: 5px;
+}
+
+.listPreview>ol{
+  margin: 0;
+  padding: 0;
+}
+
+.listPreview .bodyPreviewContent{
+  margin: 0;
+  padding: 0;
+  padding: 0 10px 5px 10px;
+}
+.listPreview span{
+  font-size: 1.1em;
+  color: rgba(255,0,0,0.75);
+  text-decoration: underline;
+}
+.subTitle{
+  margin-left: 10px;
+}
+
 @media all and (max-width: 768px){
   .react-datetime-picker__button, .dateFilterPag{
     width: 100%!important;

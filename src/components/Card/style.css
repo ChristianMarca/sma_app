@@ -245,17 +245,111 @@ td{
   
 }
 
-.inicio {
+.__inicio__operador__{
+  border-radius: 5px;
+  border-left: 3px solid #009000;
+  border-bottom: 3px solid #009000;
+  animation: hoverTarget 0.5s 1;
+}
+.__proceso__operador__{
+  border-radius: 5px;
+  border-left: 3px solid #f86702;
+  border-bottom: 3px solid #f86702;
+  animation: hoverTarget 0.5s 1;
+}
+
+.__fin__operador__{
+  border-radius: 5px;
+  border-left: 3px solid #f80202;
+  border-bottom: 3px solid #f80202;
+  animation: hoverTarget 0.5s 1;
+}
+
+.__inicio__arcotel__{
+  border-radius: 5px;
+  border-left: 3px solid #00aa00;
+  border-bottom: 3px solid #00aa00;
+  animation: hoverTarget 0.5s 1;
+}
+
+.__proceso__arcotel__{
+  border-radius: 5px;
+  border-left: 3px solid #f85e02;
+  border-bottom: 3px solid #f85e02;
+  animation: hoverTarget 0.5s 1;
+}
+
+.__fin__arcotel__{
+  border-radius: 5px;
+  border-left: 3px solid #fd1616;
+  border-bottom: 3px solid #fd1616;
+  animation: hoverTarget 0.5s 1;
+}
+
+.__inicio__arcotel__::before{
+  content: "A";
+  color: #009000;
+  width: 0; 
+  height: 0; 
+  /* border-bottom: 45px solid transparent;
+  border-left: 65px solid #009000; */
+  position: absolute;
+  left: 5px;
+}
+
+.__proceso__arcotel__::before{
+  content: "A";
+  /* font-size: 1.5em; */
+  color: #f86702;
+  /* color:#fff; */
+  width: 0; 
+  height: 0; 
+  /* border-bottom: 45px solid transparent;
+  border-left: 65px solid #f86702; */
+  position: absolute;
+  left: 5px;
+}
+
+.__fin__arcotel__::before{
+  content: "A";
+  color: #f80202;
+  width: 0; 
+  height: 0; 
+  /* border-bottom: 45px solid transparent;
+  border-left: 65px solid #f80202; */
+  position: absolute;
+  left: 5px;
+}
+
+@keyframes hoverTarget{
+  0% {
+    padding: 0;
+    margin: 0;
+    box-shadow:
+                1px 1px #3e3e3e,
+                2px 2px #3e3e3e,
+                3px 3px #3e3e3e;
+  }
+  100% {
+    -webkit-transition:height 3s ease-in-out;
+    -moz-transition:height 3s ease-in-out;
+    -o-transition:height 3s ease-in-out;
+    transition:height 3s ease-in-out;
+  }
+}
+
+
+.__inicio__arcotel__button__,.__inicio__operador__button__ {
   border-right: 2px solid #3D9970;
   border-bottom: 2px solid #3D9970;  
 }
 
-.proceso {
+.__proceso__arcotel__button__,.__proceso__operador__button__ {
   border-right: 2px solid #FF851B;
   border-bottom: 2px solid #FF851B;  
 }
 
-.finalizado {
+.__fin__arcotel__button__,.__fin__operador__button__ {
   border-right: 2px solid #FF4136;
   border-bottom: 2px solid #FF4136;  
 }
