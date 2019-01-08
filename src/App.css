@@ -1,48 +1,48 @@
-.listNav{
-  position: relative;
-  list-style: none;
-  width: 100%;
-  margin: 0;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-direction: row;
-  background: #2E2E2E;
-  color: rgba(255,255,255,0.5);
-  align-items: center;
+.listNav {
+	position: relative;
+	list-style: none;
+	width: 100%;
+	margin: 0;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: row;
+	background: #2e2e2e;
+	color: rgba(255, 255, 255, 0.5);
+	align-items: center;
 }
 .listNav li {
-  text-decoration: none;
-  display: block;
-  border-radius: 5px;
-  padding: 0.5em;
-  color: rgba(255,255,255,0.5);
-  cursor: pointer;
+	text-decoration: none;
+	display: block;
+	border-radius: 5px;
+	padding: 0.5em;
+	color: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
 }
-.listNav li a{
-  text-decoration: none;
-  display: block;
-  border-radius: 5px;
-  color: rgba(255,255,255,0.5);
-  cursor: pointer;
+.listNav li a {
+	text-decoration: none;
+	display: block;
+	border-radius: 5px;
+	color: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
 }
-.listNav li :hover{
-  color: whitesmoke
+.listNav li :hover {
+	color: whitesmoke;
 }
 
 .headerItem:hover {
-  color:#2E2E2E;
-  background-color: rgba(255,255,255,0.5);
-  border-radius: 5px;
+	color: #2e2e2e;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 5px;
 }
-.headerItemRight{
-  margin-left: auto;
+.headerItemRight {
+	margin-left: auto;
 }
 
 .listNav .icon {
-  display: none;
+	display: none;
 }
 
 /* @media all and (max-width: 800px) {
@@ -52,67 +52,68 @@
 } */
 
 @media all and (max-width: 600px), all and (max-width: 800px) {
-  .listNav li:not(:first-child) {display: none;}
-  .listNav li.icon {
-    float: right;
-    display: block;
-  }
+	.listNav li:not(:first-child) {
+		display: none;
+	}
+	.listNav li.icon {
+		float: right;
+		display: block;
+	}
 }
-@media all and (max-width: 600px), all and (max-width: 800px){
-  .listNav.responsive {
-    position: relative;
-    -webkit-flex-flow: column wrap;
-    flex-flow: column wrap;
-    padding: 0;
-  }
-  .listNav.responsive .icon{
-    position: absolute;
-    right: -47vw;
-    top: 0;
-  }
-  .listNav.responsive li{
-    float: none;
-    width: 100vw;
-    text-align: center;
-    display: block;
-    right: 0;
-    top: 0;
-  }
-  .searchItem{
-    width: 50vw;
-    left: 25vw;
-  }
-
+@media all and (max-width: 600px), all and (max-width: 800px) {
+	.listNav.responsive {
+		position: relative;
+		-webkit-flex-flow: column wrap;
+		flex-flow: column wrap;
+		padding: 0;
+	}
+	.listNav.responsive .icon {
+		position: absolute;
+		right: -47vw;
+		top: 0;
+	}
+	.listNav.responsive li {
+		float: none;
+		width: 100vw;
+		text-align: center;
+		display: block;
+		right: 0;
+		top: 0;
+	}
+	.searchItem {
+		width: 50vw;
+		left: 25vw;
+	}
 }
-.searchIcon{
-  color: #2E2E2E;
+.searchIcon {
+	color: #2e2e2e;
 }
-.searchItem{
-  /* margin-left: auto; */
-  border: 1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.5);
-  color: #2E2E2E;
-  /* margin-top: -15px;
+.searchItem {
+	/* margin-left: auto; */
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.5);
+	color: #2e2e2e;
+	/* margin-top: -15px;
   margin-bottom: 15px; */
-  border-radius: 30px;
-  padding: 0! important;
-  position: relative;
-  align-self: center;
+	border-radius: 30px;
+	padding: 0 !important;
+	position: relative;
+	align-self: center;
 }
-.searchItem .search{
-  background: transparent;
-  border: 0;
+.searchItem .search {
+	background: transparent;
+	border: 0;
 }
 
 .avatar {
-  vertical-align: middle;
-  align-self: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  padding: 0
+	vertical-align: middle;
+	align-self: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	padding: 0;
 }
 
-.itemName:hover{
-  text-decoration: underline rgba(255,255,255,0.5);
+.itemName:hover {
+	text-decoration: underline rgba(255, 255, 255, 0.5);
 }

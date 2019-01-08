@@ -1,13 +1,13 @@
 //Dependencias
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware, combineReducers} from 'redux';
-import {createLogger} from 'redux-logger';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import {BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 //Configuraciiones
-import { 
+import {
 	interruptionTypeReducer,
 	interruptionAddressReducer,
 	interruptionDateReducer,
@@ -26,49 +26,50 @@ import {
 	reducerSuggestCanton,
 	reducerSuggestParish,
 	interruptionViewReducer,
-	requestInterruptionDataReducer
-	} from './reducers';
+	requestInterruptionDataReducer,
+	structureToUpdateReducer
+} from './reducers';
 
 //Css styles
-import "tachyons"
+import 'tachyons';
 import './index.css';
 
-import AppRoutes from './routes'
+import AppRoutes from './routes';
 import registerServiceWorker from './registerServiceWorker';
 
 const looger = createLogger();
-const appReducers=combineReducers(
-	{interruptionTypeReducer,
-		interruptionAddressReducer,
-		interruptionDateReducer,
-		interruptionCausesReducer,
-		reducerSuggestID,
-		reducerSuggestEST,
-		requestIDReducer,
-		sessionReducer,
-		radioBasesAddReducer,
-		radioBasesIDAddReducer,
-		interruptionServicesReducer,
-		interruptionTechnologiesReducer,
-		reducerSuggestCodeEst,
-		requestAddressReducer,
-		reducerSuggestProvincia,
-		reducerSuggestCanton,
-		reducerSuggestParish,
-		interruptionViewReducer
-		,requestInterruptionDataReducer
-	})
+const appReducers = combineReducers({
+	interruptionTypeReducer,
+	interruptionAddressReducer,
+	interruptionDateReducer,
+	interruptionCausesReducer,
+	reducerSuggestID,
+	reducerSuggestEST,
+	requestIDReducer,
+	sessionReducer,
+	radioBasesAddReducer,
+	radioBasesIDAddReducer,
+	interruptionServicesReducer,
+	interruptionTechnologiesReducer,
+	reducerSuggestCodeEst,
+	requestAddressReducer,
+	reducerSuggestProvincia,
+	reducerSuggestCanton,
+	reducerSuggestParish,
+	interruptionViewReducer,
+	requestInterruptionDataReducer,
+	structureToUpdateReducer
+});
 
 const rootReducer = (state, action) => {
-
 	if (action.type === 'SESSION_LOGOUT') {
-		state = undefined
+		state = undefined;
 	}
 
-	return appReducers(state, action)
-}
+	return appReducers(state, action);
+};
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware,looger))
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, looger));
 // const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 export default store;
 
@@ -77,5 +78,7 @@ ReactDOM.render(
 		<Router>
 			<AppRoutes />
 		</Router>
-	</Provider>, document.getElementById('root'));
+	</Provider>,
+	document.getElementById('root')
+);
 registerServiceWorker();

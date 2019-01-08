@@ -47,10 +47,9 @@
 // })
 // console.log(tags)
 
-
 var texto = String.raw`Hola, llamaba para pedirte el -b-fav\-or- de que lleves los -b-niños- a la -b-e\-s\-c\-u\-e\-l\-a- hoy`,
-    regex = /-b-([^-<\\]*(?:\\.[^-<\\]*)*)-/g,
-    reemp = "<b>$1</b>",
-    resultado = document.getElementById("resultado");
+	regex = /-b-([^-<\\]*(?:\\.[^-<\\]*)*)-/g,
+	reemp = '<b>$1</b>',
+	resultado = document.getElementById('resultado');
 
-resultado.innerHTML = texto.replace(regex,reemp);
+resultado.innerHTML = texto.replace(regex, reemp);

@@ -1,13 +1,13 @@
-.notFound{
-    margin-top: -25px;
-    width: 100vw;
-    height: 93vh;
-    /* top: 50vh; */
-    /* left: 50vw; */
-    /* background-color: red; */
-    background-image: url('/images/page404Background-min.jpg');
+.notFound {
+	margin-top: -25px;
+	width: 100vw;
+	height: 93vh;
+	/* top: 50vh; */
+	/* left: 50vw; */
+	/* background-color: red; */
+	background-image: url('/images/page404Background-min.jpg');
 }
-.info{
-    color: whitesmoke;
-    font-size: 40px;
+.info {
+	color: whitesmoke;
+	font-size: 40px;
 }

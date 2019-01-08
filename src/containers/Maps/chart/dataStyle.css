@@ -1,21 +1,21 @@
 :export {
-  /* primaryColor: #eecda3;
+	/* primaryColor: #eecda3;
   secondaryColor: #ef629f; */
-  contrastColor: #ff8182;
-  darkColor: #20232a;
-  primaryFont: "Montserrat", Helvetica, sans-serif;
-  primaryFontColor: #eee;
-  secondaryFont: "Archivo Black", Helvetica, sans-serif;
-  secondaryFontColor: #fff;
-  reactColor: #61dafb;
-  d3Color: #f68e48;
+	contrastColor: #ff8182;
+	darkColor: #20232a;
+	primaryFont: "Montserrat", Helvetica, sans-serif;
+	primaryFontColor: #eee;
+	secondaryFont: "Archivo Black", Helvetica, sans-serif;
+	secondaryFontColor: #fff;
+	reactColor: #61dafb;
+	d3Color: #f68e48;
 
-  primaryColor: #ff9d6c;
-  secondaryColor: #bb4e75;
+	primaryColor: #ff9d6c;
+	secondaryColor: #bb4e75;
 
-  secondaryColor1: #13547a;
-  primaryColor1: #80d0c7;
+	secondaryColor1: #13547a;
+	primaryColor1: #80d0c7;
 
-  primaryColor2: #56ab2f;
-  secondaryColor3: #a8e063;
+	primaryColor2: #56ab2f;
+	secondaryColor3: #a8e063;
 }

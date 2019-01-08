@@ -1,40 +1,40 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
-
-.bar{
-  color: red;
-  /* background-color: blue; */
-  border-radius: 5px;
+.bar {
+	color: red;
+	/* background-color: blue; */
+	border-radius: 5px;
 }
 
-rect{
-  color: red;
-  background-color: red;
+rect {
+	color: red;
+	background-color: red;
 }
 
 /* .containerChart{
   background-color: #2e2e2e;
 } */
 
-.donutChart,.barsChart{
-  max-width: 900px;
-  max-height: 400px;
-  width: 900px;
-  height: 400px;
+.donutChart,
+.barsChart {
+	max-width: 900px;
+	max-height: 400px;
+	width: 900px;
+	height: 400px;
 }
 
-.axis line{
-  stroke:white;
+.axis line {
+	stroke: white;
 }
 
-.axis path{
-  stroke: white;
+.axis path {
+	stroke: white;
 }
 
-.axis text{
-  fill: white;
-} 
+.axis text {
+	fill: white;
+}

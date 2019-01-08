@@ -1,33 +1,29 @@
 import React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
 import './style.css';
 
-const mapStateToProps=state=>{
+const mapStateToProps = (state) => {
 	return {
-    sessionData: state.sessionReducer,
+		sessionData: state.sessionReducer
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {};
+};
+
+class InfoCard extends React.Component {
+	render() {
+		return (
+			<div className="infoCardContainer">
+				<h1>
+					Bienvenido
+					<hr />
+					<p>{this.props.sessionData.dataUser.username}</p>
+				</h1>
+			</div>
+		);
 	}
 }
-const mapDispatchToProps=(dispatch)=>{
-	return{
-    
-	}
-}
 
-class InfoCard extends React.Component{
-
-  render(){
-    return(
-      <div className="infoCardContainer">
-        <h1>
-          Bienvenido
-          <hr/>
-          <p>{this.props.sessionData.dataUser.username}</p>
-        </h1>
-      </div>
-    )
-  }
-
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(InfoCard);
+export default connect(mapStateToProps, mapDispatchToProps)(InfoCard);
