@@ -8,6 +8,7 @@ import Modal from './components/Modal/Modal';
 import Profile from './components/profile/Profile';
 import AdminPage from './containers/Admin/AdminPage';
 import { API_URL } from './config';
+import { withError } from './components/error/ErrorBundary';
 
 // import Dashboard from './containers/Dashboard/Dashboard'
 // import AddReport from './containers/Operators/AddReport/AddReport';
@@ -165,4 +166,4 @@ class App extends Component {
 App.propTypes = {
 	children: propTypes.object.isRequired
 };
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(withError(App));

@@ -372,9 +372,11 @@ export const CreateChartAPI = () => {
 			// .attr("transform", `translate(${setup.margin.left+xscale.bandwidth()/2+space},${setup.margin.top})`)
 			.attr('transform', `translate(${margin.left + xscale.bandwidth() / 2 + space},${margin.top})`);
 
-		envelope = svg.append('g').attr('class', 'envelope')// .attr("transform", `translate(${setup.margin.left},0)`);
-		// .attr("transform", `translate(${setup.margin.left+xscale.bandwidth()/2+space},${setup.margin.top})`)
-		.attr('transform', `translate(${margin.left + xscale.bandwidth() / 2 + space},${margin.top})`);
+		envelope = svg
+			.append('g')
+			.attr('class', 'envelope') // .attr("transform", `translate(${setup.margin.left},0)`);
+			// .attr("transform", `translate(${setup.margin.left+xscale.bandwidth()/2+space},${setup.margin.top})`)
+			.attr('transform', `translate(${margin.left + xscale.bandwidth() / 2 + space},${margin.top})`);
 
 		envelope1 = svg
 			.append('g')
@@ -493,28 +495,44 @@ export const CreateChartAPI = () => {
 
 		var total = data.map((num, index) => 10 * (num + data1[index] + data2[index]) / 30);
 
-		envelope_sum.selectAll('path').datum(total).transition().duration(setup.transitionDelay)//.attr("fill", "none")
-		//.attr("stroke-width", 1.5)
-		//.attr("stroke-linejoin", "round")
-		//.attr("stroke-linecap", "round")
-		.attr('d', linea_c);
+		envelope_sum
+			.selectAll('path')
+			.datum(total)
+			.transition()
+			.duration(setup.transitionDelay) //.attr("fill", "none")
+			//.attr("stroke-width", 1.5)
+			//.attr("stroke-linejoin", "round")
+			//.attr("stroke-linecap", "round")
+			.attr('d', linea_c);
 
-		envelope.selectAll('path').datum(data).transition().duration(setup.transitionDelay)//.attr("fill", "none")
-		//.attr("stroke-width", 1.5)
-		//.attr("stroke-linejoin", "round")
-		//.attr("stroke-linecap", "round")
-		.attr('d', linea);
+		envelope
+			.selectAll('path')
+			.datum(data)
+			.transition()
+			.duration(setup.transitionDelay) //.attr("fill", "none")
+			//.attr("stroke-width", 1.5)
+			//.attr("stroke-linejoin", "round")
+			//.attr("stroke-linecap", "round")
+			.attr('d', linea);
 
-		envelope1.selectAll('path').datum(data1).transition().duration(setup.transitionDelay)//.attr("fill", "none")
-		//.attr("stroke-width", 1.5)
-		//.attr("stroke-linejoin", "round")
-		//.attr("stroke-linecap", "round")
-		.attr('d', linea);
-		envelope2.selectAll('path').datum(data2).transition().duration(setup.transitionDelay)//.attr("fill", "none")
-		//.attr("stroke-width", 1.5)
-		//.attr("stroke-linejoin", "round")
-		//.attr("stroke-linecap", "round")
-		.attr('d', linea);
+		envelope1
+			.selectAll('path')
+			.datum(data1)
+			.transition()
+			.duration(setup.transitionDelay) //.attr("fill", "none")
+			//.attr("stroke-width", 1.5)
+			//.attr("stroke-linejoin", "round")
+			//.attr("stroke-linecap", "round")
+			.attr('d', linea);
+		envelope2
+			.selectAll('path')
+			.datum(data2)
+			.transition()
+			.duration(setup.transitionDelay) //.attr("fill", "none")
+			//.attr("stroke-width", 1.5)
+			//.attr("stroke-linejoin", "round")
+			//.attr("stroke-linecap", "round")
+			.attr('d', linea);
 	};
 
 	return {

@@ -32,6 +32,7 @@ import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../../../config';
+import { withError } from '../../../components/error/ErrorBundary';
 import InterruptionRadioBases from '../../../components/Operators/InterruptionRadioBases';
 import InterruptionDate from '../../../components/Operators/InterruptionDate';
 import InterruptionCauses from '../../../components/Operators/InterruptionCauses';
@@ -109,23 +110,27 @@ class AddReport extends React.Component {
 								if (user && user.email) {
 									this.props.onSignInApproved();
 									this.props.onReceiveDataUser(user);
-									if (this.props.sessionController.id_rol === 2) {
-										document.getElementById('buttonTypeR').style.background =
-											this.props.interruptionType === 'Random'
-												? 'rgba(255,255,255,0.5)'
-												: '#2E2E2E';
-										document.getElementById('buttonTypeR').style.color =
-											this.props.interruptionType === 'Random'
-												? '#2E2E2E'
-												: 'rgba(255,255,255,0.5)';
-										document.getElementById('buttonTypeS').style.background =
-											this.props.interruptionType === 'Random'
-												? '#2E2E2E'
-												: 'rgba(255,255,255,0.5)';
-										document.getElementById('buttonTypeS').style.color =
-											this.props.interruptionType === 'Random'
-												? 'rgba(255,255,255,0.5)'
-												: '#2E2E2E';
+									try {
+										if (this.props.sessionController.id_rol === 2) {
+											document.getElementById('buttonTypeR').style.background =
+												this.props.interruptionType === 'Random'
+													? 'rgba(255,255,255,0.5)'
+													: '#2E2E2E';
+											document.getElementById('buttonTypeR').style.color =
+												this.props.interruptionType === 'Random'
+													? '#2E2E2E'
+													: 'rgba(255,255,255,0.5)';
+											document.getElementById('buttonTypeS').style.background =
+												this.props.interruptionType === 'Random'
+													? '#2E2E2E'
+													: 'rgba(255,255,255,0.5)';
+											document.getElementById('buttonTypeS').style.color =
+												this.props.interruptionType === 'Random'
+													? 'rgba(255,255,255,0.5)'
+													: '#2E2E2E';
+										}
+									} catch (error) {
+										console.log({ Error: error });
 									}
 								}
 							});
@@ -140,15 +145,19 @@ class AddReport extends React.Component {
 		}
 	}
 	componentWillReceiveProps(nextProps) {
-		if (this.props.sessionController.id_rol === 2) {
-			document.getElementById('buttonTypeR').style.background =
-				nextProps.interruptionType === 'Random' ? 'rgba(255,255,255,0.5)' : '#2E2E2E';
-			document.getElementById('buttonTypeR').style.color =
-				nextProps.interruptionType === 'Random' ? '#2E2E2E' : 'rgba(255,255,255,0.5)';
-			document.getElementById('buttonTypeS').style.background =
-				nextProps.interruptionType === 'Random' ? '#2E2E2E' : 'rgba(255,255,255,0.5)';
-			document.getElementById('buttonTypeS').style.color =
-				nextProps.interruptionType === 'Random' ? 'rgba(255,255,255,0.5)' : '#2E2E2E';
+		try {
+			if (this.props.sessionController.id_rol === 2) {
+				document.getElementById('buttonTypeR').style.background =
+					nextProps.interruptionType === 'Random' ? 'rgba(255,255,255,0.5)' : '#2E2E2E';
+				document.getElementById('buttonTypeR').style.color =
+					nextProps.interruptionType === 'Random' ? '#2E2E2E' : 'rgba(255,255,255,0.5)';
+				document.getElementById('buttonTypeS').style.background =
+					nextProps.interruptionType === 'Random' ? '#2E2E2E' : 'rgba(255,255,255,0.5)';
+				document.getElementById('buttonTypeS').style.color =
+					nextProps.interruptionType === 'Random' ? 'rgba(255,255,255,0.5)' : '#2E2E2E';
+			}
+		} catch (error) {
+			console.log({ Error: error });
 		}
 	}
 	handleSubmit = async (event) => {
@@ -450,4 +459,4 @@ class AddReport extends React.Component {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddReport));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withError(AddReport)));
