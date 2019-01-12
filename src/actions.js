@@ -356,7 +356,7 @@ export const requestInterruptionFetchAction = (id_interruption, id_usuario) => (
 		// axios.get(`${API_URL}/radioBases/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`)
 		axios({
 			method: 'GET',
-			url: `${API_URL}/radioBases/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`,
+			url: `${API_URL}/interrupcion/interruptionSelected?id_interruption=${id_interruption}&id_user=${id_usuario}`,
 			headers: {
 				'Content-Type': 'application/json',
 				authorization: token

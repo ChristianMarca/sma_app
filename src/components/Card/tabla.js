@@ -20,6 +20,7 @@ class TablaInt extends React.Component {
 			let { data } = this.props;
 			if (Object.keys(data).length !== 0) {
 				let base = Object.keys(data[0]);
+				// console.log('headers', base);
 				let headData = this.props.campos.map((res) => base[res]);
 
 				let seleccion = data.map((elemento, index) => {

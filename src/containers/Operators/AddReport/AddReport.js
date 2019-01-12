@@ -194,7 +194,7 @@ class AddReport extends React.Component {
 		// axios.post(`${API_URL}/radioBases/newInterruption`,keys)
 		axios({
 			method: 'POST',
-			url: `${API_URL}/radioBases/newInterruption`,
+			url: `${API_URL}/interrupcion/newInterruption`,
 			data: keys,
 			headers: {
 				'Content-Type': 'application/json',
@@ -202,6 +202,7 @@ class AddReport extends React.Component {
 			}
 		})
 			.then((resp) => {
+				console.log('respuesta iterrupcion', resp);
 				this.props.onSubmitInterruptionComplete();
 				this.props.onRemoveAllServices();
 				this.props.onRemoveAllRadioBases();

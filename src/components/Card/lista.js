@@ -32,7 +32,7 @@ class Lista extends React.Component {
 			elementosPagina: 10,
 			campOrden: 'fecha_inicio',
 			orden: 'DESC',
-			campos: [ '0', '29', '10', '1' ],
+			campos: [ '29', '10', '1' ],
 			dataInt: [],
 			totalInt: 0,
 			bandera: true,
@@ -72,10 +72,9 @@ class Lista extends React.Component {
 			let resultado = await response.json();
 			let { total } = await resultado;
 			let { interrupciones } = await resultado;
-			console.log('>><<>>', interrupciones);
 			return [ total, interrupciones ];
-		} catch (e) {
-			console.log('eros..', e);
+		} catch (error) {
+			console.log({ Error: error });
 		}
 	}
 
@@ -165,7 +164,7 @@ class Lista extends React.Component {
 	};
 
 	saveSelectedMultiple = ({ selectedKeys }) => {
-		let llaves = [ '0', '29', '10', '1' ].concat(selectedKeys.sort());
+		let llaves = [ '29', '10', '1' ].concat(selectedKeys.sort());
 		this.setState({ campos: llaves });
 	};
 
@@ -173,7 +172,9 @@ class Lista extends React.Component {
 		if (
 			this.state.elementosPagina !== prevState.elementosPagina ||
 			this.state.pagina !== prevState.pagina ||
-			this.state.bandera !== prevState.bandera
+			this.state.bandera !== prevState.bandera ||
+			this.state.filtroFechaFinal !== prevState.filtroFechaFinal ||
+			this.state.filtroFechaInicial !== prevState.filtroFechaInicial
 		) {
 			this._asyncRequest = this.fetchInterrupciones()
 				.then((res) => {
@@ -226,7 +227,6 @@ class Lista extends React.Component {
 										//     this.setState({campos:["0", "29","11", "1"]});
 										//     break;
 										// }
-										console.log('here 1w', res);
 										this.setState({ totalInt: res[0], dataInt: res[1] });
 										this._asyncRequest = null;
 									});
@@ -291,10 +291,10 @@ class Lista extends React.Component {
 				<MenuItem key="4">Causa</MenuItem>
 				<Divider />
 				<MenuItem key="5">Areas afectadas</MenuItem>
+				{/* <Divider />
+				<MenuItem key="6">Estado</MenuItem> */}
 				<Divider />
-				<MenuItem key="6">Estado</MenuItem>
-				<Divider />
-				<MenuItem key="8">Operadora</MenuItem>
+				<MenuItem key="19">Operadora</MenuItem>
 				{/* <Divider/>
       <MenuItem key="9">Tipo</MenuItem> */}
 			</Menu>

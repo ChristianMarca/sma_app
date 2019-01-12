@@ -38,8 +38,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class InterruptionOperatorView extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.editorRef = React.createRef();
 		this.state = {
 			isReceiveDataOfInterruption: false,
@@ -53,8 +53,9 @@ class InterruptionOperatorView extends React.Component {
 			codigoReporte: ``,
 			editable: true,
 			messageToSend: '',
-			stateOfInterruption: [ 'inProcess' ],
-			selectedKeysMenuReport: []
+			stateOfRadiobase: [ 'inProcess' ],
+			selectedKeysMenuReport: [],
+			stateOfInterruption: 'Cargando...'
 		};
 	}
 
@@ -104,6 +105,10 @@ class InterruptionOperatorView extends React.Component {
 												)
 													.then((resp) => resp.json())
 													.then((report) => {
+														this.setState({
+															stateOfInterruption: this.props.interruptionData.ID.data
+																.data.estado_int
+														});
 														this.setState({
 															html: report.html,
 															asunto: report.asunto,
@@ -256,7 +261,7 @@ class InterruptionOperatorView extends React.Component {
 		return (
 			<Menu
 				onSelect={this.onSelectInterruptionState}
-				defaultSelectedKeys={this.state.stateOfInterruption}
+				defaultSelectedKeys={this.state.stateOfRadiobase}
 				className="menuInterruptionState"
 			>
 				<MenuItemDropdown key="ACTIVO" group="StateOfInterruption">
@@ -291,6 +296,38 @@ class InterruptionOperatorView extends React.Component {
 				<Divider />
 				<MenuItemDropdown key="sendReport" group="actionInReport">
 					Enviar por Correo
+				</MenuItemDropdown>
+			</Menu>
+		);
+	};
+
+	getItemsForUpdateInterruptionState = () => {
+		console.log('tetsdavs?><>$#@$#', [ this.props.interruptionData.ID.data.data.estado_int.replace(' ', '_') ]);
+		return (
+			<Menu
+				onSelect={this.onSelectInterruptionState}
+				// selectedKeys={this.state.selectedKeys}
+				defaultSelectedKeys={[ this.props.interruptionData.ID.data.data.estado_int.replace(' ', '_') ]}
+				className="menuInterruptionState"
+			>
+				<MenuItemDropdown key="EN_REVISION" group="updateInterruptionState">
+					EN REVISION
+				</MenuItemDropdown>
+				<Divider />
+				<MenuItemDropdown key="AUTORIZADO" group="updateInterruptionState">
+					AUTORIZADO
+				</MenuItemDropdown>
+				<Divider />
+				<MenuItemDropdown key="NEGADO" group="updateInterruptionState">
+					NEGADO
+				</MenuItemDropdown>
+				<Divider />
+				<MenuItemDropdown key="REPORTE_INCOMPLETO" group="updateInterruptionState">
+					REPORTE INCOMPLETO
+				</MenuItemDropdown>
+				<Divider />
+				<MenuItemDropdown key="COMPLETADO" group="updateInterruptionState">
+					COMPLETADO
 				</MenuItemDropdown>
 			</Menu>
 		);
@@ -334,6 +371,7 @@ class InterruptionOperatorView extends React.Component {
 		})
 			.then((resp) => resp.json())
 			.then((resp) => {
+				console.log('tetsva>?<?><>????????', resp);
 				switch (selected.key) {
 					case 'rebuildReport':
 						this.setState({ html: resp.html });
@@ -343,6 +381,9 @@ class InterruptionOperatorView extends React.Component {
 						break;
 					default:
 						break;
+				}
+				if (selected.item.props.group === 'updateInterruptionState') {
+					this.setState({ stateOfInterruption: resp });
 				}
 			})
 			.catch((error) => {
@@ -480,12 +521,22 @@ class InterruptionOperatorView extends React.Component {
 										value={this.state.html}
 										onChange={this.handleChange.bind(this, 'html')}
 									/>
-									<div className="SaveButtonContainer">
-										<button onClick={this.saveReportChanges} className="reportButtons">
-											Save Changes
-										</button>
-										<button className="reportButtons">Rebuild Report</button>
-									</div>
+									{/* <div className="SaveButtonContainer"> */}
+									<Dropdown
+										trigger={[ 'contextMenu', 'click' ]}
+										overlay={this.getItemsForUpdateInterruptionState()}
+										animation="slide-up"
+										onVisibleChange={this.onVisibleChangeInterruptionState}
+										alignPoint
+									>
+										<div className="interruptionStateDropDown">
+											{/* <button onClick={this.saveReportChanges} className="reportButtons">
+												Save Changes
+											</button>
+											<button className="reportButtons">Rebuild Report</button> */}
+											{this.state.stateOfInterruption}
+										</div>
+									</Dropdown>
 									<div className="commentsContainer">
 										<Chat message={this.state.messageToSend} />
 										<div className="sendCommentContainer">
@@ -536,6 +587,7 @@ class InterruptionOperatorView extends React.Component {
 	};
 
 	render() {
+		console.log(this.props.interruptionData, 'testa<>?><?');
 		return this.getInfoInterruption();
 	}
 }

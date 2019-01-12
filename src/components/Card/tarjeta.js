@@ -11,7 +11,7 @@ import 'moment-duration-format';
 import './table.css';
 
 const mapStateToProps = (state, ownProps) => {
-	console.log('sa../////', ownProps);
+	// console.log('sa../////', ownProps);
 	return {
 		// Inicio de Interrupción
 		// _stateOfInterruption: ownProps.stateOfInterruption
@@ -19,7 +19,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, props) => {
-	console.log('887y786', props);
 	return {
 		onSubmitInterruptionView: (event) => dispatch(interruptionViewIdAction(event)),
 		_stateOfInterruption: () => props.stateOfInterruption
@@ -75,7 +74,6 @@ class ListaInt extends React.Component {
 					},
 					(this._asyncStateTarget = null)
 				);
-				console.log('?__+++>>', this.props);
 				this.props._stateOfInterruption(res);
 			})
 			.catch((err) => console.log({ Error: err }));
@@ -158,7 +156,7 @@ class ListaInt extends React.Component {
 				let seleccion = [];
 				if (Array.isArray(data)) {
 					let selec = columns.map((elemento, index) => {
-						let ele = elemento.replace('_', ' ');
+						let ele = elemento.replace('_', ' ').replace(' inte', '');
 						let elem = ele.charAt(0).toUpperCase() + ele.slice(1);
 						return (
 							<td key={elemento + moment()} data-key={elemento} onClick={this.handleClick}>
@@ -166,7 +164,7 @@ class ListaInt extends React.Component {
 							</td>
 						);
 					});
-					seleccion = Array.prototype.concat(selec, [
+					seleccion = Array.prototype.concat([ <td key="RevE">Estado</td> ], selec, [
 						<td key="RevL">Localidad</td>,
 						<td key="RevT">Tiempo Transcurrido</td>,
 						<td key="RevC">Revision</td>
@@ -175,57 +173,61 @@ class ListaInt extends React.Component {
 					let selec = columns.map((elemento, index) => {
 						return <td key={index + moment()}>{data[elemento]}</td>;
 					});
-					seleccion = Array.prototype.concat(selec, [
-						<td key={'locate' + moment() + data.id}>{getLocationForInterruption(data)}</td>,
-						<td key={this.state._className + moment() + data.id}>
-							{console.log(
+					seleccion = Array.prototype.concat(
+						[ <td key={'estado_interrupcion' + moment() + data.estado_int}>{data.estado_int}</td> ],
+						selec,
+						[
+							<td key={'locate' + moment() + data.id}>{getLocationForInterruption(data)}</td>,
+							<td key={this.state._className + moment() + data.id}>
+								{/* {console.log(
 								moment.duration(this.state.infoTime.actualDay, 'days'),
 								this.state.infoTime.actualDay,
 								'sdfs'
-							)}
-							{moment
-								.duration(this.state.infoTime.actualDay, 'days')
-								.format('dd:hh:mm')
-								.split(':')
-								.map((item, index, array) => {
-									if (array.length === 2) {
-										if (index === 0) {
-											return `${item} h : `;
+							)} */}
+								{moment
+									.duration(this.state.infoTime.actualDay, 'days')
+									.format('dd:hh:mm')
+									.split(':')
+									.map((item, index, array) => {
+										if (array.length === 2) {
+											if (index === 0) {
+												return `${item} h : `;
+											} else {
+												return `${item} m`;
+											}
+										} else if (array.length === 3) {
+											if (index === 0) {
+												return `${item} d : `;
+											} else if (index === 1) {
+												return `${item} h : `;
+											} else {
+												return `${item} m`;
+											}
 										} else {
 											return `${item} m`;
 										}
-									} else if (array.length === 3) {
-										if (index === 0) {
-											return `${item} d : `;
-										} else if (index === 1) {
-											return `${item} h : `;
-										} else {
-											return `${item} m`;
-										}
-									} else {
-										return `${item} m`;
-									}
-								})}
-						</td>,
-						<td key={data.id_inte}>
-							<div
-								key={data.id_inte + moment()}
-								onClick={() => this.handleClickSelectInterruption(data.id_inte)}
-								className="mouse_scroll"
-							>
-								<div className="mouse inicio">
-									<div className="wheel">Ir</div>
+									})}
+							</td>,
+							<td key={data.id_inte}>
+								<div
+									key={data.id_inte + moment()}
+									onClick={() => this.handleClickSelectInterruption(data.id_inte)}
+									className="mouse_scroll"
+								>
+									<div className="mouse inicio">
+										<div className="wheel">Ir</div>
+									</div>
+									<div>
+										<span className={`m_scroll_arrows unu ${this.state._classNameButton}`} />
+										<span className={`m_scroll_arrows doi ${this.state._classNameButton}`} />
+										<span className={`m_scroll_arrows trei ${this.state._classNameButton}`} />
+									</div>
 								</div>
-								<div>
-									<span className={`m_scroll_arrows unu ${this.state._classNameButton}`} />
-									<span className={`m_scroll_arrows doi ${this.state._classNameButton}`} />
-									<span className={`m_scroll_arrows trei ${this.state._classNameButton}`} />
-								</div>
-							</div>
 
-							{this.state.openInterruption && <Redirect to="/interruptionOperator" push={true} />}
-						</td>
-					]);
+								{this.state.openInterruption && <Redirect to="/interruptionOperator" push={true} />}
+							</td>
+						]
+					);
 				}
 				return seleccion;
 			} else {

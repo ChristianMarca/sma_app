@@ -46,6 +46,8 @@
 	position: relative;
 	width: 100%;
 	height: auto;
+	max-height: 80vh;
+	overflow: scroll;
 	align-content: center;
 	align-items: center;
 	display: flex;
