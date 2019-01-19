@@ -1,24 +1,24 @@
 import { setup } from './chart-setup';
-import { select, mouse, event } from 'd3-selection';
+import { select, mouse } from 'd3-selection';
 import { scaleLinear, scaleBand } from 'd3-scale';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { line, curveLinear, curveBundle } from 'd3-shape';
-import 'd3-transition';
+import { transition } from 'd3-transition';
 
-const d3 = { select, scaleLinear, scaleBand };
+const d3 = { select, scaleLinear, scaleBand, transition };
 const styleDefs = require('./dataStyle.css');
 
-let div = null;
-let space = null;
-let curvatura = 1;
-let xscale = null;
-let yscale = null;
-let yscale_sum = null;
-let width = null;
-let height = null;
-let width_view = null;
-let height_view = null;
-let dates = [
+var div = null;
+var space = null;
+var curvatura = 1;
+var xscale = null;
+var yscale = null;
+var yscale_sum = null;
+var width = null;
+var height = null;
+var width_view = null;
+var height_view = null;
+var dates = [
 	'Enero',
 	'Febrero',
 	'Marzo',
@@ -34,31 +34,31 @@ let dates = [
 ];
 
 export const CreateChartAPI = () => {
-	let svg = null;
-	let bars = null;
-	let bars1 = null;
-	let bars2 = null;
-	let envelope_sum = null;
-	let envelope = null;
-	let envelope1 = null;
-	let envelope2 = null;
-	// let circulos=null;
-	// let xscale = null;
-	// let yscale = null;
-	// let yscale_sum=null;
-	// setup.width= null;
-	// setup.height=null;
+	var svg = null;
+	var bars = null;
+	var bars1 = null;
+	var bars2 = null;
+	var envelope_sum = null;
+	var envelope = null;
+	var envelope1 = null;
+	var envelope2 = null;
 
-	let margin = null;
+	var margin = null;
 
 	const createChart = (node, data, data1, data2) => {
 		width = node.getBoundingClientRect().width;
 		height = node.getBoundingClientRect().height;
+		margin = { top: 0.12 * height, right: 0.05 * width, bottom: 0.05 * height, left: 0.05 * width };
 
-		margin = { top: 0.095 * height, right: 0.05 * width, bottom: 0.15 * height, left: 0.05 * width };
 		width_view = node.getBoundingClientRect().width + (margin.left + margin.right);
 		height_view = node.getBoundingClientRect().height + (margin.top + margin.bottom);
+
 		space = 0.05 * width;
+
+		var _height =
+			Math.max(...[ Math.max(...data), Math.max(...data1), Math.max(...data2) ]) -
+			setup.margin.top -
+			setup.margin.bottom;
 
 		svg = d3
 			.select(node)
@@ -79,15 +79,14 @@ export const CreateChartAPI = () => {
 
 		xscale = d3.scaleBand().domain(dates).rangeRound([ 0, width ]).paddingInner(setup.barSeparation * 14);
 
-		yscale = d3.scaleLinear().domain([ setup.dataRangeMin, setup.dataRangeMax ]).range([ height, 0 ]);
+		yscale = d3.scaleLinear().domain([ setup.dataRangeMin, _height ]).range([ height, 0 ]);
 
-		yscale_sum = d3.scaleLinear().domain([ setup.dataRangeMin, 3 * setup.dataRangeMax ]).range([ height, 0 ]);
+		yscale_sum = d3.scaleLinear().domain([ setup.dataRangeMin, 3 * _height ]).range([ height, 0 ]);
 
 		bars = svg
-			.append('g') // .attr("class", style.bar);
+			.append('g')
 			.attr('class', 'bar')
 			.attr('id', 'bar')
-			// .attr("transform", `translate(${setup.margin.left+space},${setup.margin.top})`)
 			.attr('transform', `translate(${margin.left + space},${margin.top})`);
 
 		bars
@@ -101,15 +100,13 @@ export const CreateChartAPI = () => {
 			.attr('width', (d) => xscale.bandwidth())
 			.attr('fill', 'url(#barGradientConecel)')
 			.style('cursor', 'pointer')
-			// .attr("transform", `translate(${xscale.bandwidth()},0)`)
 			.on('mouseover', handleMouseOverConecel)
 			.on('mouseout', handleMouseOutConecel);
-		//-----------------------------
+
 		bars1 = svg
-			.append('g') // .attr("class", style.bar);
+			.append('g')
 			.attr('class', 'bar1')
 			.attr('id', 'bar1')
-			// .attr("transform", `translate(${setup.margin.left+xscale.bandwidth()+space},${setup.margin.top})`)
 			.attr('transform', `translate(${margin.left + xscale.bandwidth() + space},${margin.top})`);
 
 		bars1
@@ -123,18 +120,13 @@ export const CreateChartAPI = () => {
 			.attr('width', (d) => xscale.bandwidth())
 			.attr('fill', 'url(#barGradientCnt)')
 			.style('cursor', 'pointer')
-			// .attr("transform", `translate(${xscale.bandwidth()},0)`)
 			.on('mouseover', handleMouseOverCnt)
 			.on('mouseout', handleMouseOutCnt);
-		//envelope(data1);
-		//-----------------------------
 
-		//=========================
 		bars2 = svg
-			.append('g') // .attr("class", style.bar);
+			.append('g')
 			.attr('class', 'bar2')
 			.attr('id', 'bar2')
-			// .attr("transform", `translate(${setup.margin.left-xscale.bandwidth()+space},${setup.margin.top})`)
 			.attr('transform', `translate(${margin.left - xscale.bandwidth() + space},${margin.top})`);
 
 		bars2
@@ -148,44 +140,14 @@ export const CreateChartAPI = () => {
 			.attr('width', (d) => xscale.bandwidth())
 			.attr('fill', 'url(#barGradientOtecel)')
 			.style('cursor', 'pointer')
-			// .attr("transform", `translate(${xscale.bandwidth()},0)`)
 			.on('mouseover', handleMouseOverOtecel)
 			.on('mouseout', handleMouseOutOtecel);
-		//envelope(data1);
-		//-----------------------------
-		//========================
-		ejes();
+
+		initAxis();
 
 		div = d3.select(node).append('div').attr('class', 'tooltip').style('opacity', 0);
 
-		// circulos = svg
-		//   .append("g")
-		//     // .attr("class", style.bar);
-		//     .attr("class", 'circulo')
-		//     // .attr("transform", `translate(${setup.margin.left},0)`)
-		//     .attr("transform", `translate(${setup.margin.left+xscale.bandwidth()/2+10},${setup.margin.top})`)
-
-		// circulos.selectAll("circle")
-		//       .data(data)
-		//       .enter().append("circle")
-		//       .attr("r", 2)
-		//       .attr("cx", function(d,i) { return xscale(i); })
-		//       .attr("cy", function(d) { return yscale(d); })
-		//       // .attr("transform", `translate(${xscale.bandwidth()/2},0)`)
-		//       .on("mouseover", function(d) {
-		//           div.transition()
-		//               .duration(200)
-		//               .style("opacity", .9);
-		//           div.html(d + "<br/>"  + d)
-		//               .style("left", d3.select(this).attr("cx") + "px")
-		//               .style("top", d3.select(this).attr("cy") + "px");
-		//           })
-		//       .on("mouseout", function(d) {
-		//           div.transition()
-		//               .duration(500)
-		//               .style("opacity", 0);
-		//       });
-
+		// envelope_(data, '#ff0000', data1, '#80d0c7', data2, '#a8e063');
 		envelope_(data, 'url(#barGradientConecel)', data1, 'url(#barGradientCnt)', data2, 'url(#barGradientOtecel)');
 
 		var legend = svg
@@ -227,7 +189,8 @@ export const CreateChartAPI = () => {
 			.attr('width', 10)
 			.attr('height', 10)
 			.style('fill', function(d) {
-				var color = 'url(#barGradientConecel)';
+				// var color = 'url(#barGradientConecel)';
+				var color = styleDefs.primaryColor;
 				return color;
 			});
 
@@ -243,7 +206,8 @@ export const CreateChartAPI = () => {
 			.attr('width', 10)
 			.attr('height', 10)
 			.style('fill', function(d) {
-				var color = 'url(#barGradientCnt)';
+				// var color = 'url(#barGradientCnt)';
+				var color = styleDefs.primaryColor1;
 				return color;
 			});
 
@@ -259,7 +223,8 @@ export const CreateChartAPI = () => {
 			.attr('width', 10)
 			.attr('height', 10)
 			.style('fill', function(d) {
-				var color = 'url(#barGradientOtecel)';
+				// var color = 'url(#barGradientOtecel)';
+				var color = styleDefs.secondaryColor2;
 				return color;
 			});
 
@@ -315,53 +280,42 @@ export const CreateChartAPI = () => {
 			.style('stroke', 'white');
 	};
 
-	const ejes = (data) => {
-		var xAxis = axisBottom()
-			.scale(xscale)
-			// .tickValues(glucoseLevelList)
-			// .tickSizeInner(-setup.width)
-			// .tickPadding(5)
-			// .tickValues(xscale.domain().filter(function(d, i) { return !(i % 1); }))
-			.ticks(12)
-			.tickValues(dates);
+	const initAxis = () => {
+		var xAxis = axisBottom().scale(xscale).ticks(12).tickValues(dates);
 
 		var yAxis = axisLeft().scale(yscale).tickSizeInner(-width);
-		// .tickSize(2)
-		// .ticks(5);
 
 		var yAxis_a = axisLeft().scale(yscale_sum).tickSize(1);
-		//.tickSizeInner(-(setup.width))
 
 		svg
 			.append('g')
 			.attr('class', 'axis')
-			// .attr("transform", "translate(0," + (setup.height) + ")")
-			// .attr("transform", `translate(${xscale.bandwidth()/2},${setup.height})`)
-			// .attr("transform", `translate(${setup.margin.left+space},${height+setup.margin.top})`)
 			.attr('transform', `translate(${margin.left + space},${height + margin.top})`)
 			.call(xAxis);
-		//.selectAll("text")
-		//.attr("y", 0)
-		//.attr("x", -0.04*width)
-		//.attr("dy", ".35em")
-		//.attr("transform", "rotate(320)")
-		//.style("text-anchor", "start");
 
 		svg
 			.append('g')
-			.attr('class', 'axis')
-			// .attr("transform", `translate(${setup.margin.left},${setup.margin.top})`)
+			.attr('class', 'y axis')
 			.attr('transform', `translate(${margin.left + space / 2},${margin.top})`)
 			.style('stroke-dasharray', '1, 5')
 			.call(yAxis);
 
 		svg
 			.append('g')
-			.attr('class', 'axis')
-			// .attr("transform", `translate(${width+setup.margin.left+35},${setup.margin.top})`)
+			.attr('class', 'y_sum axis')
 			.attr('transform', `translate(${width + margin.left + 2 * space},${margin.top})`)
-			//.style("stroke-dasharray", ("1, 5"))
 			.call(yAxis_a);
+	};
+
+	const updateAxis = (_yscale, _yscale_sum) => {
+		var t = d3.transition().duration(500);
+		var yAxis = axisLeft().scale(_yscale).tickSizeInner(-width);
+
+		var yAxis_a = axisLeft().scale(_yscale_sum).tickSize(1);
+
+		svg.select('.y').transition(t).call(yAxis);
+
+		svg.select('.y_sum').transition(t).call(yAxis_a);
 	};
 
 	const envelope_ = (data, operatorColor, data1, operatorColor1, data2, operatorColor2) => {
@@ -403,19 +357,19 @@ export const CreateChartAPI = () => {
 			.append('path')
 			.datum(total)
 			.attr('fill', 'none')
-			.attr('stroke-width', 2)
+			.attr('stroke-width', 3)
 			.attr('stroke-linejoin', 'round')
 			.attr('stroke-linecap', 'round')
-			//.style("stroke-dasharray", ("5, 5"))
+			.style('stroke-dasharray', '5, 5')
 			// .style("stroke", operatorColor)
-			.style('stroke', '#2e2e2e')
+			.style('stroke', '	#bbc2c8')
 			.attr('d', linea_c);
 
 		envelope
 			.append('path')
 			.datum(data)
 			.attr('fill', 'none')
-			.attr('stroke-width', 1.5)
+			.attr('stroke-width', 2.5)
 			.attr('stroke-linejoin', 'round')
 			.attr('stroke-linecap', 'round')
 			.style('stroke-dasharray', '1, 5')
@@ -428,7 +382,7 @@ export const CreateChartAPI = () => {
 			.append('path')
 			.datum(data1)
 			.attr('fill', 'none')
-			.attr('stroke-width', 1.5)
+			.attr('stroke-width', 2.5)
 			.attr('stroke-linejoin', 'round')
 			.attr('stroke-linecap', 'round')
 			.style('stroke-dasharray', '1, 5')
@@ -439,7 +393,7 @@ export const CreateChartAPI = () => {
 			.append('path')
 			.datum(data2)
 			.attr('fill', 'none')
-			.attr('stroke-width', 1.5)
+			.attr('stroke-width', 2.5)
 			//.attr("stroke-linejoin", "round")
 			//.attr("stroke-linecap", "round")
 			.style('stroke-dasharray', '1, 5')
@@ -448,8 +402,19 @@ export const CreateChartAPI = () => {
 		// .attr("transform", `translate(${xscale.bandwidth()/2},0)`);
 	};
 
-	const updateChart = (data, data1, data2) => {
-		// Rejoin data and update bars with transition.
+	const updateChart = (node, data, data1, data2) => {
+		width = node.getBoundingClientRect().width;
+		height = node.getBoundingClientRect().height;
+
+		var _height =
+			Math.max(...[ Math.max(...data), Math.max(...data1), Math.max(...data2) ]) -
+			setup.margin.top -
+			setup.margin.bottom;
+
+		yscale = d3.scaleLinear().domain([ setup.dataRangeMin, _height ]).range([ height, 0 ]);
+
+		yscale_sum = d3.scaleLinear().domain([ setup.dataRangeMin, 3 * _height ]).range([ height, 0 ]);
+
 		bars
 			.selectAll('rect')
 			.data(data)
@@ -533,6 +498,8 @@ export const CreateChartAPI = () => {
 			//.attr("stroke-linejoin", "round")
 			//.attr("stroke-linecap", "round")
 			.attr('d', linea);
+
+		updateAxis(yscale, yscale_sum);
 	};
 
 	return {
@@ -542,54 +509,60 @@ export const CreateChartAPI = () => {
 };
 
 function handleMouseOverConecel(d, i) {
-	let position = event.pageX - document.getElementById('bar').getBoundingClientRect().x;
+	// var position = event.pageX - document.getElementById('bar').getBoundingClientRect().x;
+	var pos = mouse(this);
+	// var _x = event.pageX - document.getElementById('bar').getBoundingClientRect().x + 10;
+	// var _y = event.pageY - document.getElementById('bar').getBoundingClientRect().y + 10;
+	var _x = pos[0];
+	var _y = pos[1];
 	d3
 		.select(this)
 		.transition()
 		.attr('fill', styleDefs.contrastColor)
-		.attr('stroke', styleDefs.primaryryColor)
+		.attr('stroke', styleDefs.hoverColor)
 		.duration(setup.transitionDelay / 4);
 	div.transition().duration(200).style('opacity', 0.9);
+	console.log('hgfagsh', select(this).attr('cy'));
 	div
 		.html(`CONECEL ${dates[i]} </br> ${d}`)
 		//.style("left")
-		// .style("left", d3.select(this).attr("x") + "px")
-		.style('left', `${position}px`)
+		.style('left', _x + 'px')
+		// .style('left', `${position}px`)
 		//.style("top", `${event.clientY}px`)
-		// .style("top", `${d3.select(this).attr("y")<=0?d3.select(this).attr("y"):0}px`);
-		.style('top', `${mouse(this)[1] + height_view}px`);
+		.style('top', _y + 'px');
+	// .style('top', `${mouse(this)[1] + height_view}px`);
 	// console.log('data',mouse(this)[0],event,event.clientX,event.pageX,event.pageX - document.getElementById('bar').getBoundingClientRect().x,
 	// event.clientX - document.getElementById('bar').getBoundingClientRect().x,d3.select(this).attr("x"))
 }
 function handleMouseOverOtecel(d, i) {
-	let position = event.pageX - document.getElementById('bar2').getBoundingClientRect().x;
+	// var position = event.pageX - document.getElementById('bar2').getBoundingClientRect().x;
+	var pos = mouse(this);
+	var _x = pos[0];
+	var _y = pos[1];
 	d3
 		.select(this)
 		.transition()
 		.attr('fill', styleDefs.contrastColor)
-		.attr('stroke', styleDefs.primaryryColor)
+		.attr('stroke', styleDefs.hoverColor)
 		.duration(setup.transitionDelay / 4);
 	div.transition().duration(200).style('opacity', 0.9);
-	div
-		.html(`OTECEL ${dates[i]} </br> ${d}`)
-		.style('left', `${position - xscale.bandwidth()}px`)
-		.style('top', `${mouse(this)[1] + height_view}px`);
+	div.html(`OTECEL ${dates[i]} </br> ${d}`).style('left', _x + 'px').style('top', _y + 'px');
 	// .style("top", `${d3.select(this).attr("y")<=0?d3.select(this).attr("y"):0}px`);
 	//.style("top", `${d3.select(this).attr("y")}px`);
 }
 function handleMouseOverCnt(d, i) {
-	let position = event.pageX - document.getElementById('bar1').getBoundingClientRect().x;
+	// var position = event.pageX - document.getElementById('bar1').getBoundingClientRect().x;
+	var pos = mouse(this);
+	var _x = pos[0];
+	var _y = pos[1];
 	d3
 		.select(this)
 		.transition()
 		.attr('fill', styleDefs.contrastColor)
-		.attr('stroke', styleDefs.primaryryColor)
+		.attr('stroke', styleDefs.hoverColor)
 		.duration(setup.transitionDelay / 4);
 	div.transition().duration(200).style('opacity', 0.9);
-	div
-		.html(`CNT ${dates[i]} </br> ${d}`)
-		.style('left', `${position + xscale.bandwidth()}px`)
-		.style('top', `${mouse(this)[1] + height_view}px`);
+	div.html(`CNT ${dates[i]} </br> ${d}`).style('left', _x + 'px').style('top', _y + 'px');
 	// .style("top", `${d3.select(this).attr("y")<=0?d3.select(this).attr("y"):0}px`);
 	//.style("top", `${d3.select(this).attr("y")}px`);
 }

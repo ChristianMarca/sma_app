@@ -165,12 +165,12 @@ class Dashboard extends React.Component {
 	getModifyOptions = () => {
 		return this.state.modifyRBInfo === 'ACTUALIZAR' ? (
 			<div className="containerFieldRB">
-				<span className="titleUpdateCodEst">Codigo de Estructura</span>
+				<span className="titleUpdateCodEst">Código de Estructura</span>
 				<div className="containerEstSuggest">
 					<SearchCodEst />
 				</div>
 				<label className="labelForm headerform" htmlFor="direccion__">
-					Direccion:{' '}
+					Dirección:{' '}
 				</label>
 				<input
 					onChange={this.onFormChange}
@@ -240,7 +240,7 @@ class Dashboard extends React.Component {
 			</div>
 		) : (
 			<div className="containerInBuild">
-				<span>En Construccion</span>
+				<span>En Construcción</span>
 			</div>
 		);
 	};

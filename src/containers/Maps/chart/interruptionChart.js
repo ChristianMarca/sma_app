@@ -19,7 +19,7 @@ export class BridgeComponent extends React.Component {
 	}
 
 	componentDidUpdate() {
-		chartAPI.updateChart(this.props.data, this.props.data1, this.props.data2);
+		chartAPI.updateChart(this.rootNodeRef, this.props.data, this.props.data1, this.props.data2);
 	}
 
 	render() {

@@ -32,13 +32,13 @@ class Lista extends React.Component {
 			elementosPagina: 10,
 			campOrden: 'fecha_inicio',
 			orden: 'DESC',
-			campos: [ '29', '10', '1' ],
+			campos: [ '29', '7', '1' ],
 			dataInt: [],
 			totalInt: 0,
 			bandera: true,
 			fetchOffset: 0,
 			filtroFechaInicial: new Date('January 1, 2018 00:00:00'),
-			filtroFechaFinal: new Date(),
+			filtroFechaFinal: new Date('January 1, 2020 00:00:00'),
 			filtroParroquia: "'%'",
 			filtroCanton: "'%'",
 			filtroProvincia: "'%'"
@@ -61,7 +61,7 @@ class Lista extends React.Component {
 			id_user
 		];
 		try {
-			const response = await fetch(`${API_URL}/interrupcion/inter`, {
+			const response = await fetch(`${API_URL}/interrupcion/interrupcion`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ class Lista extends React.Component {
 	};
 
 	saveSelectedMultiple = ({ selectedKeys }) => {
-		let llaves = [ '29', '10', '1' ].concat(selectedKeys.sort());
+		let llaves = [ '29', '7', '1' ].concat(selectedKeys.sort());
 		this.setState({ campos: llaves });
 	};
 

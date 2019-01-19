@@ -156,21 +156,29 @@ class ListaInt extends React.Component {
 				let seleccion = [];
 				if (Array.isArray(data)) {
 					let selec = columns.map((elemento, index) => {
-						let ele = elemento.replace('_', ' ').replace(' inte', '');
+						let ele = elemento.replace('_', ' ');
 						let elem = ele.charAt(0).toUpperCase() + ele.slice(1);
 						return (
 							<td key={elemento + moment()} data-key={elemento} onClick={this.handleClick}>
-								{elem}
+								{elem.toUpperCase()}
 							</td>
 						);
 					});
-					seleccion = Array.prototype.concat([ <td key="RevE">Estado</td> ], selec, [
-						<td key="RevL">Localidad</td>,
-						<td key="RevT">Tiempo Transcurrido</td>,
-						<td key="RevC">Revision</td>
+					seleccion = Array.prototype.concat([ <td key="RevE">{'Estado'.toUpperCase()}</td> ], selec, [
+						<td key="RevL">{'Localidad'.toUpperCase()}</td>,
+						<td key="RevT">{'Tiempo Transcurrido'.toUpperCase()}</td>,
+						<td key="RevC">{'Revisión'.toUpperCase()}</td>
 					]);
 				} else {
 					let selec = columns.map((elemento, index) => {
+						console.log('test', elemento);
+						if (elemento.includes('fecha')) {
+							return (
+								<td key={index + moment()}>
+									{moment(data[elemento]).tz('America/Guayaquil').format('MM-DD-YYYY / HH:mm:ss')}
+								</td>
+							);
+						}
 						return <td key={index + moment()}>{data[elemento]}</td>;
 					});
 					seleccion = Array.prototype.concat(

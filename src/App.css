@@ -50,6 +50,10 @@
     justify-content: space-around;
   }
 } */
+.superContainerRoutes {
+	overflow: hidden;
+	width: 100%;
+}
 
 @media all and (max-width: 600px), all and (max-width: 800px) {
 	.listNav li:not(:first-child) {

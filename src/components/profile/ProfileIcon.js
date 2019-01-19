@@ -64,7 +64,7 @@ class ProfileIcon extends React.Component {
 						className="b--transparent shadow-5 dropDownMenu"
 						style={{ backgroundColor: 'rgba(255,255,255,0.5)', zIndex: '1' }}
 					>
-						<DropdownItem onClick={this.props.toogleModal}>View Profile</DropdownItem>
+						<DropdownItem onClick={this.props.toogleModal}>Ver Perfil</DropdownItem>
 						<br />
 						<DropdownItem onClick={this.onSingOutSubmit}>Sign Out</DropdownItem>
 					</DropdownMenu>

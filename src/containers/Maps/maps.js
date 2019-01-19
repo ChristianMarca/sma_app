@@ -32,22 +32,25 @@ class Maps extends React.Component {
 		super(props);
 		const randomGenerator = getRandomArray(numBars || 12, setup.dataRangeMin, setup.dataRangeMax);
 		this.state = {
-			data: randomGenerator(),
-			data1: randomGenerator(),
-			data2: randomGenerator(),
+			// data: randomGenerator(),
+			// data1: randomGenerator(),
+			// data2: randomGenerator(),
+			data: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			data1: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			data2: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
 			randomGenerator,
 
 			pagina: 1,
 			elementosPagina: 6,
 			campOrden: 'fecha_inicio',
 			orden: 'DESC',
-			campos: [ '0', '9', '1' ],
+			campos: [ '29' ],
 			dataInt: [],
 			totalInt: 0,
 			bandera: true,
 			fetchOffset: 0,
 			filtroFechaInicial: new Date('January 1, 2018 00:00:00'),
-			filtroFechaFinal: new Date(),
+			filtroFechaFinal: new Date('January 1, 2020 00:00:00'),
 			filtroParroquia: "'%'",
 			filtroCanton: "'%'",
 			filtroProvincia: "'%'"
@@ -75,6 +78,42 @@ class Maps extends React.Component {
 			height = w.innerHeight || documentElement.clientHeight || body.clientHeight;
 		console.log(width, height);
 	};
+
+	extractData = () => {
+		const token = window.sessionStorage.getItem('token') || window.localStorage.getItem('token');
+		if (token) {
+			fetch(`${API_URL}/authentication/signin`, {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json',
+					authorization: token
+				}
+			})
+				.then((resp) => resp.json())
+				.then((data) => {
+					if (data && data.id_user) {
+						fetch(`${API_URL}/interrupcion/getInterruptionStats`, {
+							method: 'GET',
+							headers: {
+								'Content-Type': 'application/json',
+								authorization: token
+							}
+						})
+							.then((resp) => resp.json())
+							.then((stats) => {
+								this.setState({ data: stats[1] });
+								this.setState({ data2: stats[0] });
+								this.setState({ data1: stats[2] });
+							});
+					}
+				})
+				.catch((err) => {
+					console.log({ Error: err });
+				});
+		} else {
+			this.props.history.push('/');
+		}
+	};
 	// componentDidMount=()=> {
 	//   //if (this.props.dynamic)
 	//   this.startDynamicData();
@@ -85,7 +124,6 @@ class Maps extends React.Component {
 		const token = window.sessionStorage.getItem('token') || window.localStorage.getItem('token');
 		const { id_rol, id_user } = this.props.sessionController.dataUser;
 		let offset = this.state.elementosPagina * (this.state.pagina - 1);
-		console.log('<>?><?', this.state, this.state.filtroFechaInicial);
 		let datos = [
 			offset,
 			this.state.elementosPagina,
@@ -97,7 +135,7 @@ class Maps extends React.Component {
 			id_rol,
 			id_user
 		];
-		const response = await fetch(`${API_URL}/interrupcion/inter`, {
+		const response = await fetch(`${API_URL}/interrupcion/interrupcion`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -197,7 +235,7 @@ class Maps extends React.Component {
 	};
 
 	saveSelectedMultiple = ({ selectedKeys }) => {
-		let llaves = [ '0', '9', '1' ].concat(selectedKeys.sort());
+		let llaves = [ '29' ].concat(selectedKeys.sort());
 		this.setState({ campos: llaves });
 	};
 
@@ -254,6 +292,7 @@ class Maps extends React.Component {
 								if (user && user.email) {
 									this.props.onSignInApproved();
 									this.props.onReceiveDataUser(user);
+									this.extractData();
 									this._isMounted = true;
 									this._isMounted &&
 										this.fetchInterrupciones().then((res) => {
@@ -263,6 +302,7 @@ class Maps extends React.Component {
 									// window.addEventListener("resize", this.updateDimensions);
 								}
 							});
+						this.extractData();
 					}
 				})
 				.catch((err) => {

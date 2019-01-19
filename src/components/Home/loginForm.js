@@ -114,11 +114,11 @@ class LoginForm extends React.Component {
 				<div className="containerLogin">
 					<div className="row">
 						<div className="col-md-4 login-sec">
-							<h2 className="text-center">Iniciar Sesion</h2>
+							<h2 className="text-center">Iniciar Sesión</h2>
 							<form className="login-form">
 								<div className="form-group">
 									<label htmlFor="exampleInputEmail1" className="text-uppercase">
-										Email
+										Correo Electrónico
 									</label>
 									<input
 										onChange={this.onEmailChange}
@@ -157,7 +157,7 @@ class LoginForm extends React.Component {
 										className="form-check-input"
 									/>
 									<label className="marca" htmlFor="rememberMe">
-										Remember Me
+										Recuerdame
 									</label>
 									<br />
 									<button

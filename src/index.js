@@ -1,8 +1,22 @@
-//Dependencias
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//___Módulo index___
+//            Autor: Christian Marca
+//            Fecha de Creación: 18/01/2019
+//            Fecha de Ultima Modificación:-----
+//            Descripción: Renderiza la pagina y crea el store para manejo de estado medinate Redux
+//            metodos:
+//						rootReducer
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//index
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -69,7 +83,11 @@ const rootReducer = (state, action) => {
 	return appReducers(state, action);
 };
 
-const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, looger));
+const composeEnhancers =
+	(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+// const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, looger));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware, looger)));
+
 // const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 export default store;
 

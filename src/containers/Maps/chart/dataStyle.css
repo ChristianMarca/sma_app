@@ -1,7 +1,7 @@
 :export {
 	/* primaryColor: #eecda3;
   secondaryColor: #ef629f; */
-	contrastColor: #ff8182;
+	contrastColor: #a7adba;
 	darkColor: #20232a;
 	primaryFont: "Montserrat", Helvetica, sans-serif;
 	primaryFontColor: #eee;
@@ -10,12 +10,14 @@
 	reactColor: #61dafb;
 	d3Color: #f68e48;
 
-	primaryColor: #ff9d6c;
+	primaryColor: #ff0000;
 	secondaryColor: #bb4e75;
 
 	secondaryColor1: #13547a;
 	primaryColor1: #80d0c7;
 
 	primaryColor2: #56ab2f;
-	secondaryColor3: #a8e063;
+	secondaryColor2: #a8e063;
+
+	hoverColor: #343d46;
 }

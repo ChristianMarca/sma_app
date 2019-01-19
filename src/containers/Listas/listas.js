@@ -60,9 +60,9 @@ class ListaInt extends React.Component {
 		if (!this.props.sessionController.id_rol) return <Redirect to="/" push={true} />;
 		if (this.props.sessionController.id_rol !== 3) {
 			return (
-				<div className="containerListSuper">
-					<Lista />
-				</div>
+				// <div className="containerListSuper">
+				<Lista />
+				// </div>
 			);
 		} else {
 			return <Redirect to="/" push={true} />;

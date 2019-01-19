@@ -10,11 +10,12 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	overflow-x: scroll;
 }
 .configContainer {
 	display: flex;
 	flex-direction: row;
-	width: 100%;
+	width: 100vw;
 	max-width: 100%;
 	background-color: #2e2e2e;
 	text-align: center;
@@ -31,9 +32,9 @@ td {
 	display: flex;
 	flex-direction: row;
 	height: auto;
-	align-content: center;
+	/* align-content: center;
 	align-items: center;
-	text-align: center;
+	text-align: center; */
 	margin: 0;
 	padding: 0;
 	margin-left: auto;
@@ -114,11 +115,67 @@ td {
 .dateFilterContainer {
 	display: flex;
 	flex-direction: row;
+	width: auto;
 	height: 100%;
 	text-align: center;
 	align-items: center;
 	align-content: center;
 }
+
+@supports (-ms-ime-align: auto) {
+	.dateFilterContainer {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		width: 50%;
+		height: 100%;
+		text-align: center;
+		align-items: center;
+		align-content: center;
+		margin-right: auto;
+	}
+	.dateFilterPag {
+		width: 60%;
+		position: relative;
+		/* width: 5%; */
+	}
+	.dateFilterPag > .react-datetime-picker__button {
+		border-radius: 5px;
+		border: none;
+		padding: 0 !important;
+		margin: 0 !important;
+		/* width: 25% !important; */
+		height: 100% !important;
+	}
+}
+
+@-moz-document url-prefix() {
+	.dateFilterContainer {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		width: 50%;
+		height: 100%;
+		text-align: center;
+		align-items: center;
+		align-content: center;
+		margin-right: auto;
+	}
+	.dateFilterPag {
+		width: 60%;
+		position: relative;
+		/* width: 5%; */
+	}
+	.dateFilterPag > .react-datetime-picker__button {
+		border-radius: 5px;
+		border: none;
+		padding: 0 !important;
+		margin: 0 !important;
+		/* width: 25% !important; */
+		height: 100% !important;
+	}
+}
+
 .dateFilterPag > .react-datetime-picker__calendar {
 	color: #000000;
 }
@@ -139,6 +196,8 @@ td {
 	align-items: center;
 	text-align: center;
 	flex-direction: inherit;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 .paginacion {
 	display: flex;

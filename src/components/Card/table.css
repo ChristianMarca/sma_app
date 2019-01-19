@@ -36,7 +36,7 @@
 
 .tableContainerInterruption {
 	width: 100%;
-	height: 85%;
+	height: 87%;
 	align-self: center;
 	align-items: center;
 	align-content: center;
@@ -57,6 +57,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 }
 .wrapperHead {
 	width: 100%;
@@ -92,14 +93,14 @@
 	width: 99.5%;
 	cursor: pointer;
 	position: relative;
-	overflow: hidden;
+	/* overflow: hidden; */
 	text-align: center;
 	align-content: center;
 	align-items: center;
 	border-top: 1px solid darken(var(--light-bg), 100%);
 	display: flex;
 	justify-content: space-around;
-	overflow: scroll;
+	overflow-y: scroll;
 	margin-bottom: 5px;
 }
 .rowTarget > td {

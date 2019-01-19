@@ -1,3 +1,20 @@
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//___Módulo App___
+//            Autor: Christian Marca
+//            Fecha de Creación: 18/01/2019
+//            Fecha de Ultima Modificación:-----
+//            Descripción: Contienen los componentes de pagina de  inicio y enrutaminento en el lado del cliente
+//            metodos:
+//                     changeNav
+//                     toogleModal
+//                     onRouterAccess
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+// App
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
@@ -90,25 +107,25 @@ class App extends Component {
 				</li>,
 				<li key="listado" className="headerItem" onClick={this.changeNav}>
 					<Link to="/listas">
-						<i className="fas fa-chart-bar" />Stats
+						<i className="fas fa-chart-bar" />Interrupciones
 					</Link>
 				</li>,
 				this.props.sessionController.dataUser.id_rol === 2 && (
 					<li key="newInterruption" className="headerItem" onClick={this.changeNav}>
 						<Link to="/newinterruption">
-							<i className="fas fa-file-medical-alt" /> Report
+							<i className="fas fa-file-medical-alt" /> Reportar
 						</Link>
 					</li>
 				),
 				<li key="maps" className="headerItem" onClick={this.changeNav}>
 					<Link to="/maps">
-						<i className="fas fa-map-marked-alt" /> Maps
+						<i className="fas fa-map-marked-alt" /> Mapas
 					</Link>
 				</li>,
 				this.props.sessionController.dataUser.id_rol === 1 && (
 					<li key="dashboard" className="headerItem" onClick={this.changeNav}>
 						<Link to="/radiobases">
-							<i className="fas fa-broadcast-tower" /> Radiobases
+							<i className="fas fa-broadcast-tower" /> Radio Bases
 						</Link>
 					</li>
 				)
@@ -157,7 +174,12 @@ class App extends Component {
 		return (
 			<div className="App">
 				{this.props.sessionController.isSessionInit ? accessToApp : accessDenied}
-				{this.props.sessionController.dataUser.issysadmin ? <AdminPage /> : <div>{children}</div>}
+				{this.props.sessionController.dataUser.issysadmin ? (
+					<AdminPage />
+				) : (
+					<div className="superContainerRoutes">{children}</div>
+				)}
+				{/* {this.props.sessionController.dataUser.issysadmin ? <AdminPage /> : <div>{children}</div>} */}
 			</div>
 		);
 	}

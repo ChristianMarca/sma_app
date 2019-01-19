@@ -1,3 +1,40 @@
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//___Módulo reducers___
+//            Autor: Christian Marca
+//            Fecha de Creación: 18/02/2018
+//            Fecha de Ultima Modificación:-----
+//            Descripción: Especifique cómo cambia el estado de la aplicación en respuesta a las acciones enviadas al store
+//            metodos:
+//						interruptionTypeReducer
+//						interruptionAddressReducer
+//						interruptionDateReducer
+//						interruptionCausesReducer
+//						interruptionServicesReducer
+//						interruptionTechnologiesReducer
+//						reducerSuggestID
+//						reducerSuggestEST
+//						reducerSuggestCodeEst
+//						reducerSuggestProvincia
+//						reducerSuggestCanton
+//						reducerSuggestParish
+//						requestIDReducer
+//						requestAddressReducer
+//						requestProvinceReducer
+//						requestCantonReducer
+//						requestParishReducer
+//						sessionReducer
+//						radioBasesAddReducer
+//						radioBasesIDAddReducer
+//						interruptionViewReducer
+//						structureToUpdateReducer
+//						requestInterruptionDataReducer
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//reducers
+
 import {
 	INTERRUPTION_TYPE,
 	INTERRUPTION_ID_BS,

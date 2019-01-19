@@ -236,7 +236,7 @@ class Profile extends React.Component {
 						/>
 
 						<label className="labelForm" htmlFor="lastPassword">
-							Antigua Contracena:{' '}
+							Antigua Contraseña:{' '}
 						</label>
 						<input
 							onChange={this.onFormChange}
@@ -252,7 +252,7 @@ class Profile extends React.Component {
 
 						<label className="labelForm" htmlFor="newPassword">
 							{' '}
-							Nueva Contracena:{' '}
+							Nueva Contraseña:{' '}
 						</label>
 						<input
 							onChange={this.onFormChange}
@@ -267,7 +267,7 @@ class Profile extends React.Component {
 						/>
 
 						<label className="labelForm" htmlFor="repeatNewPassword">
-							Repetir Contracena:{' '}
+							Repetir Contraseña:{' '}
 						</label>
 						<input
 							onChange={this.onFormChange}

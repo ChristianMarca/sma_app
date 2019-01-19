@@ -1,3 +1,57 @@
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+//___Módulo actions___
+//            Autor: Christian Marca
+//            Fecha de Creación: 18/01/2019
+//            Fecha de Ultima Modificación:-----
+//            Descripción: Contiene las acciones que contienen cargas útiles de información que envían datos desde la aplicación al store, para el manejo del estado de la aplicacion de Redux
+//            metodos:
+//						interruptionTypeAction
+//						interruptionIdBsAction
+//						interruptionCodeAction
+//						interruptionBSAction
+//						interruptionCodeEstAction
+//						interruptionLevelSelectedAction
+//						interruptionProvinceAction
+//						interruptionCantonAction
+//						interruptionParishAction
+//						interruptionSectorAction
+//						interruptionStartAction
+//						interruptionEndAction
+//						interruptionTimeAction
+//						interruptionCausesAction
+//						interruptionTagsAction
+//						interruptionServicesAddAction
+//						interruptionServicesRemoveAction
+//						interruptionServicesRemoveAllActions
+//						interruptionTechnologyAddAction
+//						interruptionTechnologyRemoveAction
+//						interruptionTechnologyRemoveAllActions
+//						requestIDAction
+//						requestAddressAction
+//						requestProvinceAction
+//						requestCantonAction
+//						requestParishAction
+//						interruptionSubmitedAction
+//						isSignInAction
+//						isSignOutAction
+//						receiveDataUserAction
+//						addRadioBaseAction
+//						removeRadioBaseAction
+//						removeAllRadioBaseAction
+//						addRadioBaseIDAction
+//						removeRadioBaseIDAction
+//						removeAllRadioBaseIDAction
+//						interruptionViewIdAction
+//						structureToUpdateAction
+//						requestInterruptionFetchAction
+
+//#########################################################################################
+//#########################################################################################
+//#########################################################################################
+// actions
+
 import axios from 'axios';
 import {
 	INTERRUPTION_TYPE,
@@ -186,7 +240,7 @@ export const requestIDAction = (newValue, typeSearch, id_usuario) => (dispatch) 
 		newValue.length >= 3 &&
 			axios({
 				method: 'GET',
-				url: `${API_URL}/radioBases/test?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+				url: `${API_URL}/radioBases/estructuras?${typeSearch}=${newValue}&id_user=${id_usuario}`,
 				headers: {
 					'Content-Type': 'application/json',
 					authorization: token
@@ -228,7 +282,7 @@ export const requestProvinceAction = (newValue, typeSearch, id_usuario) => (disp
 		// return axios.get(`${API_URL}/radioBases/address?${typeSearch}=${newValue}&id_user=${id_usuario}`)
 		return axios({
 			method: 'GET',
-			url: `${API_URL}/radioBases/address?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+			url: `${API_URL}/radioBases/addressInterruptionForProvince?${typeSearch}=${newValue}&id_user=${id_usuario}`,
 			headers: {
 				'Content-Type': 'application/json',
 				authorization: token
@@ -248,7 +302,7 @@ export const requestCantonAction = (newValue, typeSearch, id_usuario) => (dispat
 		// return axios.get(`${API_URL}/radioBases/address1?${typeSearch}=${newValue}&id_user=${id_usuario}`)
 		return axios({
 			method: 'GET',
-			url: `${API_URL}/radioBases/address1?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+			url: `${API_URL}/radioBases/addressInterruptionForCanton?${typeSearch}=${newValue}&id_user=${id_usuario}`,
 			headers: {
 				'Content-Type': 'application/json',
 				authorization: token
@@ -268,7 +322,7 @@ export const requestParishAction = (newValue, typeSearch, id_usuario) => (dispat
 		// return axios.get(`${API_URL}/radioBases/address2?${typeSearch}=${newValue}&id_user=${id_usuario}`)
 		return axios({
 			method: 'GET',
-			url: `${API_URL}/radioBases/address2?${typeSearch}=${newValue}&id_user=${id_usuario}`,
+			url: `${API_URL}/radioBases/addressInterruptionForParish?${typeSearch}=${newValue}&id_user=${id_usuario}`,
 			headers: {
 				'Content-Type': 'application/json',
 				authorization: token

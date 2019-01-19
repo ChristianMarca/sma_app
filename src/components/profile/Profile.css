@@ -23,7 +23,12 @@
 
 .dropDownMenu {
 	top: 10px !important;
+	/* left: 85px !important; */
 	box-sizing: border-box;
+}
+.dropdown-menu {
+	min-width: auto;
+	width: 75px;
 }
 .dropdown-item {
 	box-sizing: border-box;

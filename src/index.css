@@ -12,4 +12,17 @@ body {
 	height: 100%;
 	margin: 0;
 	outline: none;
+	/* overflow: -moz-scrollbars-none; */
+	/* overflow-y: hidden; */
+	/* overflow-x: hidden; */
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+@-moz-document url-prefix() {
+	/* html,
+	body {
+		overflow: hidden;
+	} */
 }
