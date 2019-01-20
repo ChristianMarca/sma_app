@@ -1,7 +1,7 @@
 {
   "main.css": "/christianmarca.github.io/sma_app/static/css/main.ea8b870a.chunk.css",
-  "main.js": "/christianmarca.github.io/sma_app/static/js/main.47158e91.chunk.js",
-  "main.js.map": "/christianmarca.github.io/sma_app/static/js/main.47158e91.chunk.js.map",
+  "main.js": "/christianmarca.github.io/sma_app/static/js/main.7a00d80f.chunk.js",
+  "main.js.map": "/christianmarca.github.io/sma_app/static/js/main.7a00d80f.chunk.js.map",
   "static/css/1.b68f5043.chunk.css": "/christianmarca.github.io/sma_app/static/css/1.b68f5043.chunk.css",
   "static/js/1.1861ca24.chunk.js": "/christianmarca.github.io/sma_app/static/js/1.1861ca24.chunk.js",
   "static/js/1.1861ca24.chunk.js.map": "/christianmarca.github.io/sma_app/static/js/1.1861ca24.chunk.js.map",
@@ -10,6 +10,6 @@
   "static/css/main.ea8b870a.chunk.css.map": "/christianmarca.github.io/sma_app/static/css/main.ea8b870a.chunk.css.map",
   "static/css/1.b68f5043.chunk.css.map": "/christianmarca.github.io/sma_app/static/css/1.b68f5043.chunk.css.map",
   "index.html": "/christianmarca.github.io/sma_app/index.html",
-  "precache-manifest.d9e2c6b93cad43330fa470c2544893d9.js": "/christianmarca.github.io/sma_app/precache-manifest.d9e2c6b93cad43330fa470c2544893d9.js",
+  "precache-manifest.c129125c93cc8003ed580fe0c4d4aa5b.js": "/christianmarca.github.io/sma_app/precache-manifest.c129125c93cc8003ed580fe0c4d4aa5b.js",
   "service-worker.js": "/christianmarca.github.io/sma_app/service-worker.js"
 }
