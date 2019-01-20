@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "909d5cf172d60999c27b",
+    "revision": "47158e91364def3644ac",
     "url": "/christianmarca.github.io/sma_app/static/css/main.ea8b870a.chunk.css"
   },
   {
-    "revision": "909d5cf172d60999c27b",
-    "url": "/christianmarca.github.io/sma_app/static/js/main.909d5cf1.chunk.js"
+    "revision": "47158e91364def3644ac",
+    "url": "/christianmarca.github.io/sma_app/static/js/main.47158e91.chunk.js"
   },
   {
     "revision": "1861ca24e3b8ae8fab32",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/christianmarca.github.io/sma_app/static/js/runtime~main.8ccc704a.js"
   },
   {
-    "revision": "58ab51a49654a8fc0581553fec1d590e",
+    "revision": "9b555cc69422a628afb4522610914807",
     "url": "/christianmarca.github.io/sma_app/index.html"
   }
 ];

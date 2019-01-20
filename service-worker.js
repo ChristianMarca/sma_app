@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/christianmarca.github.io/sma_app/precache-manifest.13960e3850d5913d71e7b59b8cca2aec.js"
+  "/christianmarca.github.io/sma_app/precache-manifest.d9e2c6b93cad43330fa470c2544893d9.js"
 );
 
 workbox.clientsClaim();
