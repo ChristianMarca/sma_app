@@ -88,12 +88,17 @@ const composeEnhancers =
 // const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, looger));
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware, looger)));
 
+// export default function Routes() {
+//   const history = createHistory({
+//     basename: process.env.PUBLIC_URL,
+//   });
+
 // const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 export default store;
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router>
+		<Router basename={process.env.PUBLIC_URL}>
 			<AppRoutes />
 		</Router>
 	</Provider>,

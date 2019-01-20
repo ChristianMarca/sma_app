@@ -525,3 +525,10 @@
 		opacity: 0;
 	}
 }
+
+/* @media all and (max-width: 768px) {
+	.containerInterruption {
+		border: 5px solid rebeccapurple;
+		display: block;
+	}
+} */

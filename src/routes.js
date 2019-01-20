@@ -40,7 +40,6 @@ class AppRoutes extends React.Component {
 					<Route exact path="/radiobases" component={RadioBasesPage} />
 					<Route exact path="/listas" component={ListaInt} />
 					<Route exact path="/interruptionOperator" component={OperatorViewInteruption} />
-					<Route exact path="/" component={RadioBasesPage} />
 					<Route component={Page404} />
 				</Switch>
 			</App>
