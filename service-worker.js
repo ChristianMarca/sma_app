@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/christianmarca.github.io/precache-manifest.48a6f5ab78ecb0f8a7d46d72b8a507df.js"
+  "/christianmarca.github.io/sma_app/precache-manifest.13960e3850d5913d71e7b59b8cca2aec.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/christianmarca.github.io/index.html", {
+workbox.routing.registerNavigationRoute("/christianmarca.github.io/sma_app/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
