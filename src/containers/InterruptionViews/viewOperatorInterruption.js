@@ -358,6 +358,7 @@ class InterruptionOperatorView extends React.Component {
 				selected: selected.key,
 				contentHtml: this.state.html,
 				id_interruption: this.props.interruptionViewSelected,
+				sessionController: this.props.sessionController,
 				contentHeader: {
 					asunto: this.state.asunto,
 					codigoReport: this.state.codigoReporte,
@@ -371,7 +372,7 @@ class InterruptionOperatorView extends React.Component {
 		})
 			.then((resp) => resp.json())
 			.then((resp) => {
-				console.log('tetsva>?<?><>????????', resp);
+				// console.log('tetsva>?<?><>????????', resp);
 				switch (selected.key) {
 					case 'rebuildReport':
 						this.setState({ html: resp.html });
@@ -572,9 +573,9 @@ class InterruptionOperatorView extends React.Component {
 											/>
 										</div>
 									</div>
-									<button className="SendInterruptionForEmail">
+									{/* <button className="SendInterruptionForEmail">
 										Enviar Reporte Por Interrupcion
-									</button>
+									</button> */}
 								</div>
 							</Pane>
 						)}

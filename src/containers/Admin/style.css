@@ -1,12 +1,23 @@
+.superContainerAdmin {
+	position: absolute;
+	height: auto;
+	width: 100vw;
+	/* display: flex; */
+	/* background: red; */
+}
 .adminContainer {
+	position: relative;
 	width: 50vw;
+	/* height: 300px; */
 	display: flex;
 	flex-direction: column;
 	align-content: center;
 	align-items: center;
 	text-align: center;
-	border: 2px solid #fff;
+	/* border: 2px solid #fff; */
 	background-color: whitesmoke;
+	margin-top: 15px !important;
+	margin-bottom: 15px !important;
 }
 .groupRadioButtons {
 	display: flex;
@@ -33,6 +44,61 @@
 	color: rgba(255, 255, 255, 0.5);
 	background-color: rgba(255, 0, 0, 0.25);
 }
+
+/* Images */
+.uploadFileForm {
+	margin-top: 0 !important;
+	top: 0;
+	/* padding: 5px; */
+}
+.inputForFile {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	width: auto;
+	height: 80px;
+	outline: none;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.drag-text {
+	border: 1px dashed #fff;
+	border-radius: 10px;
+	padding: 10px;
+	height: 80px;
+}
+
+.file-return {
+	margin: 0;
+}
+.file-return:not(:empty) {
+	margin: 1em 0;
+}
+.js .file-return {
+	font-style: italic;
+	font-size: .9em;
+	font-weight: bold;
+}
+.js .file-return:not(:empty):before {
+	content: "Selected file: ";
+	font-style: normal;
+	font-weight: normal;
+}
+
+.buttonForSendFile {
+	background: transparent;
+	border: 1px solid #fff;
+	padding: 5px;
+	border-radius: 5px;
+	margin-top: 15px;
+}
+.buttonForSendFile:hover {
+	/* background: #fff; */
+	text-decoration: underline;
+}
+
+/* End Images */
 
 @media all and (max-width: 600px) {
 	.adminContainer > input[type="email"] {

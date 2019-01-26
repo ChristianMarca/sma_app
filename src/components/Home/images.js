@@ -16,11 +16,7 @@ const Carrucel = (props) => {
 			<div className="carousel-inner">
 				<div className="item active">
 					<figure className="snip0016">
-						<img
-							src="sma_app/images/BSs_1.png"
-							alt="sample41"
-							onClick={(event) => event.preventDefault()}
-						/>
+						<img src="images/BSs_1.png" alt="sample41" onClick={(event) => event.preventDefault()} />
 						<figcaption>
 							<h2>
 								Plataforma <span>SMA_APP</span>{' '}
@@ -36,11 +32,7 @@ const Carrucel = (props) => {
 
 				<div className="item">
 					<figure className="snip0016">
-						<img
-							src="sma_app/images/SMA_APP_1.png"
-							alt="sample42"
-							onClick={(event) => event.preventDefault()}
-						/>
+						<img src="images/SMA_APP_1.png" alt="sample42" onClick={(event) => event.preventDefault()} />
 						<figcaption>
 							<h2>
 								Plataforma <span>SMA_APP</span>
@@ -55,11 +47,7 @@ const Carrucel = (props) => {
 
 				<div className="item">
 					<figure className="snip1321">
-						<img
-							src="/sma_app/images/SMA_APP_2.png"
-							alt="sq-sample26"
-							onClick={(event) => event.preventDefault()}
-						/>
+						<img src="images/SMA_APP_2.png" alt="sq-sample26" onClick={(event) => event.preventDefault()} />
 						<figcaption>
 							<i className="fas fa-box-open" />
 							<h4>Desarrolladores </h4>

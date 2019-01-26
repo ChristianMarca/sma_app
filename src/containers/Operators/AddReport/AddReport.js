@@ -196,6 +196,7 @@ class AddReport extends React.Component {
 			interruptionCanton,
 			interruptionParish,
 			interruptionIdUser: this.props.sessionController.id_user,
+			interruptionEmailSelf: this.props.sessionController.email,
 			interruptionRB,
 			interruptionEmailAddress: this.state.emailAddress,
 			coordinacion_zonal: this.state.CZ
