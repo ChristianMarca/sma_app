@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "ba7aaf0b0261212cda6b",
+    "revision": "f00d5256eb83263e2187",
     "url": "/sma_app/static/css/main.78bfa8f0.chunk.css"
   },
   {
-    "revision": "ba7aaf0b0261212cda6b",
-    "url": "/sma_app/static/js/main.ba7aaf0b.chunk.js"
+    "revision": "f00d5256eb83263e2187",
+    "url": "/sma_app/static/js/main.f00d5256.chunk.js"
   },
   {
     "revision": "c79ba4d68e56d8f7bb3a",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/sma_app/static/js/runtime~main.362387bf.js"
   },
   {
-    "revision": "56d28cc5e7b2235e656520b955ade37c",
+    "revision": "48b90f1bf3133606a0e6d9d78cc75a7d",
     "url": "/sma_app/index.html"
   }
 ];
