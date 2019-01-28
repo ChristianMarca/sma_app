@@ -1,7 +1,7 @@
 {
   "main.css": "/sma_app/static/css/main.78bfa8f0.chunk.css",
-  "main.js": "/sma_app/static/js/main.48bcdf15.chunk.js",
-  "main.js.map": "/sma_app/static/js/main.48bcdf15.chunk.js.map",
+  "main.js": "/sma_app/static/js/main.ba7aaf0b.chunk.js",
+  "main.js.map": "/sma_app/static/js/main.ba7aaf0b.chunk.js.map",
   "static/css/1.b68f5043.chunk.css": "/sma_app/static/css/1.b68f5043.chunk.css",
   "static/js/1.c79ba4d6.chunk.js": "/sma_app/static/js/1.c79ba4d6.chunk.js",
   "static/js/1.c79ba4d6.chunk.js.map": "/sma_app/static/js/1.c79ba4d6.chunk.js.map",
@@ -10,6 +10,6 @@
   "static/css/main.78bfa8f0.chunk.css.map": "/sma_app/static/css/main.78bfa8f0.chunk.css.map",
   "static/css/1.b68f5043.chunk.css.map": "/sma_app/static/css/1.b68f5043.chunk.css.map",
   "index.html": "/sma_app/index.html",
-  "precache-manifest.d72fc5e4de93923ed50781c07039dcf8.js": "/sma_app/precache-manifest.d72fc5e4de93923ed50781c07039dcf8.js",
+  "precache-manifest.00d4c95f03253f3fa70014c9f9e1f375.js": "/sma_app/precache-manifest.00d4c95f03253f3fa70014c9f9e1f375.js",
   "service-worker.js": "/sma_app/service-worker.js"
 }
