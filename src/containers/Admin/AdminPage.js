@@ -62,6 +62,7 @@ class AdminPage extends React.Component {
 						}
 					})
 					.catch((error) => {
+						console.log('Error', error);
 						alert('ERROR');
 					});
 			} else {

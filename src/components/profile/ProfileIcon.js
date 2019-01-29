@@ -57,7 +57,7 @@ class ProfileIcon extends React.Component {
 			<div className="pa4 tc">
 				<ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
 					<DropdownToggle tag="span" data-toggle="dropdown" aria-expanded={this.state.dropdownOpen}>
-						<img src="/images/avatar.svg" className="br-100 ba h3 w3 dib avatar" alt="avatar" />
+						<img src="images/avatar.svg" className="br-100 ba h3 w3 dib avatar" alt="avatar" />
 					</DropdownToggle>
 					<DropdownMenu
 						right
