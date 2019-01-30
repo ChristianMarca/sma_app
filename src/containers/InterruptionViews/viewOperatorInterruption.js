@@ -55,7 +55,8 @@ class InterruptionOperatorView extends React.Component {
 			messageToSend: '',
 			stateOfRadiobase: [ 'inProcess' ],
 			selectedKeysMenuReport: [],
-			stateOfInterruption: 'Cargando...'
+			stateOfInterruption: 'Cargando...',
+			is_finished: false
 		};
 	}
 
@@ -107,7 +108,9 @@ class InterruptionOperatorView extends React.Component {
 													.then((report) => {
 														this.setState({
 															stateOfInterruption: this.props.interruptionData.ID.data
-																.data.estado_int
+																.data.estado_int,
+															is_finished: this.props.interruptionData.ID.data.data
+																.is_finished
 														});
 														this.setState({
 															html: report.html,
@@ -302,7 +305,7 @@ class InterruptionOperatorView extends React.Component {
 	};
 
 	getItemsForUpdateInterruptionState = () => {
-		console.log('tetsdavs?><>$#@$#', [ this.props.interruptionData.ID.data.data.estado_int.replace(' ', '_') ]);
+		// console.log('tetsdavs?><>$#@$#', [ this.props.interruptionData.ID.data.data.estado_int.replace(' ', '_') ]);
 		return (
 			<Menu
 				onSelect={this.onSelectInterruptionState}
@@ -333,15 +336,19 @@ class InterruptionOperatorView extends React.Component {
 		);
 	};
 
-	getItemsForAddInterruption = () => {
+	getItemsForUpdateStateOfInterruption = () => {
 		return (
 			<Menu
 				onSelect={this.onSelectInterruptionState}
 				selectedKeys={this.state.selectedKeys}
 				className="menuInterruptionState"
 			>
-				<MenuItemDropdown key="saveChanges" group="actionInReport">
-					Reportar por Email
+				<MenuItemDropdown
+					disabled={this.props.interruptionData.ID.data.data.is_finished}
+					key="FINALIZAR_INTERRUPCION_OPERADOR"
+					group="finishInterruption"
+				>
+					Finalizar
 				</MenuItemDropdown>
 			</Menu>
 		);
@@ -379,6 +386,9 @@ class InterruptionOperatorView extends React.Component {
 						break;
 					case 'sendReport':
 						alert('Enviado');
+						break;
+					case 'FINALIZAR_INTERRUPCION_OPERADOR':
+						this.setState({ is_finished: resp });
 						break;
 					default:
 						break;
@@ -560,6 +570,23 @@ class InterruptionOperatorView extends React.Component {
 								style={this.paneStyle}
 							>
 								<div className="cardInfoInterruption viewCode">
+									<Dropdown
+										trigger={[ 'contextMenu', 'click' ]}
+										overlay={this.getItemsForUpdateStateOfInterruption()}
+										animation="slide-up"
+										onVisibleChange={this.onVisibleChangeInterruptionState}
+										alignPoint
+									>
+										<div className="interruptionStateDropDown">
+											{/* <button onClick={this.saveReportChanges} className="reportButtons">
+												Save Changes
+											</button>
+											<button className="reportButtons">Rebuild Report</button> */}
+											<span>Interrupción:&emsp;</span>
+											{this.state.is_finished ? 'Finalizada' : 'En Proceso'}
+											{/* {this.state.stateOfInterruption} */}
+										</div>
+									</Dropdown>
 									<div className="commentsContainer">
 										<Chat message={this.state.messageToSend} />
 										<div className="sendCommentContainer">

@@ -22,6 +22,8 @@ package-lock.json
 /src/containers/Maps/map/Tareas.txt
 
 src/containers/InterruptionViews/viewOperatorInterruption1.js
+docs
+/docs
 # misc
 .DS_Store
 .env.local
