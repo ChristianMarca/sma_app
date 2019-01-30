@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { Redirect, withRouter } from 'react-router-dom';
 import { interruptionViewIdAction } from '../../actions';
 import { API_URL } from '../../config';
@@ -45,15 +45,15 @@ class ListaInt extends React.Component {
 		this.setState((prevState) => ({ openInterruption: !prevState.openInterruption }));
 	};
 
-	socketConnectionEnable = (id_interruption) => {
-		const socket = io.connect(`${API_URL}`, { path: '/socket' });
-		socket.on('connect', function() {
-			console.log('Conectado al Servidor');
-		});
-		socket.on('disconnect', function() {
-			console.log('Perdimos la conexion al server');
-		});
-	};
+	// socketConnectionEnable = (id_interruption) => {
+	// 	this.socket = io.connect(`${API_URL}`, { path: '/socket' });
+	// 	this.socket.on('connect', function() {
+	// 		console.log('Conectado al Servidor');
+	// 	});
+	// 	this.socket.on('disconnect', function() {
+	// 		console.log('Perdimos la conexion al server');
+	// 	});
+	// };
 
 	dataRequest = async () => {
 		const token = window.sessionStorage.getItem('token') || window.localStorage.getItem('token');
@@ -133,6 +133,7 @@ class ListaInt extends React.Component {
 		if (this._asyncRequestColumns) {
 			this._asyncRequestColumns.cancel();
 		}
+		// this.socket.disconnect();
 	};
 
 	columnas = () => {
@@ -171,7 +172,6 @@ class ListaInt extends React.Component {
 					]);
 				} else {
 					let selec = columns.map((elemento, index) => {
-						console.log('test', elemento);
 						if (elemento.includes('fecha')) {
 							return (
 								<td key={index + moment()}>

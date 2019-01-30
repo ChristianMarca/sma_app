@@ -30,6 +30,7 @@ class InterruptionOperatorView extends React.Component {
 		this.state = {
 			isReceiveDataOfInterruption: false,
 			time: '',
+			time_finalizado: '0 dias',
 			showExternalHTML: false
 		};
 	}
@@ -50,17 +51,20 @@ class InterruptionOperatorView extends React.Component {
 		this.socket.emit('temir', 'testk');
 		this.socket.emit('interruptionSelected', { interruption: this.props.interruptionViewSelected });
 		this.socket.on('timer', (time) => {
-			var time_ = time.countdown.split(':').map((item, index) => {
-				switch (index) {
-					case 0:
-						return `${item} h `;
-					case 1:
-						return `${item} min `;
-					default:
-						return `${item} seg`;
-				}
+			// var time_ = time.countdown.split(':').map((item, index) => {
+			// 	switch (index) {
+			// 		case 0:
+			// 			return `${item} h `;
+			// 		case 1:
+			// 			return `${item} min `;
+			// 		default:
+			// 			return `${item} seg`;
+			// 	}
+			// });
+			this.setState({
+				time: this.getDateString(time.countdown),
+				time_finalizado: this.getDateString(time.countdown_real)
 			});
-			this.setState({ time: time_ });
 		});
 
 		// this.socket.on('update',data=>{console.log('si leyo ',data)})
@@ -121,6 +125,28 @@ class InterruptionOperatorView extends React.Component {
 		this.socket.disconnect();
 	};
 
+	getDateString = (days) => {
+		return moment.duration(days, 'days').format('dd:hh:mm').split(':').map((item, index, array) => {
+			if (array.length === 2) {
+				if (index === 0) {
+					return `${item} h : `;
+				} else {
+					return `${item} m`;
+				}
+			} else if (array.length === 3) {
+				if (index === 0) {
+					return `${item} d : `;
+				} else if (index === 1) {
+					return `${item} h : `;
+				} else {
+					return `${item} m`;
+				}
+			} else {
+				return `${item} m`;
+			}
+		});
+	};
+
 	getInfoInterruption = () => {
 		const { data } = this.props.interruptionData.ID;
 		if (this.props.interruptionData.ID.data.data) {
@@ -128,8 +154,12 @@ class InterruptionOperatorView extends React.Component {
 				<div className="cardInfoInterruption cardInfoDetails">
 					<div className="titleInterruption titleInfo">Informacion de la Interrupcion</div>
 					<div className="containerInfoInterruption">
-						<div className="titleInfo">Tiempo:</div>
+						<div className="titleInfo">Duración desde Inicio:</div>
 						<div className="body-info">{this.state.time}</div>
+					</div>
+					<div className="containerInfoInterruption">
+						<div className="titleInfo">Duración desde Finalización:</div>
+						<div className="body-info">{this.state.time_finalizado}</div>
 					</div>
 					<div className="containerInfoInterruption">
 						<div className="titleInfo">Tipo:</div>

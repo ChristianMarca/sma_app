@@ -70,6 +70,7 @@ import { API_URL } from '../../../config';
 const mapStateToProps = (state) => {
 	return {
 		sessionController: state.sessionReducer.dataUser
+		// dataInterruption: state.requestInterruptionDataReducer
 	};
 };
 const mapDispatchToProps = (dispatch) => {
