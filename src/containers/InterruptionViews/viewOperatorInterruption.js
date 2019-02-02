@@ -5,6 +5,7 @@ import { SortablePane, Pane } from 'react-sortable-pane';
 import ContentEditable from 'react-contenteditable';
 import sanitizeHtml from 'sanitize-html';
 import Dropdown from 'rc-dropdown';
+import moment from 'moment-timezone';
 import Menu, { Item as MenuItemDropdown, Divider } from 'rc-menu';
 import 'rc-dropdown/assets/index.css';
 import { requestInterruptionFetchAction, isSignInAction, receiveDataUserAction } from '../../actions';
@@ -18,6 +19,9 @@ import Chat from '../../components/viewInterruptions/chat';
 import { API_URL } from '../../config';
 
 import InterruptionView from '../../components/viewInterruptions/viewOperatorInterruption';
+
+import Modal from '../../components/Modal/Modal';
+import DateTimePicker from 'react-datetime-picker';
 
 import './style.css';
 
@@ -56,7 +60,9 @@ class InterruptionOperatorView extends React.Component {
 			stateOfRadiobase: [ 'inProcess' ],
 			selectedKeysMenuReport: [],
 			stateOfInterruption: 'Cargando...',
-			is_finished: false
+			is_finished: false,
+			real_finish_interruption: moment().tz('America/Guayaquil').toDate(),
+			isModalOpen: false
 		};
 	}
 
@@ -363,6 +369,7 @@ class InterruptionOperatorView extends React.Component {
 			body: JSON.stringify({
 				group: selected.item.props.group,
 				selected: selected.key,
+				real_finish_interruption: selected.real_finish_interruption,
 				contentHtml: this.state.html,
 				id_interruption: this.props.interruptionViewSelected,
 				sessionController: this.props.sessionController,
@@ -414,11 +421,74 @@ class InterruptionOperatorView extends React.Component {
 	onVisibleChangeInterruptionState(visible) {
 		//this.setState({elementosPagina: key})
 	}
+	toogleModal = () => {
+		this.setState((prevState) => ({
+			...prevState,
+			isModalOpen: !prevState.isModalOpen
+		}));
+	};
+	onChangeRealFinishInterruption = (event) => {
+		this.setState({ real_finish_interruption: event });
+	};
+	onHandleFinishInterruption = (event) => {
+		var handleEvent = event.currentTarget;
+		const actionValue = {
+			item: {
+				props: {
+					group: handleEvent.getAttribute('group')
+				}
+			},
+			key: handleEvent.getAttribute('keyvalue'),
+			real_finish_interruption: this.state.real_finish_interruption
+		};
+		// console.log('evensa', event.currentTarget, handleEvent, actionValue);
+		this.onSelectInterruptionState(actionValue);
+		this.toogleModal();
+	};
 
 	getInfoInterruption = () => {
 		if (this.props.interruptionData.ID.data.data) {
 			return (
 				<div onDoubleClick={this.initDrag} className="containerInterruption">
+					{this.state.isModalOpen &&
+					!this.state.is_finished && (
+						<Modal>
+							<div className="profile-modal">
+								<article className="modalInfoContainer">
+									<main className="mainModalForm">
+										<span className="interruptionFinishTitle">Finalizar Interrupción</span>
+										<DateTimePicker
+											className="DatePickerFinishInterruption"
+											onChange={this.onChangeRealFinishInterruption}
+											value={this.state.real_finish_interruption}
+											disableClock={true}
+											clearIcon={<i className="fas fa-eraser" />}
+											calendarIcon={<i className="far fa-calendar-alt" />}
+										/>
+										<div
+											className="submitsButtonModal"
+											style={{ display: 'flex', justifyContent: 'space-evenly' }}
+										>
+											<button
+												onClick={this.onHandleFinishInterruption}
+												keyvalue="FINALIZAR_INTERRUPCION_OPERADOR"
+												group="finishInterruption"
+												className="buttonSubmitModal"
+											>
+												Save
+											</button>
+											<button className="buttonSubmitModal" onClick={this.toogleModal}>
+												Cancel
+											</button>
+										</div>
+									</main>
+									<div className="modal-close" onClick={this.toogleModal}>
+										&times;
+									</div>
+								</article>
+							</div>
+						</Modal>
+					)}
 					<SortablePane
 						className="viewInformation"
 						direction="horizontal"
@@ -570,23 +640,23 @@ class InterruptionOperatorView extends React.Component {
 								style={this.paneStyle}
 							>
 								<div className="cardInfoInterruption viewCode">
-									<Dropdown
+									{/* <Dropdown
 										trigger={[ 'contextMenu', 'click' ]}
 										overlay={this.getItemsForUpdateStateOfInterruption()}
 										animation="slide-up"
 										onVisibleChange={this.onVisibleChangeInterruptionState}
 										alignPoint
-									>
-										<div className="interruptionStateDropDown">
-											{/* <button onClick={this.saveReportChanges} className="reportButtons">
+									> */}
+									<div className="interruptionStateDropDown" onClick={this.toogleModal}>
+										{/* <button onClick={this.saveReportChanges} className="reportButtons">
 												Save Changes
 											</button>
 											<button className="reportButtons">Rebuild Report</button> */}
-											<span>Interrupción:&emsp;</span>
-											{this.state.is_finished ? 'Finalizada' : 'En Proceso'}
-											{/* {this.state.stateOfInterruption} */}
-										</div>
-									</Dropdown>
+										<span>Interrupción:&emsp;</span>
+										{this.state.is_finished ? 'Finalizada' : 'En Proceso'}
+										{/* {this.state.stateOfInterruption} */}
+									</div>
+									{/* </Dropdown> */}
 									<div className="commentsContainer">
 										<Chat message={this.state.messageToSend} />
 										<div className="sendCommentContainer">
@@ -615,7 +685,6 @@ class InterruptionOperatorView extends React.Component {
 	};
 
 	render() {
-		console.log(this.props.interruptionData, 'testa<>?><?');
 		return this.getInfoInterruption();
 	}
 }
