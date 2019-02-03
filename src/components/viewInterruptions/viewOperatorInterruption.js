@@ -61,10 +61,15 @@ class InterruptionOperatorView extends React.Component {
 			// 			return `${item} seg`;
 			// 	}
 			// });
-			this.setState({
-				time: this.getDateString(time.countdown),
-				time_finalizado: this.getDateString(time.countdown_real)
-			});
+			time.is_finished
+				? this.setState({
+						time: this.getDateString(time.countdown),
+						time_finalizado: this.getDateString(time.countdown_real)
+					})
+				: this.setState({
+						time: this.getDateString(time.countdown),
+						time_finalizado: time.countdown_real
+					});
 		});
 
 		// this.socket.on('update',data=>{console.log('si leyo ',data)})
