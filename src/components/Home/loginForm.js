@@ -171,7 +171,8 @@ class LoginForm extends React.Component {
 							</form>
 							<div className="copy-text">
 								La presenta plataforma se encuentra en proceso de desarrollo, para mas información
-								dirigirse a <i className="fab fa-github" /> o en{' '}
+								dirigirse a{' '}
+								<i href="https://github.com/ChristianMarca/sma_app" className="fab fa-github" /> o en{' '}
 								<a href="http://www.arcotel.gob.ec/">ARCOTEL</a>
 							</div>
 						</div>

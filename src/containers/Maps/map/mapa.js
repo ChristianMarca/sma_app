@@ -358,7 +358,7 @@ class Map extends React.Component {
 	};
 
 	clickGoTo = () => {
-		var win = window.open('https://github.com/ChristianMarca', '_blank');
+		var win = window.open('https://christianmarca.github.io/StatusBaseStation/', '_blank');
 		win.focus();
 	};
 
